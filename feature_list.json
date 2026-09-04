@@ -1,0 +1,54 @@
+{
+  "project": "math-sheets",
+  "activeFeature": null,
+  "rules": [
+    "Exactly one feature may be in_progress at a time.",
+    "A feature moves to done only when every item in its doneCriteria has recorded evidence in progress.md.",
+    "If work reveals a needed change outside the active feature's scope, add a new feature entry with status backlog instead of doing it now."
+  ],
+  "features": [
+    {
+      "id": "curriculum-grade6",
+      "title": "Grade 6 topics and generators",
+      "status": "done",
+      "scope": "lib/generators/*, lib/curriculum/grade6.ts",
+      "doneCriteria": [
+        "Every grade 6 topic resolves to a registered generator",
+        "generators.test.ts and answers.test.ts pass at all three levels"
+      ]
+    },
+    {
+      "id": "sheet-rendering",
+      "title": "Printable A4 sheet and answer key",
+      "status": "done",
+      "scope": "app/sheet/[grade]/[topic]/page.tsx, components/*, app/globals.css",
+      "doneCriteria": [
+        "seed/count/level/answers round-trip through the URL",
+        "Answer key starts on its own printed page and problems do not split across pages"
+      ]
+    },
+    {
+      "id": "review-loop",
+      "title": "Mistake capture and spaced repetition",
+      "status": "backlog",
+      "scope": "New lib/review/* module, plus UI entry points in components/. No changes to generator signatures.",
+      "constraints": [
+        "localStorage only — no auth, no backend, no database",
+        "Storage is keyed by (topicId, seed, level, problem index); never store the generated problem text as the source of truth, regenerate it from the seed",
+        "Review state must never influence which problems a sheet renders — the determinism invariant in AGENTS.md still holds",
+        "Reads of localStorage must be client-side only; the sheet page is a server component and must stay renderable without it",
+        "Must degrade to a working worksheet when localStorage is unavailable or cleared"
+      ],
+      "openQuestions": [
+        "Does a review sheet reuse the original seed and select a problem subset, or get its own seed? Ask before implementing.",
+        "What scheduling interval set — fixed Leitner boxes or dates?"
+      ],
+      "doneCriteria": [
+        "Marking a problem wrong persists and survives a reload",
+        "A review sheet regenerates the exact same problems as the sheet they were missed on, proven by a test",
+        "./init.sh passes",
+        "Print preview of a review sheet checked at A4"
+      ]
+    }
+  ]
+}
