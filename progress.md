@@ -4,9 +4,9 @@ Append a new entry at the top of the log for every session. Never overwrite hist
 
 ## Current state
 
-- **Active feature:** `review-loop` — code complete, awaiting a manual browser pass.
-- **Last verified:** 2026-09-04 — `./init.sh` all checks passed (typecheck, lint, 97 tests in 6 files, determinism guard, comment guard).
-- **Next step:** click the loop in a real browser (mark a sheet → reload → check the badge and `/review/6`), then print-preview the review sheet at A4.
+- **Active feature:** `review-loop` — shipped and confirmed working in a browser.
+- **Last verified:** 2026-09-04 — `./init.sh` all checks passed (typecheck, lint, 101 tests in 6 files, determinism guard, comment guard). Marking confirmed by the user on production: a marked topic shows the `בתהליך` badge after reload, so persistence and hydration both work.
+- **Next step:** print-preview `/review/6` and `/mivdak/6` at A4 — the only remaining unchecked done-criterion.
 
 ## Entry template
 
@@ -19,6 +19,12 @@ Next step: <the single next action>
 ```
 
 ## Log
+
+### 2026-09-04 — review-loop verification and empty-state fix
+Changed: `lib/progress/schedule.ts` (`weakestSkills`, `nextDueAt`, `daysUntil`), `components/ReviewSheet.tsx` (empty state explains the spacing gap, offers early practice on the weakest skills), `lib/progress/schedule.test.ts`.
+Verified: `./init.sh` ALL CHECKS PASSED (101 tests). User confirmed on production that a marked topic shows `בתהליך` after reload — marking persists and the client components hydrate cleanly.
+Not done / known gaps: print preview of `/review` and `/mivdak` at A4 still unchecked.
+Next step: print preview, then close out `review-loop`.
 
 ### 2026-09-04 — review-loop
 Changed: `lib/progress/` (types, `schedule.ts` Leitner scheduling over 1/3/7/14/30 days, `store.ts` with injectable storage, `useProgress` via `useSyncExternalStore`), `lib/mixed.ts` (round-robin interleaved multi-topic sheets + `sliceBySkill`), `components/` (`MarkResults`, `MixedSheet`, `PrintControls`, `ReviewSheet`, `DueBanner`, `DueLink`, `TopicStatusBadge`, `ProgressBackup`), routes `app/mivdak/[grade]` and `app/review/[grade]`, wiring in the sheet and grade pages and the navbar.
