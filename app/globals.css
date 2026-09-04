@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #2563eb;
+  --color-on-primary: #ffffff;
+  --color-secondary: #f59e0b;
+  --color-accent: #ec4899;
+  --color-background: #eff6ff;
+  --color-foreground: #0f172a;
+  --color-muted: #f1f5fd;
+  --color-border: #e4ecfc;
+  --color-ring: #2563eb;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-heebo);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-heebo), system-ui, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-page-break {
+    break-before: page;
+  }
+
+  .print-keep {
+    break-inside: avoid;
+  }
 }

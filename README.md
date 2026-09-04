@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# דפי עבודה במתמטיקה
 
-## Getting Started
+Printable Hebrew math worksheet generator for parents. Pick a grade, pick a topic from the
+Israeli Ministry of Education curriculum, print a worksheet — the child works on paper.
 
-First, run the development server:
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3000
+npm test        # generator determinism + answer correctness
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+A worksheet is a pure function of `(topic, seed, count, level)`, all of which live in the URL:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+/sheet/6/kefel-shvarim?seed=48213&count=20&level=2&answers=1
+```
 
-## Learn More
+The same URL always produces the same sheet, so the answer key (`answers=1`) is guaranteed to
+match the printed page, and a sheet can be re-printed or bookmarked.
 
-To learn more about Next.js, take a look at the following resources:
+## Adding a topic
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Add a generator in `lib/generators/` implementing the `Generator` type from `lib/types.ts`.
+   Draw randomness only from `createRng(seed)` — never `Math.random`.
+2. Register it in `lib/generators/index.ts`.
+3. Add a `Topic` entry in `lib/curriculum/grade6.ts` pointing at the generator id.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Adding a grade means one more file under `lib/curriculum/` plus its generators, and flipping
+`available` in `lib/curriculum/index.ts`.
 
-## Deploy on Vercel
+## Curriculum source
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Topics follow the Ministry of Education program for grade 6:
+`meyda.education.gov.il/files/Tochniyot_Limudim/Math/Yesodi/kita6.pdf`
