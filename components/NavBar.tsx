@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DueLink from "./DueLink";
+import ProfileSwitcher from "./ProfileSwitcher";
 import { getGrade, getTopic } from "@/lib/curriculum";
 
 type Crumb = { label: string; href?: string };
@@ -77,7 +78,10 @@ export default function NavBar() {
           ))}
         </ol>
 
-        <DueLink />
+        <div className="mr-auto flex items-center gap-1">
+          <DueLink />
+          <ProfileSwitcher />
+        </div>
       </nav>
     </header>
   );

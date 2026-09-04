@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { parseProgress } from "@/lib/progress/store";
+import { mergeProgress, parseProgress } from "@/lib/progress/store";
 import { emptyProgress } from "@/lib/progress/schedule";
 import { useProgress } from "@/lib/progress/useProgress";
 
@@ -15,7 +15,7 @@ export default function ProgressBackup() {
 
   if (!mounted) return null;
 
-  const attempts = state.attempts.length;
+  const attempts = state.events.length;
 
   const download = () => {
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
@@ -29,12 +29,14 @@ export default function ProgressBackup() {
 
   const upload = async (file: File) => {
     const imported = parseProgress(await file.text());
-    if (imported.attempts.length === 0 && Object.keys(imported.skills).length === 0) {
+    if (!imported) {
       setMessage("הקובץ לא מכיל נתוני התקדמות.");
       return;
     }
-    replace(imported);
-    setMessage(`נטענו ${imported.attempts.length} תרגולים.`);
+    const merged = mergeProgress(state, imported);
+    const added = merged.events.length - state.events.length;
+    replace(merged);
+    setMessage(added === 0 ? "הכול כבר היה שמור." : `נוספו ${added} תרגולים.`);
   };
 
   const reset = () => {
@@ -46,8 +48,9 @@ export default function ProgressBackup() {
     <section className="no-print mt-10 rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
       <h2 className="text-lg font-semibold">התקדמות</h2>
       <p className="mt-1 text-sm text-slate-600">
-        הנתונים נשמרים בדפדפן הזה בלבד ולא נשלחים לשום מקום. {attempts} תרגולים נשמרו. כדאי לשמור
-        גיבוי לפני ניקוי היסטוריית הדפדפן.
+        הנתונים נשמרים בדפדפן הזה בלבד ולא נשלחים לשום מקום. {attempts} תרגולים נשמרו עבור{" "}
+        {state.profiles.length} ילדים. טעינת גיבוי מוסיפה לנתונים הקיימים ולא מוחקת אותם. כדאי
+        לשמור גיבוי לפני ניקוי היסטוריית הדפדפן.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">

@@ -23,6 +23,11 @@ if [ ! -d node_modules ]; then
   npm install || exit 1
 fi
 
+if [ ! -d .next/types ]; then
+  echo "generating Next route types"
+  npx next typegen >/dev/null 2>&1 || npx next build >/dev/null 2>&1 || true
+fi
+
 run "typecheck" npx tsc --noEmit
 run "lint" npm run lint
 run "tests" npm test

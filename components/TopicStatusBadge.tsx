@@ -19,10 +19,10 @@ const styles: Record<SkillStatus, string> = {
 };
 
 export default function TopicStatusBadge({ topicId }: { topicId: string }) {
-  const { state, mounted } = useProgress();
+  const { skills, mounted } = useProgress();
   if (!mounted) return null;
 
-  const status = topicStatus(state, topicId, new Date());
+  const status = topicStatus(skills, topicId, new Date());
   if (status === "new") return null;
 
   return (

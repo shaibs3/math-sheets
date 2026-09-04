@@ -22,7 +22,7 @@ function nextReviewLabel(days: number): string {
 }
 
 export default function MarkResults({ gradeId, specs, skillIds, seed }: Props) {
-  const { state, mounted, record } = useProgress();
+  const { skills, mounted, record, activeProfile } = useProgress();
   const [wrong, setWrong] = useState<number[]>([]);
   const [savedAt, setSavedAt] = useState<number | null>(null);
 
@@ -49,12 +49,19 @@ export default function MarkResults({ gradeId, specs, skillIds, seed }: Props) {
 
   const savedSkill =
     savedAt && specs.length === 1
-      ? state.skills[skillId(specs[0].topicId, specs[0].level)]
+      ? skills[skillId(specs[0].topicId, specs[0].level)]
       : undefined;
 
   return (
     <section className="no-print mt-6 rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
-      <h2 className="text-lg font-semibold">סימון תוצאות</h2>
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-lg font-semibold">סימון תוצאות</h2>
+        {activeProfile && (
+          <span className="text-sm text-slate-600">
+            נשמר עבור <span className="font-semibold">{activeProfile.nickname}</span>
+          </span>
+        )}
+      </div>
       <p className="mt-1 text-sm text-slate-600">
         סמנו את מספרי התרגילים שהיא טעתה בהם. הנושאים שיסומנו יחזרו בדף חזרה בעוד כמה ימים.
       </p>

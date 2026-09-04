@@ -5,10 +5,10 @@ import { dueSkills } from "@/lib/progress/schedule";
 import { useProgress } from "@/lib/progress/useProgress";
 
 export default function DueBanner({ gradeId }: { gradeId: number }) {
-  const { state, mounted } = useProgress();
+  const { skills, mounted } = useProgress();
   if (!mounted) return null;
 
-  const due = dueSkills(state, new Date());
+  const due = dueSkills(skills, new Date());
   if (due.length === 0) return null;
 
   return (

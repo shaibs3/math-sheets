@@ -18,7 +18,7 @@ export function seedForDay(now: Date): number {
 }
 
 export default function ReviewSheet({ gradeId }: { gradeId: number }) {
-  const { state, mounted } = useProgress();
+  const { skills, mounted } = useProgress();
   const searchParams = useSearchParams();
   const [practiceEarly, setPracticeEarly] = useState(false);
 
@@ -29,8 +29,8 @@ export default function ReviewSheet({ gradeId }: { gradeId: number }) {
   const seedParam = Number(searchParams.get("seed"));
   const seed = Number.isFinite(seedParam) && seedParam > 0 ? seedParam : seedForDay(now);
 
-  const due = dueSkills(state, now);
-  const selected = due.length > 0 ? due : practiceEarly ? weakestSkills(state, MAX_SKILLS) : [];
+  const due = dueSkills(skills, now);
+  const selected = due.length > 0 ? due : practiceEarly ? weakestSkills(skills, MAX_SKILLS) : [];
 
   const specs: MixedSpec[] = selected
     .slice(0, MAX_SKILLS)
@@ -48,8 +48,8 @@ export default function ReviewSheet({ gradeId }: { gradeId: number }) {
     });
 
   if (specs.length === 0) {
-    const upcoming = nextDueAt(state, now);
-    const tracked = Object.keys(state.skills).length > 0;
+    const upcoming = nextDueAt(skills, now);
+    const tracked = Object.keys(skills).length > 0;
 
     return (
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
