@@ -1,14 +1,26 @@
 import { describe, expect, it } from "vitest";
 import generators, { getGenerator } from "./index";
-import { grade6Topics } from "../curriculum/grade6";
+import { grades } from "../curriculum";
 import type { Level } from "../types";
 
 const levels: Level[] = [1, 2, 3];
 
 describe("generator registry", () => {
-  it("has a generator for every grade 6 topic", () => {
-    for (const topic of grade6Topics) {
-      expect(getGenerator(topic.generatorId), topic.id).toBeDefined();
+  it.each(grades)("has a generator for every topic in $name", (grade) => {
+    expect(grade.topics.length).toBeGreaterThan(0);
+    for (const topic of grade.topics) {
+      expect(getGenerator(topic.generatorId), `${grade.id}/${topic.id}`).toBeDefined();
+    }
+  });
+
+  it.each(grades)("gives every topic in $name a unique id", (grade) => {
+    const ids = grade.topics.map((topic) => topic.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("marks every grade as available", () => {
+    for (const grade of grades) {
+      expect(grade.available, String(grade.id)).toBe(true);
     }
   });
 });

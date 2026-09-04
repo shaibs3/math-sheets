@@ -4,9 +4,9 @@ Append a new entry at the top of the log for every session. Never overwrite hist
 
 ## Current state
 
-- **Active feature:** `review-loop` — shipped and confirmed working in a browser.
-- **Last verified:** 2026-09-04 — `./init.sh` all checks passed (typecheck, lint, 101 tests in 6 files, determinism guard, comment guard). Marking confirmed by the user on production: a marked topic shows the `בתהליך` badge after reload, so persistence and hydration both work.
-- **Next step:** print-preview `/review/6` and `/mivdak/6` at A4 — the only remaining unchecked done-criterion.
+- **Active feature:** `grades-1-5` — all six grades are now `available`.
+- **Last verified:** 2026-09-04 — `./init.sh` ALL CHECKS PASSED (typecheck, lint, 355 tests in 6 files, determinism guard, comment guard).
+- **Next step:** print-preview the new grade 1–5 sheets at A4 (especially the 3-column bare-arithmetic generators at high `count`), and `/review/6` + `/mivdak/6`.
 
 ## Entry template
 
@@ -19,6 +19,24 @@ Next step: <the single next action>
 ```
 
 ## Log
+
+### 2026-09-04 — grades-1-5
+
+Changed: `lib/curriculum/grade1.ts`–`grade5.ts` (new), `lib/curriculum/index.ts` (imports them, all six grades `available: true`), 31 new generators in `lib/generators/` all registered in `lib/generators/index.ts`, `lib/generators/generators.test.ts` (registry test now iterates every grade instead of only grade 6, and checks unique topic ids and availability), `lib/generators/answers.test.ts` (independent recompute checks for the new arithmetic-heavy generators), `components/TopicIcon.tsx` (icons for שעון, כסף, ישר המספרים, לוח הכפל, שטח והיקף מלבן, נפח תיבה, שטח משולש ומקבילית).
+
+Curriculum source: Ministry of Education *תכנית לימודים במתמטיקה לכיתות א-ו*, the strand tables at doc pages 17 / 33 / 53 / 75 / 97. Grade 1 is **not** at `.../Yesodi/kita1.pdf` (404) — it is at `https://meyda.education.gov.il/files/Tochniyot_Limudim/Math/Yesodi/kita1_1204762245.pdf`. Grades 2–5 are at `.../Yesodi/kita<N>.pdf`.
+
+Reused rather than duplicated: `fraction-of-quantity` (grade 4 השבר הפשוט), `fractions-add-subtract` and `decimals-operations` (grade 5), `add-sub-100` / `add-sub-vertical` / `multiply-table` / `multiply-vertical` / `order-of-operations` / `divisibility` / `clock` / `word-add-sub-basic` across adjacent grades at different levels.
+
+Verified: `./init.sh` ALL CHECKS PASSED — 355 tests in 6 files (was 101). Every registered generator goes through the automatic count/level/determinism checks. Answers are recomputed from the prompt string (never asserted against a hardcoded array) for add-sub-20/100/vertical, multiply-table/vertical/powers-ten, long-division, divide-two-digit, divide-remainder, order-of-operations, powers, compare-numbers, even-odd, number-line-missing, place-value, divisibility, divisibility-369, primes, unit-fraction, fraction-simplify, improper-mixed, fraction-to-decimal, average, rectangle-area, area-shapes, box-volume-surface, clock, money and word-add-sub-basic. Home page renders six cards with topic counts 7/9/9/9/8/11 and no `בקרוב` placeholders; `/grade/1`, `/grade/3`, `/grade/5`, `/sheet/1/shaon` and `/mivdak/5` all return 200 in dev. The home grid (`grid-cols-2 sm:grid-cols-3`) and `app/grade/[grade]/page.tsx` needed no changes — both were already generic over available grades.
+
+Not done / known gaps:
+- Print preview of the new sheets at A4 is **not** checked. The grade 1–3 bare-arithmetic generators use `columns: 3`, which is new territory for long prompts like `9999 − 1234 =`.
+- `length-units` and `time-units` have no independent answer check — their answers carry Hebrew unit words rather than a bare number, so a prompt-only recompute would just re-encode the conversion table.
+- Deliberately skipped subtopics, because none of them yields an answer recomputable from a text-only prompt (which the answer-key invariant requires) — these were **considered and rejected**, not forgotten: drawing/visual geometry (מצולעים, מרובעים, זוויות, שיקוף והזזה, סימטרייה, ריצוף, גבהים), חקר נתונים וניתוח סיכויים, ערכי האותיות ושיטת האלף-בית, אומדן תוצאות, and לוח השנה.
+- Known harness bug, not introduced here: on a fresh worktree `./init.sh` typecheck fails with `Cannot find name 'PageProps'/'LayoutProps'` because `.next/types` does not exist yet. `npx next build` once fixes it. Being fixed separately on main.
+
+Next step: A4 print preview of the new grade 1–5 sheets at high `count` with `?answers=1`.
 
 ### 2026-09-04 — review-loop verification and empty-state fix
 Changed: `lib/progress/schedule.ts` (`weakestSkills`, `nextDueAt`, `daysUntil`), `components/ReviewSheet.tsx` (empty state explains the spacing gap, offers early practice on the weakest skills), `lib/progress/schedule.test.ts`.

@@ -38,6 +38,65 @@ function TwoFractions({ operator }: { operator: string }) {
 }
 
 const icons: Record<string, React.ReactNode> = {
+  shaon: (
+    <g>
+      <circle cx={24} cy={24} r={15} />
+      <line x1={24} y1={24} x2={24} y2={14} />
+      <line x1={24} y1={24} x2={31} y2={28} />
+      <line x1={24} y1={9} x2={24} y2={11} />
+      <line x1={39} y1={24} x2={37} y2={24} />
+      <line x1={24} y1={39} x2={24} y2={37} />
+      <line x1={9} y1={24} x2={11} y2={24} />
+    </g>
+  ),
+  kesef: (
+    <g>
+      <circle cx={19} cy={20} r={10} />
+      <circle cx={29} cy={29} r={10} />
+      <line x1={29} y1={24} x2={29} y2={34} />
+      <line x1={26} y1={27} x2={32} y2={27} />
+      <line x1={26} y1={31} x2={32} y2={31} />
+    </g>
+  ),
+  "yashar-hamisparim": (
+    <g>
+      <line x1={7} y1={28} x2={41} y2={28} />
+      <path d="M37 24 L41 28 L37 32" />
+      <line x1={13} y1={22} x2={13} y2={34} />
+      <line x1={22} y1={22} x2={22} y2={34} />
+      <line x1={31} y1={22} x2={31} y2={34} />
+      <circle cx={22} cy={28} r={2.6} fill="currentColor" stroke="none" />
+    </g>
+  ),
+  "luach-hakefel": (
+    <g>
+      <rect x={9} y={9} width={30} height={30} rx={3} />
+      <line x1={19} y1={9} x2={19} y2={39} />
+      <line x1={9} y1={19} x2={39} y2={19} />
+      <line x1={24} y1={26} x2={34} y2={36} />
+      <line x1={34} y1={26} x2={24} y2={36} />
+    </g>
+  ),
+  "shetach-vehekef-malben": (
+    <g>
+      <rect x={8} y={14} width={32} height={20} rx={2} />
+      <line x1={8} y1={38} x2={40} y2={38} strokeDasharray="3 3" />
+      <line x1={44} y1={14} x2={44} y2={34} strokeDasharray="3 3" />
+    </g>
+  ),
+  "nefach-teiva": (
+    <g>
+      <path d="M12 18 L24 12 L36 18 L36 32 L24 38 L12 32 Z" />
+      <path d="M12 18 L24 24 L36 18" />
+      <line x1={24} y1={24} x2={24} y2={38} />
+    </g>
+  ),
+  "shetach-mishulash-umakbilit": (
+    <g>
+      <path d="M9 36 L24 12 L39 36 Z" />
+      <line x1={24} y1={12} x2={24} y2={36} strokeDasharray="3 3" />
+    </g>
+  ),
   "kefel-shvarim": <TwoFractions operator="×" />,
   "hiluk-shvarim": <TwoFractions operator="÷" />,
   "hibur-hisur-shvarim": <TwoFractions operator="+" />,
