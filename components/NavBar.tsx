@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DueLink from "./DueLink";
 import { getGrade, getTopic } from "@/lib/curriculum";
 
 type Crumb = { label: string; href?: string };
@@ -75,6 +76,8 @@ export default function NavBar() {
             </li>
           ))}
         </ol>
+
+        <DueLink />
       </nav>
     </header>
   );

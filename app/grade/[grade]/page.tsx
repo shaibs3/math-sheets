@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DueBanner from "@/components/DueBanner";
+import ProgressBackup from "@/components/ProgressBackup";
 import TopicIcon from "@/components/TopicIcon";
+import TopicStatusBadge from "@/components/TopicStatusBadge";
 import { getGrade, grades } from "@/lib/curriculum";
 
 export function generateStaticParams() {
@@ -16,8 +19,16 @@ export default async function GradePage({ params }: PageProps<"/grade/[grade]">)
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
+      <DueBanner gradeId={grade.id} />
+
       <h1 className="text-3xl font-bold">{grade.name} — נושאים</h1>
-      <p className="mt-2 text-slate-600">בחרו נושא כדי ליצור דף תרגול להדפסה.</p>
+      <p className="mt-2 text-slate-600">
+        בחרו נושא כדי ליצור דף תרגול להדפסה, או התחילו ב
+        <Link href={`/mivdak/${grade.id}`} className="text-[var(--color-primary)] underline">
+          מבדק קצר
+        </Link>{" "}
+        שיראה על מה כדאי לעבוד.
+      </p>
 
       {strands.map((strand) => (
         <section key={strand} className="mt-8">
@@ -37,7 +48,10 @@ export default async function GradePage({ params }: PageProps<"/grade/[grade]">)
                       <TopicIcon topicId={topic.id} className="size-9" />
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-lg font-semibold">{topic.name}</span>
+                      <span className="flex items-center gap-2">
+                        <span className="text-lg font-semibold">{topic.name}</span>
+                        <TopicStatusBadge topicId={topic.id} />
+                      </span>
                       <span className="mt-0.5 block text-sm text-slate-600">
                         {topic.description}
                       </span>
@@ -48,6 +62,8 @@ export default async function GradePage({ params }: PageProps<"/grade/[grade]">)
           </ul>
         </section>
       ))}
+
+      <ProgressBackup />
     </main>
   );
 }

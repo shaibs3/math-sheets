@@ -1,11 +1,13 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import AnswerKey from "@/components/AnswerKey";
+import MarkResults from "@/components/MarkResults";
 import ProblemList from "@/components/ProblemList";
 import SheetControls from "@/components/SheetControls";
 import WorksheetHeader from "@/components/WorksheetHeader";
 import { getTopic } from "@/lib/curriculum";
 import { getGenerator } from "@/lib/generators";
+import { skillId } from "@/lib/progress/schedule";
 import type { Level } from "@/lib/types";
 
 function defaultSeed(topicId: string): number {
@@ -37,6 +39,8 @@ export default async function SheetPage({
   const answers = query.answers === "1";
 
   const problems = generator.generate({ seed, count, level });
+  const specs = [{ topicId: topic.id, generatorId: topic.generatorId, level, count }];
+  const skillIds = problems.map(() => skillId(topic.id, level));
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-8 print:max-w-none print:px-0 print:py-0">
@@ -54,6 +58,8 @@ export default async function SheetPage({
         <ProblemList problems={problems} columns={generator.columns} />
         {answers && <AnswerKey problems={problems} title={topic.name} />}
       </article>
+
+      <MarkResults gradeId={gradeId} specs={specs} skillIds={skillIds} seed={seed} />
     </main>
   );
 }
