@@ -50,7 +50,10 @@ Rules that follow from it, and that a change must never break:
 | `lib/generators/*.ts` | One topic per file, `export default` a `Generator`. |
 | `lib/generators/index.ts` | The registry. A generator that is not imported *and* added to the `generators` array does not exist. |
 | `lib/curriculum/grade6.ts` | Topics; each `generatorId` must resolve in the registry. |
+| `lib/mixed.ts` | `buildMixedSheet` — interleaves several topics into one sheet, plus `sliceBySkill` for attributing marked mistakes. Must stay deterministic; the determinism guard scans it. |
+| `lib/progress/` | Review-loop state. `schedule.ts` is pure and takes `now` as a parameter; `store.ts` takes an injectable storage; `useProgress` is client-only. This is the one area allowed to read the clock and localStorage — it must never change which problems a sheet renders. |
 | `app/sheet/[grade]/[topic]/page.tsx` | Parses and clamps the URL params, calls the generator. |
+| `app/mivdak/[grade]/`, `app/review/[grade]/` | Diagnostic and daily-review mixed sheets. The review sheet is client-rendered because it depends on localStorage. |
 | `components/` | Presentation only. No problem generation here. |
 | `design-system/math-sheets/MASTER.md` | Tokens and component rules. `app/globals.css` defines the CSS variables. |
 
@@ -111,5 +114,9 @@ Do not report a feature complete with failing or skipped checks. Report what fai
 ## Out of scope unless asked
 
 Auth, a backend or database, payments, analytics, other grades (1–5 are `available: false`
-placeholders), non-Hebrew locales, and rewriting the design system. The upcoming review-loop
-work is localStorage-first with no auth — see `feature_list.json`.
+placeholders), non-Hebrew locales, and rewriting the design system. The review loop is
+localStorage-first with no auth and stays that way — see `feature_list.json`.
+
+Any component reading progress state must render nothing until mounted (`useProgress`
+returns `mounted`). Server HTML that depends on localStorage or on today's date will
+hydration-mismatch — that is the most likely bug in this area.

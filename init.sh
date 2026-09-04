@@ -29,7 +29,7 @@ run "tests" npm test
 
 echo ""
 echo "=== determinism guard ==="
-banned=$(grep -rnE 'Math\.random|new Date\(|Date\.now|crypto\.' lib/generators lib/math.ts 2>/dev/null || true)
+banned=$(grep -rnE 'Math\.random|new Date\(|Date\.now|crypto\.' lib/generators lib/math.ts lib/mixed.ts 2>/dev/null || true)
 if [ -n "$banned" ]; then
   echo "$banned"
   echo "--- determinism guard: FAIL (generators must draw randomness only from createRng(seed))"

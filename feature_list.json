@@ -1,6 +1,6 @@
 {
   "project": "math-sheets",
-  "activeFeature": null,
+  "activeFeature": "review-loop",
   "rules": [
     "Exactly one feature may be in_progress at a time.",
     "A feature moves to done only when every item in its doneCriteria has recorded evidence in progress.md.",
@@ -30,24 +30,25 @@
     {
       "id": "review-loop",
       "title": "Mistake capture and spaced repetition",
-      "status": "backlog",
-      "scope": "New lib/review/* module, plus UI entry points in components/. No changes to generator signatures.",
+      "status": "in_progress",
+      "scope": "lib/progress/*, lib/mixed.ts, app/review/[grade], app/mivdak/[grade], plus UI entry points in components/. No changes to generator signatures.",
       "constraints": [
         "localStorage only — no auth, no backend, no database",
-        "Storage is keyed by (topicId, seed, level, problem index); never store the generated problem text as the source of truth, regenerate it from the seed",
+        "Scheduling is keyed by skill (topicId + level); attempts also record (seed, count, wrong indexes). Never store generated problem text as the source of truth, regenerate it from the seed",
         "Review state must never influence which problems a sheet renders — the determinism invariant in AGENTS.md still holds",
         "Reads of localStorage must be client-side only; the sheet page is a server component and must stay renderable without it",
         "Must degrade to a working worksheet when localStorage is unavailable or cleared"
       ],
-      "openQuestions": [
-        "Does a review sheet reuse the original seed and select a problem subset, or get its own seed? Ask before implementing.",
-        "What scheduling interval set — fixed Leitner boxes or dates?"
+      "decisions": [
+        "A review sheet gets its own seed (the date) and asks the same problem shapes with new numbers — practising the method, not the memory of one answer. Deliberately NOT a replay of the original seed.",
+        "Leitner boxes over 1/3/7/14/30 day intervals: accuracy >= 0.8 promotes, >= 0.5 holds, below 0.5 resets to box 0."
       ],
       "doneCriteria": [
         "Marking a problem wrong persists and survives a reload",
-        "A review sheet regenerates the exact same problems as the sheet they were missed on, proven by a test",
+        "A review sheet draws the due skills and interleaves them, proven by a test over the full mark-to-review loop",
         "./init.sh passes",
-        "Print preview of a review sheet checked at A4"
+        "Print preview of a review sheet checked at A4",
+        "Marking verified in a real browser: panel appears, save persists across reload, no hydration error"
       ]
     }
   ]
