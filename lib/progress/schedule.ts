@@ -75,6 +75,29 @@ export function topicStatus(state: ProgressState, topicId: string, now: Date): S
   return "learning";
 }
 
+export function weakestSkills(state: ProgressState, limit: number): SkillState[] {
+  return Object.values(state.skills)
+    .filter((skill) => skill.seenCount > 0)
+    .sort((a, b) => {
+      const byWrongRate = b.wrongCount / b.seenCount - a.wrongCount / a.seenCount;
+      if (byWrongRate !== 0) return byWrongRate;
+      return new Date(b.lastSeenAt).getTime() - new Date(a.lastSeenAt).getTime();
+    })
+    .slice(0, limit);
+}
+
+export function nextDueAt(state: ProgressState, now: Date): Date | null {
+  const upcoming = Object.values(state.skills)
+    .map((skill) => new Date(skill.dueAt))
+    .filter((date) => date.getTime() > now.getTime())
+    .sort((a, b) => a.getTime() - b.getTime());
+  return upcoming[0] ?? null;
+}
+
+export function daysUntil(target: Date, now: Date): number {
+  return Math.max(1, Math.ceil((target.getTime() - now.getTime()) / DAY_IN_MS));
+}
+
 export function accuracyFor(state: ProgressState, topicId: string): number | null {
   const skills = Object.values(state.skills).filter((skill) => skill.topicId === topicId);
   const seen = skills.reduce((total, skill) => total + skill.seenCount, 0);

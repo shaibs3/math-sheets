@@ -3,12 +3,15 @@ import {
   INTERVALS_IN_DAYS,
   MAX_ATTEMPTS,
   accuracyFor,
+  daysUntil,
   dueSkills,
   emptyProgress,
   gradeAttempt,
+  nextDueAt,
   skillId,
   skillStatus,
   topicStatus,
+  weakestSkills,
 } from "./schedule";
 import type { AttemptInput, ProgressState } from "./types";
 
@@ -130,6 +133,36 @@ describe("status", () => {
     for (let i = 0; i < 5; i++) state = gradeAttempt(state, attempt({ level: 1 }), start);
     state = gradeAttempt(state, attempt({ level: 3 }), start);
     expect(topicStatus(state, "kefel-shvarim", daysLater(5))).toBe("due");
+  });
+});
+
+describe("weakestSkills", () => {
+  it("ranks by wrong rate and ignores unseen skills", () => {
+    let state = gradeAttempt(emptyProgress(), attempt({ topicId: "achuzim", wrong: [1, 2, 3] }), start);
+    state = gradeAttempt(state, attempt({ topicId: "yachas", wrong: [1] }), start);
+    state = gradeAttempt(state, attempt({ topicId: "nefach", wrong: [1, 2, 3, 4, 5] }), start);
+
+    expect(weakestSkills(state, 2).map((skill) => skill.topicId)).toEqual(["nefach", "achuzim"]);
+  });
+
+  it("returns nothing when no skill has been practised", () => {
+    expect(weakestSkills(emptyProgress(), 5)).toEqual([]);
+  });
+});
+
+describe("nextDueAt", () => {
+  it("finds the soonest future due date and counts days up to it", () => {
+    let state = gradeAttempt(emptyProgress(), attempt({ topicId: "achuzim", wrong: [1, 2, 3, 4, 5, 6] }), start);
+    state = gradeAttempt(state, attempt({ topicId: "yachas" }), start);
+
+    const next = nextDueAt(state, start);
+    expect(next).not.toBeNull();
+    expect(daysUntil(next as Date, start)).toBe(1);
+  });
+
+  it("is null once everything is already due", () => {
+    const state = gradeAttempt(emptyProgress(), attempt(), start);
+    expect(nextDueAt(state, daysLater(60))).toBeNull();
   });
 });
 
