@@ -14,7 +14,7 @@ const powerLaws: Generator = {
       const symbol = level === 3 && rng.bool() ? String(rng.int(2, 9)) : "x";
       const m = rng.int(2, maxExponent);
       const n = rng.int(2, maxExponent);
-      const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 4);
+      const kind = level === 1 ? rng.int(1, 2) : level === 2 ? rng.int(1, 3) : rng.int(1, 4);
 
       if (kind === 1) {
         problems.push({

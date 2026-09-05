@@ -65,13 +65,6 @@ export const grade12Topics: Topic[] = [
     generatorId: "solids-volume",
   },
   {
-    id: "trigonometria-bemerchav",
-    name: "טריגונומטריה במשולש ישר זווית",
-    strand: "גאומטריה במרחב",
-    description: "יחסים טריגונומטריים ומציאת צלע לפי זווית.",
-    generatorId: "right-triangle-trig",
-  },
-  {
     id: "hitpalgut-normalit",
     name: "התפלגות נורמלית",
     strand: "התפלגות נורמלית",
