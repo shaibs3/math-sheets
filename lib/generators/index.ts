@@ -93,6 +93,14 @@ import volume from "./volume";
 import wordAddSubBasic from "./word-add-sub-basic";
 import zScore from "./z-score";
 
+import arithmeticLaws from "./arithmetic-laws";
+import compareFractions from "./compare-fractions";
+import functionTransform from "./function-transform";
+import placeValueMillion from "./place-value-million";
+import quadraticInequality from "./quadratic-inequality";
+import quadraticSystem from "./quadratic-system";
+import rationalEquation from "./rational-equation";
+
 const generators: Generator[] = [
   absoluteValueEquation,
   addSub100,
@@ -187,6 +195,13 @@ const generators: Generator[] = [
   volume,
   wordAddSubBasic,
   zScore,
+  arithmeticLaws,
+  compareFractions,
+  functionTransform,
+  placeValueMillion,
+  quadraticInequality,
+  quadraticSystem,
+  rationalEquation,
 ];
 
 export const generatorsById = new Map(generators.map((generator) => [generator.id, generator]));

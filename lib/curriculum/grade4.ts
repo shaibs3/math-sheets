@@ -65,6 +65,13 @@ export const grade4Topics: Topic[] = [
     description: "חישוב נפח תיבה ושטח הפנים שלה.",
     generatorId: "box-volume-surface",
   },
+  {
+    id: "erech-hamakom-milion",
+    name: "ערך המקום עד מיליון",
+    strand: "פעולות החשבון",
+    description: "ספרות וערכן במספרים בני חמש ושש ספרות ופירוק לפי ערך המקום.",
+    generatorId: "place-value-million",
+  },
 ];
 
 export default grade4Topics;

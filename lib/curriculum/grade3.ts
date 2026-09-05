@@ -66,6 +66,13 @@ export const grade3Topics: Topic[] = [
     description: "מעבר בין ימים, שעות, דקות ושניות.",
     generatorId: "time-units",
   },
+  {
+    id: "hukey-hapeulot",
+    name: "חוקי החילוף, הקיבוץ והפילוג",
+    strand: "פעולות החשבון",
+    description: "השלמת האיבר החסר לפי חוק החילוף, חוק הקיבוץ וחוק הפילוג.",
+    generatorId: "arithmetic-laws",
+  },
 ];
 
 export default grade3Topics;

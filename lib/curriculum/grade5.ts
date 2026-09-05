@@ -59,6 +59,13 @@ export const grade5Topics: Topic[] = [
     description: "חישוב שטח לפי בסיס וגובה.",
     generatorId: "area-shapes",
   },
+  {
+    id: "hashvaat-shvarim",
+    name: "השוואת שברים",
+    strand: "שברים",
+    description: "השוואה בין שני שברים ובין שבר למספר שלם.",
+    generatorId: "compare-fractions",
+  },
 ];
 
 export default grade5Topics;

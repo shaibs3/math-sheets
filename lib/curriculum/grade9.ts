@@ -72,6 +72,34 @@ export const grade9Topics: Topic[] = [
     description: "חישובי זוויות במקבילית, בטרפז, במרובע ובמשולש שווה שוקיים.",
     generatorId: "quadrilateral-angles",
   },
+  {
+    id: "mishvaot-shvarim",
+    name: "משוואות עם שברים אלגבריים",
+    strand: "תחום אלגברי",
+    description: "פתרון משוואה שבה הנעלם מופיע במכנה.",
+    generatorId: "rational-equation",
+  },
+  {
+    id: "ee-shivyon-ribui",
+    name: "אי-שוויון ריבועי",
+    strand: "תחום אלגברי",
+    description: "פתרון אי-שוויון ריבועי לפי שורשי הטרינום וכיוון הפרבולה.",
+    generatorId: "quadratic-inequality",
+  },
+  {
+    id: "maarechet-ribuit",
+    name: "מערכת משוואות ממעלה שנייה",
+    strand: "תחום אלגברי",
+    description: "פתרון מערכת שבה משוואה אחת היא ממעלה שנייה.",
+    generatorId: "quadratic-system",
+  },
+  {
+    id: "hazazat-funktsia",
+    name: "הזזות ומתיחות של פונקציה",
+    strand: "תחום אלגברי",
+    description: "כתיבת g(x) המתקבלת מ-f(x) בהזזה, בשיקוף ובמתיחה, כפולינום.",
+    generatorId: "function-transform",
+  },
 ];
 
 export default grade9Topics;

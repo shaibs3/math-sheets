@@ -75,6 +75,13 @@ import slopeRelations from "./slope-relations";
 import quadraticOptimum from "./quadratic-optimum";
 import zScore from "./z-score";
 import speedDistanceTime from "./speed-distance-time";
+import arithmeticLaws from "./arithmetic-laws";
+import compareFractions from "./compare-fractions";
+import functionTransform from "./function-transform";
+import placeValueMillion from "./place-value-million";
+import quadraticInequality from "./quadratic-inequality";
+import quadraticSystem from "./quadratic-system";
+import rationalEquation from "./rational-equation";
 import { gcd } from "../math";
 import type { Generator, Level } from "../types";
 
@@ -1225,6 +1232,139 @@ describe("coordinate-slope", () => {
         (y2 - y1) / (x2 - x1),
         9,
       );
+    }
+  });
+});
+
+const millionPlaces: [string, number][] = [
+  ["היחידות", 0],
+  ["העשרות", 1],
+  ["המאות", 2],
+  ["האלפים", 3],
+  ["עשרות האלפים", 4],
+  ["מאות האלפים", 5],
+];
+
+describe("arithmetic-laws", () => {
+  it.each(testLevels)("the stated value makes both sides equal at level %i", (level) => {
+    for (const problem of arithmeticLaws.generate({ seed: 5101, count: 40, level })) {
+      expect(problem.prompt.match(/___/g), problem.prompt).toHaveLength(1);
+      const [left, right] = problem.prompt.replace("___", `(${problem.answer})`).split(" = ");
+      expect(evaluateExpression(left), problem.prompt).toBe(evaluateExpression(right));
+    }
+  });
+});
+
+describe("place-value-million", () => {
+  it.each(testLevels)("recomputes the digit named in the prompt at level %i", (level) => {
+    for (const problem of placeValueMillion.generate({ seed: 5102, count: 40, level })) {
+      if (!problem.prompt.includes("במספר")) {
+        expect(evaluateExpression(problem.prompt), problem.prompt).toBe(Number(problem.answer));
+        continue;
+      }
+      const value = Number(/במספר (\d+)\?/.exec(problem.prompt)![1]);
+      const named = millionPlaces.filter(([name]) => problem.prompt.includes(`ספרת ${name} `));
+      expect(named, problem.prompt).toHaveLength(1);
+      const exponent = named[0][1];
+      const digit = Math.floor(value / 10 ** exponent) % 10;
+      const wantsPlaceValue = problem.prompt.startsWith("מהו הערך");
+      expect(Number(problem.answer), problem.prompt).toBe(
+        wantsPlaceValue ? digit * 10 ** exponent : digit,
+      );
+    }
+  });
+});
+
+describe("compare-fractions", () => {
+  it.each(testLevels)("recomputes the stated comparison at level %i", (level) => {
+    for (const problem of compareFractions.generate({ seed: 5103, count: 40, level })) {
+      const [left, right] = problem.prompt.split(" ___ ").map((part) => {
+        const [n, d] = part.split("/").map(Number);
+        return { n, d: d ?? 1 };
+      });
+      const difference = left.n * right.d - right.n * left.d;
+      expect(problem.answer, problem.prompt).toBe(
+        difference > 0 ? ">" : difference < 0 ? "<" : "=",
+      );
+    }
+  });
+});
+
+describe("rational-equation", () => {
+  it.each(testLevels)("the stated root satisfies the equation at level %i", (level) => {
+    for (const problem of rationalEquation.generate({ seed: 5104, count: 40, level })) {
+      const [x] = solutionsIn(problem.answer, "x");
+      const [left, right] = problem.prompt.split(" = ");
+      const value = evaluateExpression(left, { x });
+      expect(Number.isFinite(value), problem.prompt).toBe(true);
+      expect(value, problem.prompt).toBeCloseTo(evaluateExpression(right, { x }), 9);
+    }
+  });
+});
+
+describe("quadratic-inequality", () => {
+  it.each(testLevels)("the stated solution set matches the inequality at level %i", (level) => {
+    for (const problem of quadraticInequality.generate({ seed: 5105, count: 40, level })) {
+      const relation = /[<>≤≥]/.exec(problem.prompt)![0];
+      const [left, right] = problem.prompt.split(` ${relation} `);
+      expect(evaluateExpression(right), problem.prompt).toBe(0);
+
+      const roots = signedNumbersIn(problem.answer);
+      expect(roots, problem.prompt).toHaveLength(2);
+      const [low, high] = roots;
+      expect(low, problem.prompt).toBeLessThan(high);
+      for (const root of roots) {
+        expect(evaluateExpression(left, { x: root }), problem.prompt).toBeCloseTo(0, 9);
+      }
+
+      const statesOutside = problem.answer.startsWith("x");
+      for (const probe of [low - 1, (low + high) / 2, high + 1]) {
+        const value = evaluateExpression(left, { x: probe });
+        const holds = relation === ">" || relation === "≥" ? value > 0 : value < 0;
+        const between = probe > low && probe < high;
+        expect(holds, `${problem.prompt} @ ${probe}`).toBe(statesOutside ? !between : between);
+      }
+    }
+  });
+});
+
+describe("quadratic-system", () => {
+  it.each(testLevels)("both stated pairs satisfy both equations at level %i", (level) => {
+    for (const problem of quadraticSystem.generate({ seed: 5106, count: 30, level })) {
+      const points = pointsIn(problem.answer);
+      expect(points, problem.prompt).toHaveLength(2);
+      expect(points[0], problem.prompt).not.toEqual(points[1]);
+      for (const [x, y] of points) {
+        for (const equation of problem.prompt.split(" ; ")) {
+          const [left, right] = equation.split(" = ");
+          expect(evaluateExpression(left, { x, y }), problem.prompt).toBeCloseTo(
+            evaluateExpression(right, { x, y }),
+            9,
+          );
+        }
+      }
+    }
+  });
+});
+
+describe("function-transform", () => {
+  it.each(testLevels)("the stated polynomial matches the composition at level %i", (level) => {
+    for (const problem of functionTransform.generate({ seed: 5107, count: 30, level })) {
+      const [base, transform] = problem.prompt.split(" ; ");
+      const baseExpression = base.split(" = ")[1];
+      const outer = transform.split(" = ")[1];
+      const answerExpression = problem.answer.split(" = ")[1];
+      const inner = /f\(([^)]*)\)/.exec(outer)![1];
+
+      for (const x of [-3, -1, 0, 2, 5]) {
+        const argument = evaluateExpression(inner, { x });
+        const baseValue = evaluateExpression(baseExpression, { x: argument });
+        const substituted = outer.replace(/f\([^)]*\)/, `(${baseValue})`);
+        expect(evaluateExpression(answerExpression, { x }), problem.prompt).toBeCloseTo(
+          evaluateExpression(substituted),
+          9,
+        );
+      }
     }
   });
 });
