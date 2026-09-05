@@ -87,7 +87,7 @@ describe("every figure a generator emits", () => {
   const seeds = [7, 1234, 98765];
   const levels: Level[] = [1, 2, 3];
 
-  const layouts = generators.flatMap((generator) =>
+  const generatorLayouts = generators.flatMap((generator) =>
     levels.flatMap((level) =>
       seeds.flatMap((seed) =>
         generator
@@ -100,6 +100,19 @@ describe("every figure a generator emits", () => {
       ),
     ),
   );
+
+  const blankGridLayouts = [
+    { min: -5, max: 5 },
+    { min: -4, max: 4 },
+    { min: -8, max: 8 },
+    { min: -10, max: 10 },
+  ].flatMap((range) => {
+    const figure = { kind: "axes" as const, ...range };
+    const layout = shapeLayoutFor(figure);
+    return layout ? [{ id: `work-grid ${range.min}..${range.max}`, kind: figure.kind, layout }] : [];
+  });
+
+  const layouts = [...generatorLayouts, ...blankGridLayouts];
 
   it("covers every shape kind that has a layout", () => {
     expect(new Set(layouts.map((entry) => entry.kind)).size).toBeGreaterThanOrEqual(11);
