@@ -22,7 +22,7 @@ export default async function GradePage({ params }: PageProps<"/grade/[grade]">)
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
       {PROGRESS_ENABLED ? <DueBanner gradeId={grade.id} /> : null}
 
-      <h1 className="text-3xl font-bold">{grade.name} — נושאים</h1>
+      <h1 className="text-3xl font-bold">נושאים ב{grade.name}</h1>
       <p className="mt-2 text-slate-600">
         בחרו נושא כדי ליצור דף תרגול להדפסה, או התחילו ב
         <Link href={`/mivdak/${grade.id}`} className="text-[var(--color-primary)] underline">

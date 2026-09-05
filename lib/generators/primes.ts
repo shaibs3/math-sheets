@@ -31,7 +31,7 @@ const primes: Generator = {
       const prime = isPrime(value);
 
       problems.push({
-        prompt: `${value} — ראשוני או פריק? אם פריק, ציינו מחלק שלו.`,
+        prompt: `${value}: ראשוני או פריק? אם פריק, ציינו מחלק שלו.`,
         answer: prime ? "ראשוני" : `פריק, מתחלק ב‑${smallestFactor(value)}`,
         work: "none",
         dir: "rtl",

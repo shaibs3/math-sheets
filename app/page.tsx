@@ -29,7 +29,7 @@ export default function HomePage() {
       <section className="paper-rule grid items-center gap-10 pb-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
-            דף תרגול מוכן להדפסה — בפחות מדקה
+            דף תרגול מוכן להדפסה, בפחות מדקה
           </h1>
           <p className="mt-4 max-w-md text-lg text-[var(--color-subtle)]">
             בוחרים כיתה ונושא, ומקבלים דף A4 עם פתרונות להורה. בלי הרשמה, בלי תשלום.

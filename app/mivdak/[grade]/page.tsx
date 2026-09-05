@@ -47,7 +47,7 @@ export default async function MivdakPage({
 
       <MixedSheet
         gradeId={gradeId}
-        title={`מבדק — ${grade.name}`}
+        title={`מבדק ${grade.name}`}
         subtitle={`${sheet.problems.length} תרגילים מכל נושאי הכיתה. סמנו את התוצאות כדי לדעת על מה לעבוד.`}
         seed={seed}
         sheet={sheet}
