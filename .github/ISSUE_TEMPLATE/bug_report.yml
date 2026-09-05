@@ -1,0 +1,34 @@
+name: Bug report
+description: Something produces a wrong sheet, a wrong answer, or breaks
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Sheet URL
+      description: >
+        Paste the full URL, including seed, count and level. A sheet is a pure function of
+        those values, so the URL reproduces the exact sheet you saw.
+      placeholder: /sheet/6/kefel-shvarim?seed=48213&count=20&level=2
+    validations:
+      required: false
+
+  - type: input
+    id: problem
+    attributes:
+      label: Which problem number
+      placeholder: "7"
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Browser and device
+      placeholder: Chrome 141 on macOS, printed to A4

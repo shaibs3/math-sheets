@@ -1,0 +1,25 @@
+name: Feature or topic request
+description: A missing curriculum topic, a generator idea, or a product change
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: Describe the situation as a parent or teacher, not the implementation.
+    validations:
+      required: true
+
+  - type: input
+    id: grade
+    attributes:
+      label: Grade and topic
+      placeholder: כיתה ד׳ — שברים
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example problems
+      description: >
+        Two or three worked examples with their answers. Every topic here must have an
+        answer derivable from the problem text, so a test can verify the answer key.
