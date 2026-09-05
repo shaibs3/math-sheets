@@ -34,7 +34,7 @@ export default function HomePage() {
             <span className="text-2xl font-extrabold tracking-tight sm:text-3xl">על הנייר</span>
           </p>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
-            דף תרגול מוכן להדפסה, בפחות מדקה
+            דף תרגול מוכן להדפסה, בשתי לחיצות
           </h1>
           <p className="mt-4 max-w-md text-lg text-[var(--color-subtle)]">
             בוחרים כיתה ונושא, ומקבלים דף A4 עם פתרונות להורה. בלי הרשמה, בלי תשלום.
