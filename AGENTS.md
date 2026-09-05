@@ -25,9 +25,14 @@ rules — if you change one, keep the other in step. PR titles follow Convention
    top of it and it conflicts on every merge. Create it if it is missing.
 2. Read `docs/agents/feature_list.json` for scope and done criteria of that feature. Like
    the progress log it is gitignored local state; create it if it is missing.
-3. Run `./init.sh` before your first edit. It must pass before you change anything, so a
+3. Read `docs/agents/session-handoff.md` if it exists. The previous session overwrites it
+   with the ranked next jobs, the traps it hit, and anything a fresh session would otherwise
+   have to rediscover. Also gitignored, so it will be absent in a fresh clone, on CI, and in
+   a new worktree — its absence means nobody handed anything over, not that there is nothing
+   to do.
+4. Run `./init.sh` before your first edit. It must pass before you change anything, so a
    later failure is provably yours.
-4. Work one feature at a time. Do not start a second one.
+5. Work one feature at a time. Do not start a second one.
 
 ## The determinism invariant
 
