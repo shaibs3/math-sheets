@@ -2,11 +2,13 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { randomSeed } from "@/lib/rng";
+import type { Level } from "@/lib/types";
 
 type Props = {
   seed: number;
   count: number;
-  level: number;
+  level: Level;
+  levels: Level[];
   answers: boolean;
 };
 
@@ -16,7 +18,9 @@ const fieldClass =
 const buttonClass =
   "min-h-11 cursor-pointer rounded-lg px-4 text-sm font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]";
 
-export default function SheetControls({ seed, count, level, answers }: Props) {
+const levelNames: Record<Level, string> = { 1: "קל", 2: "בינוני", 3: "מאתגר" };
+
+export default function SheetControls({ seed, count, level, levels, answers }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -42,18 +46,22 @@ export default function SheetControls({ seed, count, level, answers }: Props) {
           />
         </label>
 
-        <label className="flex flex-col text-sm">
-          רמת קושי
-          <select
-            value={level}
-            onChange={(event) => update({ level: event.target.value })}
-            className={`${fieldClass} cursor-pointer`}
-          >
-            <option value={1}>קל</option>
-            <option value={2}>בינוני</option>
-            <option value={3}>מאתגר</option>
-          </select>
-        </label>
+        {levels.length > 1 && (
+          <label className="flex flex-col text-sm">
+            רמת קושי
+            <select
+              value={level}
+              onChange={(event) => update({ level: event.target.value })}
+              className={`${fieldClass} cursor-pointer`}
+            >
+              {levels.map((option) => (
+                <option key={option} value={option}>
+                  {levelNames[option]}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
 
         <button
           type="button"
