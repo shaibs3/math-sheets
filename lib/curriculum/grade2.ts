@@ -50,8 +50,9 @@ export const grade2Topics: Topic[] = [
     id: "shaon",
     name: "מדידות זמן",
     strand: "מדידות וגאומטרייה",
-    description: "שעות שלמות, חצאי שעה ורבעי שעה ומשך זמן.",
+    description: "חצאי שעה ורבעי שעה ומשך זמן.",
     generatorId: "clock",
+    levels: [2, 3],
   },
   {
     id: "kesef",

@@ -76,9 +76,14 @@ describe("curriculum level declarations", () => {
     const grade1Clock = getTopic(1, "shaon");
     const grade2Clock = getTopic(2, "shaon");
     expect(topicLevels(grade1Clock)).toEqual([1, 2]);
-    expect(topicLevels(grade2Clock)).toEqual([1, 2, 3]);
+    expect(topicLevels(grade2Clock)).toEqual([2, 3]);
     expect(supportsLevel(grade1Clock, 3)).toBe(false);
     expect(clampLevel(grade1Clock, 3)).toBe(2);
+  });
+
+  it("starts the grade 2 clock at half hours so the default sheet is not whole hours", () => {
+    expect(defaultLevel(getTopic(2, "shaon"))).toBe(2);
+    expect(supportsLevel(getTopic(2, "shaon"), 3)).toBe(true);
   });
 
   it("never lets a shared generator expose the harder grade's level to the younger grade", () => {

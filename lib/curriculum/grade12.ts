@@ -7,6 +7,7 @@ export const grade12Topics: Topic[] = [
     strand: "גאומטריה אנליטית",
     description: "חישוב אורך קטע לפי קואורדינטות קצותיו.",
     generatorId: "distance-points",
+    studyLevel: 3,
   },
   {
     id: "emtza-keta",
@@ -14,6 +15,7 @@ export const grade12Topics: Topic[] = [
     strand: "גאומטריה אנליטית",
     description: "מציאת אמצע הקטע או קצה חסר.",
     generatorId: "midpoint",
+    studyLevel: 3,
   },
   {
     id: "shipua-yeshirim",
@@ -21,6 +23,7 @@ export const grade12Topics: Topic[] = [
     strand: "גאומטריה אנליטית",
     description: "שיפוע של ישר מקביל או מאונך ומשוואת ישר דרך נקודה.",
     generatorId: "slope-relations",
+    studyLevel: 3,
   },
   {
     id: "mishvaat-yashar",
@@ -28,6 +31,7 @@ export const grade12Topics: Topic[] = [
     strand: "גאומטריה אנליטית",
     description: "מציאת שיפוע ומשוואת ישר לפי שתי נקודות.",
     generatorId: "line-from-points",
+    studyLevel: 3,
   },
   {
     id: "nekudat-hitux",
@@ -35,6 +39,7 @@ export const grade12Topics: Topic[] = [
     strand: "גאומטריה אנליטית",
     description: "פתרון מערכת שתי משוואות למציאת נקודת החיתוך.",
     generatorId: "linear-system",
+    studyLevel: 3,
   },
   {
     id: "mishvaa-ribuit",
@@ -42,6 +47,7 @@ export const grade12Topics: Topic[] = [
     strand: "מודל ריבועי",
     description: "פתרון אלגברי של משוואה ריבועית.",
     generatorId: "quadratic-equation",
+    studyLevel: 3,
   },
   {
     id: "parabola",
@@ -49,6 +55,7 @@ export const grade12Topics: Topic[] = [
     strand: "מודל ריבועי",
     description: "קודקוד, ציר סימטריה וחיתוך עם ציר ה-y.",
     generatorId: "parabola",
+    studyLevel: 3,
   },
   {
     id: "optimum-ribui",
@@ -56,6 +63,7 @@ export const grade12Topics: Topic[] = [
     strand: "מודל ריבועי",
     description: "מציאת רווח מקסימלי או עלות מינימלית.",
     generatorId: "quadratic-optimum",
+    studyLevel: 3,
   },
   {
     id: "gufim-bemerchav",
@@ -63,6 +71,7 @@ export const grade12Topics: Topic[] = [
     strand: "גאומטריה במרחב",
     description: "נפח מנסרה, גליל, חרוט ופירמידה.",
     generatorId: "solids-volume",
+    studyLevel: 3,
   },
   {
     id: "hitpalgut-normalit",
@@ -70,6 +79,7 @@ export const grade12Topics: Topic[] = [
     strand: "התפלגות נורמלית",
     description: "חישוב ציון תקן z ומציאת הערך המתאים לו.",
     generatorId: "z-score",
+    studyLevel: 3,
   },
 ];
 

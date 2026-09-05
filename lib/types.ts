@@ -2,6 +2,8 @@ import type { Figure } from "./figure";
 
 export type Level = 1 | 2 | 3;
 
+export type StudyLevel = 3 | 4 | 5;
+
 export type WorkStyle = "none" | "lines" | "vertical" | "box" | "grid";
 
 export type Problem = {
@@ -32,6 +34,7 @@ export type Topic = {
   description: string;
   generatorId: string;
   levels?: Level[];
+  studyLevel?: StudyLevel;
 };
 
 export type Grade = {

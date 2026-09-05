@@ -7,6 +7,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "מודל y = y₀ · qᵗ וחישוב הכמות אחרי מספר שנים.",
     generatorId: "exponential-growth",
+    studyLevel: 3,
   },
   {
     id: "mishvaa-maarichit",
@@ -14,6 +15,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "פתרון משוואה מהצורה qˣ = c עם מעריך שלם.",
     generatorId: "exponential-equation",
+    studyLevel: 3,
   },
   {
     id: "stiyat-teken",
@@ -21,6 +23,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "חישוב ממוצע וסטיית תקן של אוסף נתונים.",
     generatorId: "standard-deviation",
+    studyLevel: 3,
   },
   {
     id: "histabrut-mitkademet",
@@ -28,6 +31,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "מאורעות תלויים ובלתי תלויים והסתברות מותנית.",
     generatorId: "conditional-probability",
+    studyLevel: 3,
   },
   {
     id: "ribit-deribit",
@@ -35,6 +39,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול פיננסי-כלכלי",
     description: "חיסכון והלוואות לפי המודל המעריכי.",
     generatorId: "compound-interest",
+    studyLevel: 3,
   },
   {
     id: "achuzim-tsarchaniim",
@@ -42,6 +47,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול פיננסי-כלכלי",
     description: "הנחות, מע\"מ ומציאת המחיר לפני ההנחה.",
     generatorId: "consumer-percent",
+    studyLevel: 3,
   },
   {
     id: "yachas-uproportzia",
@@ -49,6 +55,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "חלוקה לפי יחס והשלמת ערך חסר בפרופורציה.",
     generatorId: "ratio",
+    studyLevel: 3,
   },
   {
     id: "kne-mida",
@@ -56,6 +63,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "מעבר בין אורך במפה או בשרטוט לאורך במציאות.",
     generatorId: "scale",
+    studyLevel: 3,
   },
   {
     id: "dimyon-meshulashim",
@@ -63,6 +71,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "יחס דמיון ויחסי צלעות, היקפים ושטחים.",
     generatorId: "similar-triangles",
+    studyLevel: 3,
   },
   {
     id: "trigonometria",
@@ -70,6 +79,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "סינוס, קוסינוס וטנגנס ומציאת צלע לפי זווית.",
     generatorId: "right-triangle-trig",
+    studyLevel: 3,
   },
   {
     id: "pitagoras",
@@ -77,6 +87,7 @@ export const grade11Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "מציאת יתר או ניצב במשולש ישר זווית.",
     generatorId: "pythagoras",
+    studyLevel: 3,
   },
 ];
 
