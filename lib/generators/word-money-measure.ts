@@ -53,9 +53,10 @@ const wordMoneyMeasure: Generator = {
       } else if (kind === 2) {
         const item = rng.pick(goods);
         const buyer = rng.pick(buyers);
-        const quantity = rng.int(range.quantity[0], range.quantity[1]);
         const price = rng.int(range.price[0], range.price[1]);
-        const note = [50, 100, 200, 500].find((value) => value > quantity * price) ?? 1000;
+        const wanted = rng.int(range.quantity[0], range.quantity[1]);
+        const quantity = Math.max(2, Math.min(wanted, Math.floor(199 / price)));
+        const note = [20, 50, 100, 200].find((value) => value > quantity * price) ?? 200;
         problems.push({
           prompt: `${buyer} קנתה ${quantity} ${item.plural} במחיר ${price} ₪ ${item.each} ושילמה בשטר של ${note} ₪. כמה עודף קיבלה?`,
           answer: `${note - quantity * price} ₪`,

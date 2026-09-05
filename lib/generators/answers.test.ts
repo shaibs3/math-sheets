@@ -585,6 +585,16 @@ describe("word-two-step", () => {
 });
 
 describe("word-money-measure", () => {
+  it.each(allLevels)("only ever pays with a real banknote at level %i", (level) => {
+    const issued = [20, 50, 100, 200];
+    for (const problem of wordMoneyMeasure.generate({ seed: 6262, count: 40, level })) {
+      const note = /בשטר של (\d+) ₪/.exec(problem.prompt);
+      if (!note) continue;
+      expect(issued, problem.prompt).toContain(Number(note[1]));
+      expect(firstNumber(problem.answer), problem.prompt).toBeGreaterThan(0);
+    }
+  });
+
   it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
     for (const problem of wordMoneyMeasure.generate({ seed: 6262, count: 40, level })) {
       const [first, second, third] = numbersIn(problem.prompt);
@@ -609,6 +619,14 @@ function roundTo(value: number, decimals: number): number {
 }
 
 describe("word-fractions-decimals", () => {
+  it.each(allLevels)("keeps a class small enough to be a real class at level %i", (level) => {
+    for (const problem of wordFractionsDecimals.generate({ seed: 3311, count: 40, level })) {
+      const size = /בכיתה (\d+) תלמידים/.exec(problem.prompt);
+      if (!size) continue;
+      expect(Number(size[1]), problem.prompt).toBeLessThanOrEqual(40);
+    }
+  });
+
   it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
     for (const problem of wordFractionsDecimals.generate({ seed: 3311, count: 40, level })) {
       const numbers = numbersIn(problem.prompt);
@@ -638,7 +656,10 @@ describe("word-rate-average", () => {
       if (problem.prompt.includes("הציון הממוצע")) {
         const [howMany, ...scores] = numbers;
         expect(scores, problem.prompt).toHaveLength(howMany);
-        expected = scores.reduce((sum, score) => sum + score, 0) / howMany;
+        const total = scores.reduce((sum, score) => sum + score, 0);
+        expect(total % howMany, problem.prompt).toBe(0);
+        expected = total / howMany;
+        expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
       } else if (problem.prompt.includes("המהירות הממוצעת")) {
         expected = numbers[0] / numbers[1];
       } else if (problem.prompt.includes("כמה עולה")) {
