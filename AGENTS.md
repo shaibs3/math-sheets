@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# math-sheets
+# על הנייר (al-hanyar)
 
 Hebrew RTL site that generates printable math worksheets for the Israeli school
 curriculum. A parent prints an A4 sheet; a child solves it on paper. The printed page —

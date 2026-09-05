@@ -1,9 +1,9 @@
-# דפי עבודה במתמטיקה
+# על הנייר
 
 Printable Hebrew maths worksheets for the Israeli school curriculum, with an answer key for
 the parent. Pick a grade, pick a topic, print. The child works on paper, not on a screen.
 
-[**Live site**](https://math-sheets-jade.vercel.app) ·
+[**Live site**](https://al-hanyar.vercel.app) ·
 [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 ## Why this exists
