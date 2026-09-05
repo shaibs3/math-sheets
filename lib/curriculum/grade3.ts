@@ -14,6 +14,7 @@ export const grade3Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "כפל מספר דו-ספרתי או תלת-ספרתי במספר חד-ספרתי.",
     generatorId: "multiply-vertical",
+    levels: [1, 2],
   },
   {
     id: "hiluk-im-sheerit",
@@ -42,6 +43,7 @@ export const grade3Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "תרגילים משולבים עם קדימות כפל וחילוק ועם סוגריים.",
     generatorId: "order-of-operations",
+    levels: [1, 2],
   },
   {
     id: "simanei-hitchalkut",

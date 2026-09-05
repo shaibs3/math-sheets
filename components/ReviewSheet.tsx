@@ -6,6 +6,7 @@ import { useState } from "react";
 import MixedSheet from "./MixedSheet";
 import PrintControls from "./PrintControls";
 import { getTopic } from "@/lib/curriculum";
+import { clampLevel } from "@/lib/levels";
 import { buildMixedSheet, type MixedSpec } from "@/lib/mixed";
 import { dueSkills, daysUntil, nextDueAt, weakestSkills } from "@/lib/progress/schedule";
 import { useProgress } from "@/lib/progress/useProgress";
@@ -32,20 +33,23 @@ export default function ReviewSheet({ gradeId }: { gradeId: number }) {
   const due = dueSkills(skills, now);
   const selected = due.length > 0 ? due : practiceEarly ? weakestSkills(skills, MAX_SKILLS) : [];
 
-  const specs: MixedSpec[] = selected
-    .slice(0, MAX_SKILLS)
-    .flatMap((skill) => {
-      const topic = getTopic(gradeId, skill.topicId);
-      if (!topic) return [];
-      return [
-        {
-          topicId: topic.id,
-          generatorId: topic.generatorId,
-          level: skill.level,
-          count: PROBLEMS_PER_SKILL,
-        },
-      ];
-    });
+  const taken = new Set<string>();
+  const specs: MixedSpec[] = selected.slice(0, MAX_SKILLS).flatMap((skill) => {
+    const topic = getTopic(gradeId, skill.topicId);
+    if (!topic) return [];
+    const level = clampLevel(topic, skill.level);
+    const key = `${topic.id}:${level}`;
+    if (taken.has(key)) return [];
+    taken.add(key);
+    return [
+      {
+        topicId: topic.id,
+        generatorId: topic.generatorId,
+        level,
+        count: PROBLEMS_PER_SKILL,
+      },
+    ];
+  });
 
   if (specs.length === 0) {
     const upcoming = nextDueAt(skills, now);

@@ -7,6 +7,7 @@ export const grade4Topics: Topic[] = [
     strand: "שברים",
     description: "מציאת חלק מכמות ומציאת הכמות מתוך החלק.",
     generatorId: "fraction-of-quantity",
+    levels: [1, 2],
   },
   {
     id: "kefel-bemeunach",
