@@ -19,8 +19,11 @@ run() {
 }
 
 if [ ! -d node_modules ]; then
-  echo "node_modules missing; running npm install"
-  npm install || exit 1
+  echo "node_modules missing; running npm ci"
+  npm ci || exit 1
+elif [ package-lock.json -nt node_modules ]; then
+  echo "node_modules older than package-lock.json; running npm ci"
+  npm ci || exit 1
 fi
 
 if [ ! -d .next/types ]; then
