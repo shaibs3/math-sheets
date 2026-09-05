@@ -29,6 +29,14 @@ describe("splitMathSegments", () => {
     expect(isolated("הטמפרטורה ירדה אל -7 מעלות.")).toContain("-7");
   });
 
+  it("isolates coordinates written with the Unicode minus the algebra helpers emit", () => {
+    expect(isolated("מצאו את אמצע הקטע שקצותיו (−9 , −7) ו-(1 , 3).")).toContain("(−9 , −7)");
+  });
+
+  it("isolates a signed value assignment", () => {
+    expect(isolated("חשבו את z עבור z = −2 במדגם.")).toContain("z = −2");
+  });
+
   it("isolates a ratio", () => {
     expect(isolated("היחס בין הצלעות הוא 3 : 4 במשולש.")).toContain("3 : 4");
   });

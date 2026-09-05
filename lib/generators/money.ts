@@ -20,7 +20,7 @@ const money: Generator = {
     for (let i = 0; i < count; i++) {
       const paid = rng.pick(paidByLevel[level]);
       const first = rng.int(2, Math.floor(paid / 2));
-      const second = rng.int(1, paid - first - 1);
+      const second = rng.int(2, Math.max(2, paid - first - 1));
       const spent = first + second;
       const firstGood = rng.pick(goods);
       const secondGood = rng.pick(goods.filter((good) => good !== firstGood));

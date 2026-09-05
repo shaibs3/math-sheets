@@ -12,9 +12,9 @@ const probabilityBasic: Generator = {
     const bound = level === 1 ? 6 : level === 2 ? 10 : 15;
 
     for (let i = 0; i < count; i++) {
-      const red = rng.int(1, bound);
-      const blue = rng.int(1, bound);
-      const green = level === 1 ? 0 : rng.int(1, bound);
+      const red = rng.int(2, bound);
+      const blue = rng.int(2, bound);
+      const green = level === 1 ? 0 : rng.int(2, bound);
       const total = red + blue + green;
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 3);
       const contents = green
