@@ -5,8 +5,9 @@ export const grade9Topics: Topic[] = [
     id: "hukey-hezkot",
     name: "חוקי חזקות",
     strand: "תחום אלגברי",
-    description: "כפל, חילוק וחזקה של חזקה, כולל מעריך שלילי.",
+    description: "כפל, חילוק וחזקה של חזקה.",
     generatorId: "power-laws",
+    levels: [1, 2],
   },
   {
     id: "ktiv-madai",
@@ -63,13 +64,6 @@ export const grade9Topics: Topic[] = [
     strand: "תחום אלגברי",
     description: "קודקוד, ציר סימטריה וחיתוך עם ציר ה-y של פרבולה.",
     generatorId: "parabola",
-  },
-  {
-    id: "histabrut-mutnet",
-    name: "הסתברות מותנית",
-    strand: "הסתברות",
-    description: "הוצאה עם החזרה ובלעדיה, מאורעות תלויים ובלתי תלויים.",
-    generatorId: "conditional-probability",
   },
   {
     id: "zaviot-bemrubaim",
