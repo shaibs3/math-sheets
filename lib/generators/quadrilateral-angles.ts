@@ -11,7 +11,7 @@ const quadrilateralAngles: Generator = {
 
     for (let i = 0; i < count; i++) {
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 4);
-      const angle = rng.int(20, 160);
+      const angle = rng.int(level === 3 ? 11 : 20, level === 3 ? 169 : 160);
 
       if (kind === 1) {
         problems.push({

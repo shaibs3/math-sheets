@@ -3,10 +3,14 @@ import { gcd } from "../math";
 import type { Generator, Problem } from "../types";
 
 const contexts = [
-  { total: "גולות", a: "כחולות", b: "אדומות" },
-  { total: "שקלים", a: "לדנה", b: "ליואב" },
-  { total: "מדבקות", a: "לנועה", b: "לתמר" },
-  { total: "עוגיות", a: "בצלחת הראשונה", b: "בצלחת השנייה" },
+  { total: "גולות", share: "בין הכחולות לאדומות", a: "גולות כחולות", b: "גולות אדומות" },
+  { total: "מדבקות", share: "בין נועה לתמר", a: "מדבקות של נועה", b: "מדבקות של תמר" },
+  {
+    total: "עוגיות",
+    share: "בין שתי הצלחות",
+    a: "עוגיות בצלחת הראשונה",
+    b: "עוגיות בצלחת השנייה",
+  },
 ];
 
 const ratio: Generator = {
@@ -33,14 +37,14 @@ const ratio: Generator = {
 
       if (kind === 1) {
         problems.push({
-          prompt: `חלקו ${total} ${context.total} ${context.a} ו${context.b} ביחס ${a}:${b}. כמה יקבל כל צד?`,
+          prompt: `חלקו ${total} ${context.total} ${context.share} ביחס ${a}:${b}. כמה יקבל כל צד?`,
           answer: `${a * unit} ו-${b * unit}`,
           work: "lines",
           dir: "rtl",
         });
       } else {
         problems.push({
-          prompt: `היחס בין ${context.a} ל${context.b} הוא ${a}:${b}. אם יש ${a * unit} ${context.a}, כמה יש ${context.b}?`,
+          prompt: `היחס בין ${context.a} ל${context.b} הוא ${a}:${b}. אם יש ${a * unit} ${context.a}, כמה ${context.b} יש?`,
           answer: String(b * unit),
           work: "lines",
           dir: "rtl",

@@ -14,6 +14,7 @@ const signedNumbers: Generator = {
     const rng = createRng(seed);
     const problems: Problem[] = [];
     const bound = level === 1 ? 10 : level === 2 ? 20 : 40;
+    const factorBound = level === 3 ? 20 : 12;
 
     for (let i = 0; i < count; i++) {
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 4);
@@ -35,8 +36,8 @@ const signedNumbers: Generator = {
           dir: "ltr",
         });
       } else if (kind === 3) {
-        const left = rng.int(2, 12) * (rng.bool() ? 1 : -1);
-        const right = rng.int(2, 12) * (rng.bool() ? 1 : -1);
+        const left = rng.int(2, factorBound) * (rng.bool() ? 1 : -1);
+        const right = rng.int(2, factorBound) * (rng.bool() ? 1 : -1);
         problems.push({
           prompt: `${operand(left)} × ${operand(right)} =`,
           answer: formatSignedNumber(left * right),
@@ -44,8 +45,8 @@ const signedNumbers: Generator = {
           dir: "ltr",
         });
       } else {
-        const divisor = rng.int(2, 12) * (rng.bool() ? 1 : -1);
-        const quotient = rng.int(2, 12) * (rng.bool() ? 1 : -1);
+        const divisor = rng.int(2, factorBound) * (rng.bool() ? 1 : -1);
+        const quotient = rng.int(2, factorBound) * (rng.bool() ? 1 : -1);
         problems.push({
           prompt: `${operand(divisor * quotient)} ÷ ${operand(divisor)} =`,
           answer: formatSignedNumber(quotient),

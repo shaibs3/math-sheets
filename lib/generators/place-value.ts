@@ -16,7 +16,11 @@ const placeValue: Generator = {
 
     for (let i = 0; i < count; i++) {
       const value = rng.int(10 ** (digits - 1), 10 ** digits - 1);
-      const place = rng.int(0, digits - 1);
+      let place = rng.int(0, digits - 1);
+      for (let attempt = 0; attempt < digits; attempt++) {
+        if (Math.floor(value / 10 ** place) % 10 !== 0) break;
+        place = (place + 1) % digits;
+      }
       const digit = Math.floor(value / 10 ** place) % 10;
 
       if (rng.bool()) {

@@ -14,7 +14,7 @@ const consumerPercent: Generator = {
     const problems: Problem[] = [];
 
     for (let i = 0; i < count; i++) {
-      const price = rng.int(2, 40) * 100;
+      const price = rng.int(2, level === 3 ? 90 : 40) * (level === 3 ? 10 : 100);
       const discount = rng.pick(discounts);
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 3);
 

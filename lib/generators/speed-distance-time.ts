@@ -13,7 +13,7 @@ const speedDistanceTime: Generator = {
 
     for (let i = 0; i < count; i++) {
       const speed = rng.pick(speeds);
-      const hours = rng.int(2, level === 1 ? 5 : 9);
+      const hours = rng.int(2, level === 1 ? 5 : level === 2 ? 9 : 14);
       const distance = speed * hours;
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 3);
 

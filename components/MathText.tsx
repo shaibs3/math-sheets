@@ -1,7 +1,7 @@
 import { Fragment } from "react";
+import { splitMathSegments } from "@/lib/math-text";
 
 const fractionToken = /^(\d+)\/(\d+)([.,?!:;)]*)$/;
-const mathSegment = /\(-?\d+,\s*-?\d+\)|y\s*=\s*-?\d*x(?:\s*[+-]\s*\d+)?/g;
 
 function StackedFraction({ numerator, denominator }: { numerator: string; denominator: string }) {
   return (
@@ -43,32 +43,20 @@ function Plain({ text }: { text: string }) {
 }
 
 export default function MathText({ text }: { text: string }) {
-  const parts: { text: string; isolated: boolean }[] = [];
-  let cursor = 0;
-
-  for (const match of text.matchAll(mathSegment)) {
-    const start = match.index ?? 0;
-    if (start > cursor) parts.push({ text: text.slice(cursor, start), isolated: false });
-    parts.push({ text: match[0], isolated: true });
-    cursor = start + match[0].length;
-  }
-
-  if (cursor < text.length) parts.push({ text: text.slice(cursor), isolated: false });
-
   return (
     <>
-      {parts.map((part, index) =>
-        part.isolated ? (
+      {splitMathSegments(text).map((segment, index) =>
+        segment.isolated ? (
           <span
             key={index}
             dir="ltr"
             className="inline-block whitespace-nowrap"
             style={{ unicodeBidi: "isolate" }}
           >
-            {part.text}
+            {segment.text}
           </span>
         ) : (
-          <Plain key={index} text={part.text} />
+          <Plain key={index} text={segment.text} />
         ),
       )}
     </>
