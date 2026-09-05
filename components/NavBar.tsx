@@ -54,7 +54,7 @@ export default function NavBar() {
             <path d="M4 6h16M4 12h10M4 18h13" />
             <circle cx={19} cy={17} r={3} />
           </svg>
-          דפי עבודה
+          על הנייר
         </Link>
 
         <ol className="flex min-w-0 items-center gap-1 text-sm text-slate-600">

@@ -10,7 +10,10 @@ const heebo = Heebo({
 });
 
 export const metadata: Metadata = {
-  title: "דפי עבודה במתמטיקה",
+  title: {
+    default: "על הנייר — דפי תרגול במתמטיקה להדפסה",
+    template: "%s · על הנייר",
+  },
   description: "יצירת דפי תרגול להדפסה לפי תכנית הלימודים של משרד החינוך",
 };
 
