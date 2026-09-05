@@ -1,4 +1,5 @@
 import GradePicker from "@/components/GradePicker";
+import { PROGRESS_ENABLED } from "@/lib/features";
 import HeroIllustration from "@/components/HeroIllustration";
 import HomeGreeting from "@/components/HomeGreeting";
 
@@ -16,9 +17,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <HomeGreeting>
+      {PROGRESS_ENABLED ? (
+        <HomeGreeting>
+          <GradePicker heading="באיזו כיתה הילד/ה?" />
+        </HomeGreeting>
+      ) : (
         <GradePicker heading="באיזו כיתה הילד/ה?" />
-      </HomeGreeting>
+      )}
     </main>
   );
 }

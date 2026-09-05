@@ -4,7 +4,7 @@ import {
   type Primitive,
   type ShapeLayout,
 } from "@/lib/figure-layout";
-import type { Figure as FigureData, Measure } from "@/lib/figure";
+import type { Figure as FigureData } from "@/lib/figure";
 
 const stroke = { stroke: "currentColor", fill: "none", strokeWidth: 1.5 } as const;
 const labelProps = {
@@ -14,23 +14,10 @@ const labelProps = {
   style: { direction: "ltr" as const, unicodeBidi: "isolate" as const },
 };
 
-function withUnit(value: Measure, unit?: string): string {
-  if (value === "?") return "?";
-  return unit ? `${value} ${unit}` : String(value);
-}
 
-function span(value: Measure, fallback: number): number {
-  return value === "?" ? fallback : value;
-}
 
 type Vector = { x: number; y: number };
 
-function unitVector(from: Vector, to: Vector): Vector {
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const length = Math.hypot(dx, dy) || 1;
-  return { x: dx / length, y: dy / length };
-}
 
 function angleArc(vertex: Vector, first: Vector, second: Vector, radius: number): string {
   const start = { x: vertex.x + first.x * radius, y: vertex.y + first.y * radius };

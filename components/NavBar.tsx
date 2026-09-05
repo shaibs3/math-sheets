@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PROGRESS_ENABLED } from "@/lib/features";
 import { usePathname } from "next/navigation";
 import DueLink from "./DueLink";
 import ProfileSwitcher from "./ProfileSwitcher";
@@ -79,8 +80,8 @@ export default function NavBar() {
         </ol>
 
         <div className="me-auto flex items-center gap-1">
-          <DueLink />
-          <ProfileSwitcher />
+          {PROGRESS_ENABLED ? <DueLink /> : null}
+          {PROGRESS_ENABLED ? <ProfileSwitcher /> : null}
         </div>
       </nav>
     </header>

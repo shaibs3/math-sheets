@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { PROGRESS_ENABLED } from "@/lib/features";
 import { notFound } from "next/navigation";
 import AnswerKey from "@/components/AnswerKey";
 import MarkResults from "@/components/MarkResults";
@@ -64,7 +65,9 @@ export default async function SheetPage({
         {answers && <AnswerKey problems={problems} title={topic.name} />}
       </article>
 
-      <MarkResults gradeId={gradeId} specs={specs} skillIds={skillIds} seed={seed} />
+      {PROGRESS_ENABLED ? (
+        <MarkResults gradeId={gradeId} specs={specs} skillIds={skillIds} seed={seed} />
+      ) : null}
     </main>
   );
 }
