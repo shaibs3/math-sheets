@@ -24,6 +24,7 @@ const cylinder: Generator = {
           answer: `${formatNumber(2 * PI * radius * (radius + height), 2)} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "cylinder", radius, height, unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -31,6 +32,7 @@ const cylinder: Generator = {
           answer: `${formatNumber(PI * radius * radius * height, 2)} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "cylinder", radius, height, unit: 'ס"מ' },
         });
       }
     }

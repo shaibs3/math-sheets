@@ -19,6 +19,7 @@ const quadrilateralAngles: Generator = {
           answer: `${180 - angle}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "parallelogram-angle", angle },
         });
       } else if (kind === 2) {
         const base = rng.int(20, 89);
@@ -27,6 +28,7 @@ const quadrilateralAngles: Generator = {
           answer: `${base}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "isosceles-apex", apex: 180 - 2 * base },
         });
       } else if (kind === 3) {
         const first = rng.int(20, 120);
@@ -36,6 +38,7 @@ const quadrilateralAngles: Generator = {
           answer: `${360 - first - second - 90}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "quad-angles", angles: [first, second, 90] },
         });
       } else {
         const leg = rng.int(20, 160);
@@ -44,6 +47,7 @@ const quadrilateralAngles: Generator = {
           answer: `${180 - leg}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "trapezoid-angle", angle: leg },
         });
       }
     }

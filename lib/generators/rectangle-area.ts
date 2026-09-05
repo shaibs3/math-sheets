@@ -22,6 +22,7 @@ const rectangleArea: Generator = {
           answer: `${width * height} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "rect", width, height, unit: 'ס"מ' },
         });
       } else if (kind === 2) {
         problems.push({
@@ -29,6 +30,7 @@ const rectangleArea: Generator = {
           answer: `${2 * (width + height)} ס"מ`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "rect", width, height, unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -36,6 +38,7 @@ const rectangleArea: Generator = {
           answer: `${height} ס"מ`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "rect", width, height: "?", unit: 'ס"מ' },
         });
       }
     }
