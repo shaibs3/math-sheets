@@ -1,4 +1,4 @@
-import type { Figure as FigureData, Point } from "@/lib/figure";
+import type { Figure as FigureData, Measure, Point } from "@/lib/figure";
 
 const stroke = { stroke: "currentColor", fill: "none", strokeWidth: 1.5 } as const;
 const labelProps = {
@@ -8,8 +8,13 @@ const labelProps = {
   style: { direction: "ltr" as const, unicodeBidi: "isolate" as const },
 };
 
-function withUnit(value: number, unit?: string): string {
+function withUnit(value: Measure, unit?: string): string {
+  if (value === "?") return "?";
   return unit ? `${value} ${unit}` : String(value);
+}
+
+function span(value: Measure, fallback: number): number {
+  return value === "?" ? fallback : value;
 }
 
 type Vector = { x: number; y: number };
@@ -28,28 +33,189 @@ function angleArc(vertex: Vector, first: Vector, second: Vector, radius: number)
   return `M ${start.x} ${start.y} A ${radius} ${radius} 0 0 ${sweep} ${end.x} ${end.y}`;
 }
 
-function Rect({ width, height, unit }: { width: number; height: number; unit?: string }) {
-  const scale = Math.min(74 / width, 46 / height);
-  const w = width * scale;
-  const h = height * scale;
+function Rect({ width, height, unit }: { width: Measure; height: Measure; unit?: string }) {
+  const w0 = span(width, 10);
+  const h0 = span(height, 6);
+  const scale = Math.min(70 / w0, 42 / h0);
+  const w = w0 * scale;
+  const h = h0 * scale;
 
   return (
     <svg viewBox="0 0 120 78" className="w-full max-w-[150px]">
-      <rect x={28} y={10} width={w} height={h} {...stroke} />
-      <text x={28 + w / 2} y={10 + h + 14} textAnchor="middle" {...labelProps}>
+      <rect x={30} y={12} width={w} height={h} {...stroke} />
+      <text x={30 + w / 2} y={12 + h + 13} textAnchor="middle" {...labelProps}>
         {withUnit(width, unit)}
       </text>
-      <text x={22} y={10 + h / 2 + 3} textAnchor="end" {...labelProps}>
+      <text x={25} y={12 + h / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
         {withUnit(height, unit)}
       </text>
     </svg>
   );
 }
 
-function Triangle({ base, height, unit }: { base: number; height: number; unit?: string }) {
-  const scale = Math.min(74 / base, 46 / height);
-  const w = base * scale;
-  const h = height * scale;
+function Parallelogram({ base, height, unit }: { base: Measure; height: Measure; unit?: string }) {
+  const b0 = span(base, 10);
+  const h0 = span(height, 6);
+  const scale = Math.min(60 / b0, 40 / h0);
+  const w = b0 * scale;
+  const h = h0 * scale;
+  const skew = Math.min(18, w * 0.35);
+  const top = 12;
+  const bottom = top + h;
+
+  return (
+    <svg viewBox="0 0 120 78" className="w-full max-w-[150px]">
+      <polygon
+        points={`24,${bottom} ${24 + w},${bottom} ${24 + w + skew},${top} ${24 + skew},${top}`}
+        {...stroke}
+      />
+      <line x1={24 + skew} y1={top} x2={24 + skew} y2={bottom} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      <text x={24 + w / 2} y={bottom + 13} textAnchor="middle" {...labelProps}>
+        {withUnit(base, unit)}
+      </text>
+      <text x={24 + skew - 4} y={top + h / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(height, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function RightTriangle({
+  a,
+  b,
+  c,
+  markAngle,
+  unit,
+}: {
+  a: Measure;
+  b: Measure;
+  c: Measure;
+  markAngle?: boolean;
+  unit?: string;
+}) {
+  const a0 = span(a, 6);
+  const b0 = span(b, 8);
+  const scale = Math.min(62 / b0, 40 / a0);
+  const w = b0 * scale;
+  const h = a0 * scale;
+  const left = 30;
+  const bottom = 56;
+
+  return (
+    <svg viewBox="0 0 120 78" className="w-full max-w-[160px]">
+      <polygon points={`${left},${bottom} ${left + w},${bottom} ${left},${bottom - h}`} {...stroke} />
+      <path
+        d={`M ${left + 7} ${bottom} L ${left + 7} ${bottom - 7} L ${left} ${bottom - 7}`}
+        {...stroke}
+        strokeWidth={1}
+      />
+      {markAngle ? (
+        <>
+          <path
+            d={angleArc(
+              { x: left + w, y: bottom },
+              { x: -1, y: 0 },
+              unitVector({ x: left + w, y: bottom }, { x: left, y: bottom - h }),
+              11,
+            )}
+            {...stroke}
+            strokeWidth={1}
+          />
+          <text x={left + w - 16} y={bottom - 6} textAnchor="middle" {...labelProps} fontSize={8}>
+            α
+          </text>
+        </>
+      ) : null}
+      <text x={left + w / 2} y={bottom + 13} textAnchor="middle" {...labelProps}>
+        {withUnit(b, unit)}
+      </text>
+      <text x={left - 5} y={bottom - h / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(a, unit)}
+      </text>
+      <text
+        x={left + w / 2 + 6}
+        y={bottom - h / 2 - 6}
+        textAnchor="start"
+        dominantBaseline="middle"
+        {...labelProps}
+      >
+        {withUnit(c, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function RectSemicircle({ width, height, unit }: { width: Measure; height: Measure; unit?: string }) {
+  const w0 = span(width, 10);
+  const h0 = span(height, 6);
+  const scale = Math.min(56 / w0, 30 / h0);
+  const w = w0 * scale;
+  const h = h0 * scale;
+  const left = 34;
+  const top = 30;
+  const radius = w / 2;
+
+  return (
+    <svg viewBox="0 0 120 82" className="w-full max-w-[150px]">
+      <path
+        d={`M ${left} ${top + h} L ${left} ${top} A ${radius} ${radius} 0 0 1 ${left + w} ${top} L ${left + w} ${top + h} Z`}
+        {...stroke}
+      />
+      <line x1={left} y1={top} x2={left + w} y2={top} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      <text x={left + w / 2} y={top + h + 13} textAnchor="middle" {...labelProps}>
+        {withUnit(width, unit)}
+      </text>
+      <text x={left - 5} y={top + h / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(height, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function RectCutout({
+  width,
+  height,
+  cut,
+  unit,
+}: {
+  width: Measure;
+  height: Measure;
+  cut: Measure;
+  unit?: string;
+}) {
+  const w0 = span(width, 10);
+  const h0 = span(height, 6);
+  const c0 = Math.min(span(cut, 3), w0 * 0.6, h0 * 0.6);
+  const scale = Math.min(66 / w0, 40 / h0);
+  const w = w0 * scale;
+  const h = h0 * scale;
+  const c = c0 * scale;
+  const left = 30;
+  const top = 12;
+
+  return (
+    <svg viewBox="0 0 120 82" className="w-full max-w-[155px]">
+      <path
+        d={`M ${left} ${top} L ${left + w} ${top} L ${left + w} ${top + h - c} L ${left + w - c} ${top + h - c} L ${left + w - c} ${top + h} L ${left} ${top + h} Z`}
+        {...stroke}
+      />
+      <text x={left + w / 2} y={top + h + 13} textAnchor="middle" {...labelProps}>
+        {withUnit(width, unit)}
+      </text>
+      <text x={left - 5} y={top + h / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(height, unit)}
+      </text>
+      <text x={left + w - c / 2} y={top + h - c - 4} textAnchor="middle" {...labelProps} fontSize={8}>
+        {withUnit(cut, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function Triangle({ base, height, unit }: { base: Measure; height: Measure; unit?: string }) {
+  const scale = Math.min(74 / span(base, 10), 46 / span(height, 6));
+  const w = span(base, 10) * scale;
+  const h = span(height, 6) * scale;
   const left = 28;
   const bottom = 10 + h;
 
@@ -67,7 +233,7 @@ function Triangle({ base, height, unit }: { base: number; height: number; unit?:
   );
 }
 
-function Circle({ value, label, unit }: { value: number; label: string; unit?: string }) {
+function Circle({ value, label, unit }: { value: Measure; label: string; unit?: string }) {
   const cx = 60;
   const cy = 38;
   const r = 28;
@@ -242,6 +408,196 @@ function Polygon({ sides }: { sides: number }) {
   );
 }
 
+function Box({ a, b, c, unit }: { a: Measure; b: Measure; c: Measure; unit?: string }) {
+  const w = 58;
+  const h = 34;
+  const d = 18;
+  const left = 22;
+  const top = 20;
+
+  return (
+    <svg viewBox="0 0 120 82" className="w-full max-w-[155px]">
+      <rect x={left} y={top + d} width={w} height={h} {...stroke} />
+      <polygon points={`${left},${top + d} ${left + d},${top} ${left + w + d},${top} ${left + w},${top + d}`} {...stroke} />
+      <polygon
+        points={`${left + w},${top + d} ${left + w + d},${top} ${left + w + d},${top + h} ${left + w},${top + d + h}`}
+        {...stroke}
+      />
+      <text x={left + w / 2} y={top + d + h + 13} textAnchor="middle" {...labelProps}>
+        {withUnit(a, unit)}
+      </text>
+      <text x={left - 4} y={top + d + h / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(b, unit)}
+      </text>
+      <text x={left + w + d + 3} y={top + h / 2 + 2} textAnchor="start" dominantBaseline="middle" {...labelProps}>
+        {withUnit(c, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function Cylinder({ radius, height, unit }: { radius: Measure; height: Measure; unit?: string }) {
+  const cx = 56;
+  const rx = 26;
+  const ry = 8;
+  const top = 20;
+  const bottom = 60;
+
+  return (
+    <svg viewBox="0 0 120 82" className="w-full max-w-[150px]">
+      <ellipse cx={cx} cy={top} rx={rx} ry={ry} {...stroke} />
+      <path d={`M ${cx - rx} ${top} L ${cx - rx} ${bottom}`} {...stroke} />
+      <path d={`M ${cx + rx} ${top} L ${cx + rx} ${bottom}`} {...stroke} />
+      <path d={`M ${cx - rx} ${bottom} A ${rx} ${ry} 0 0 0 ${cx + rx} ${bottom}`} {...stroke} />
+      <line x1={cx} y1={top} x2={cx + rx} y2={top} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      <text x={cx + rx / 2} y={top - 4} textAnchor="middle" {...labelProps} fontSize={8}>
+        {withUnit(radius, unit)}
+      </text>
+      <text x={cx + rx + 4} y={(top + bottom) / 2} textAnchor="start" dominantBaseline="middle" {...labelProps}>
+        {withUnit(height, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function Cone({ radius, height, unit }: { radius: Measure; height: Measure; unit?: string }) {
+  const cx = 54;
+  const rx = 24;
+  const ry = 7;
+  const apex = 16;
+  const base = 60;
+
+  return (
+    <svg viewBox="0 0 120 82" className="w-full max-w-[150px]">
+      <path d={`M ${cx - rx} ${base} L ${cx} ${apex} L ${cx + rx} ${base}`} {...stroke} />
+      <ellipse cx={cx} cy={base} rx={rx} ry={ry} {...stroke} />
+      <line x1={cx} y1={apex} x2={cx} y2={base} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      <line x1={cx} y1={base} x2={cx + rx} y2={base} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      <text x={cx + rx / 2} y={base + 13} textAnchor="middle" {...labelProps} fontSize={8}>
+        {withUnit(radius, unit)}
+      </text>
+      <text x={cx - 4} y={(apex + base) / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(height, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function Pyramid({ base, height, unit }: { base: Measure; height: Measure; unit?: string }) {
+  const cx = 54;
+  const half = 26;
+  const ry = 8;
+  const apex = 16;
+  const bottom = 58;
+
+  return (
+    <svg viewBox="0 0 120 82" className="w-full max-w-[150px]">
+      <polygon points={`${cx - half},${bottom} ${cx + half},${bottom} ${cx},${apex}`} {...stroke} />
+      <path d={`M ${cx - half} ${bottom} L ${cx} ${bottom + ry} L ${cx + half} ${bottom}`} {...stroke} />
+      <line x1={cx} y1={apex} x2={cx} y2={bottom + ry / 2} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      <text x={cx} y={bottom + ry + 12} textAnchor="middle" {...labelProps} fontSize={8}>
+        {withUnit(base, unit)}
+      </text>
+      <text x={cx - 4} y={(apex + bottom) / 2} textAnchor="end" dominantBaseline="middle" {...labelProps}>
+        {withUnit(height, unit)}
+      </text>
+    </svg>
+  );
+}
+
+function ParallelogramAngle({ angle }: { angle: number }) {
+  const top = 18;
+  const bottom = 54;
+  const left = 26;
+  const w = 52;
+  const skew = 16;
+
+  return (
+    <svg viewBox="0 0 120 74" className="w-full max-w-[160px]">
+      <polygon
+        points={`${left},${bottom} ${left + w},${bottom} ${left + w + skew},${top} ${left + skew},${top}`}
+        {...stroke}
+      />
+      <text x={left + 15} y={bottom - 7} textAnchor="middle" {...labelProps} fontSize={8}>
+        {`${angle}°`}
+      </text>
+      <text x={left + w - 9} y={bottom - 7} textAnchor="middle" {...labelProps} fontSize={8}>
+        ?
+      </text>
+    </svg>
+  );
+}
+
+function IsoscelesApex({ apex }: { apex: number }) {
+  const cx = 58;
+  const top = 14;
+  const bottom = 56;
+  const half = 30;
+
+  return (
+    <svg viewBox="0 0 120 74" className="w-full max-w-[155px]">
+      <polygon points={`${cx},${top} ${cx - half},${bottom} ${cx + half},${bottom}`} {...stroke} />
+      <text x={cx} y={top + 14} textAnchor="middle" {...labelProps} fontSize={8}>
+        {`${apex}°`}
+      </text>
+      <text x={cx - half + 11} y={bottom - 5} textAnchor="middle" {...labelProps} fontSize={8}>
+        ?
+      </text>
+    </svg>
+  );
+}
+
+function QuadAngles({ angles }: { angles: number[] }) {
+  const corners = [
+    { x: 26, y: 16 },
+    { x: 94, y: 20 },
+    { x: 86, y: 58 },
+    { x: 32, y: 54 },
+  ];
+  const inward = [
+    { x: 12, y: 12 },
+    { x: -14, y: 11 },
+    { x: -11, y: -12 },
+    { x: 13, y: -11 },
+  ];
+
+  return (
+    <svg viewBox="0 0 120 74" className="w-full max-w-[160px]">
+      <polygon points={corners.map((corner) => `${corner.x},${corner.y}`).join(" ")} {...stroke} />
+      {corners.map((corner, index) => (
+        <text
+          key={index}
+          x={corner.x + inward[index].x}
+          y={corner.y + inward[index].y}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          {...labelProps}
+          fontSize={8}
+        >
+          {index < angles.length ? `${angles[index]}°` : "?"}
+        </text>
+      ))}
+    </svg>
+  );
+}
+
+function TrapezoidAngle({ angle }: { angle: number }) {
+  const top = 18;
+  const bottom = 56;
+
+  return (
+    <svg viewBox="0 0 120 74" className="w-full max-w-[160px]">
+      <polygon points={`22,${bottom} 98,${bottom} 84,${top} 36,${top}`} {...stroke} />
+      <text x={38} y={bottom - 7} textAnchor="middle" {...labelProps} fontSize={8}>
+        {`${angle}°`}
+      </text>
+      <text x={42} y={top + 12} textAnchor="middle" {...labelProps} fontSize={8}>
+        ?
+      </text>
+    </svg>
+  );
+}
+
 export function Axes({
   min,
   max,
@@ -342,6 +698,45 @@ export default function Figure({ figure }: { figure: FigureData }) {
       return <Triangle base={figure.base} height={figure.height} unit={figure.unit} />;
     case "circle":
       return <Circle value={figure.value} label={figure.label} unit={figure.unit} />;
+    case "parallelogram":
+      return <Parallelogram base={figure.base} height={figure.height} unit={figure.unit} />;
+    case "right-triangle":
+      return (
+        <RightTriangle
+          a={figure.a}
+          b={figure.b}
+          c={figure.c}
+          markAngle={figure.markAngle}
+          unit={figure.unit}
+        />
+      );
+    case "rect-semicircle":
+      return <RectSemicircle width={figure.width} height={figure.height} unit={figure.unit} />;
+    case "rect-cutout":
+      return (
+        <RectCutout
+          width={figure.width}
+          height={figure.height}
+          cut={figure.cut}
+          unit={figure.unit}
+        />
+      );
+    case "box":
+      return <Box a={figure.a} b={figure.b} c={figure.c} unit={figure.unit} />;
+    case "cylinder":
+      return <Cylinder radius={figure.radius} height={figure.height} unit={figure.unit} />;
+    case "cone":
+      return <Cone radius={figure.radius} height={figure.height} unit={figure.unit} />;
+    case "pyramid":
+      return <Pyramid base={figure.base} height={figure.height} unit={figure.unit} />;
+    case "parallelogram-angle":
+      return <ParallelogramAngle angle={figure.angle} />;
+    case "isosceles-apex":
+      return <IsoscelesApex apex={figure.apex} />;
+    case "quad-angles":
+      return <QuadAngles angles={figure.angles} />;
+    case "trapezoid-angle":
+      return <TrapezoidAngle angle={figure.angle} />;
     case "triangle-angles":
       return <TriangleAngles angles={figure.angles} />;
     case "adjacent-angles":

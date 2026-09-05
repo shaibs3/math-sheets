@@ -24,6 +24,7 @@ const volume: Generator = {
           answer: `${a * b * c} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "box", a, b, c, unit: 'ס"מ' },
         });
       } else if (kind === 2) {
         const edge = rng.int(2, 12);
@@ -32,6 +33,7 @@ const volume: Generator = {
           answer: `נפח ${edge ** 3} סמ"ק, שטח פנים ${6 * edge ** 2} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "box", a: edge, b: edge, c: edge, unit: 'ס"מ' },
         });
       } else {
         const radius = rng.int(2, 10);
@@ -41,6 +43,7 @@ const volume: Generator = {
           answer: `${formatNumber(PI * radius * radius * height, 2)} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "cylinder", radius, height, unit: 'ס"מ' },
         });
       }
     }

@@ -22,6 +22,7 @@ const areaShapes: Generator = {
           answer: `${(base * height) / 2} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "triangle", base, height, unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -29,6 +30,7 @@ const areaShapes: Generator = {
           answer: `${base * height} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "parallelogram", base, height, unit: 'ס"מ' },
         });
       }
     }

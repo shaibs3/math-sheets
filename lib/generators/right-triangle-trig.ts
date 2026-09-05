@@ -32,6 +32,7 @@ const rightTriangleTrig: Generator = {
           answer: formatRatio(opposite, hypotenuse),
           work: "lines",
           dir: "rtl",
+          figure: { kind: "right-triangle", a: opposite, b: adjacent, c: hypotenuse, markAngle: true, unit: 'ס"מ' },
         });
       } else if (kind === 2) {
         problems.push({
@@ -39,6 +40,7 @@ const rightTriangleTrig: Generator = {
           answer: formatRatio(adjacent, hypotenuse),
           work: "lines",
           dir: "rtl",
+          figure: { kind: "right-triangle", a: opposite, b: adjacent, c: hypotenuse, markAngle: true, unit: 'ס"מ' },
         });
       } else if (kind === 3) {
         problems.push({
@@ -46,6 +48,7 @@ const rightTriangleTrig: Generator = {
           answer: formatRatio(opposite, adjacent),
           work: "lines",
           dir: "rtl",
+          figure: { kind: "right-triangle", a: opposite, b: adjacent, c: hypotenuse, markAngle: true, unit: 'ס"מ' },
         });
       } else {
         const half = rng.int(2, 12);

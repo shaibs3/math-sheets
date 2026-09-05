@@ -24,6 +24,7 @@ const boxVolumeSurface: Generator = {
           answer: `${a * b * c} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "box", a, b, c, unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -31,6 +32,7 @@ const boxVolumeSurface: Generator = {
           answer: `${2 * (a * b + b * c + a * c)} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "box", a, b, c, unit: 'ס"מ' },
         });
       }
     }

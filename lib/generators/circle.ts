@@ -25,6 +25,7 @@ const circle: Generator = {
           answer: `${formatNumber(PI * radius * radius, 2)} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "circle", value: measure, label: givenDiameter ? "diameter" : "radius", unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -32,6 +33,7 @@ const circle: Generator = {
           answer: `${formatNumber(2 * PI * radius, 2)} ס"מ`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "circle", value: measure, label: givenDiameter ? "diameter" : "radius", unit: 'ס"מ' },
         });
       }
     }

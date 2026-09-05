@@ -25,6 +25,7 @@ const solidsVolume: Generator = {
           answer: `${formatNumber(base * radius * height, 2)} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "box", a: base, b: radius, c: height, unit: 'ס"מ' },
         });
       } else if (kind === 2) {
         problems.push({
@@ -32,6 +33,7 @@ const solidsVolume: Generator = {
           answer: `${formatNumber(PI * radius * radius * height, 2)} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "cylinder", radius, height, unit: 'ס"מ' },
         });
       } else if (kind === 3) {
         problems.push({
@@ -39,6 +41,7 @@ const solidsVolume: Generator = {
           answer: `${formatNumber(PI * radius * radius * height, 2)} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "cone", radius, height: height * 3, unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -46,6 +49,7 @@ const solidsVolume: Generator = {
           answer: `${formatNumber(base * base * height, 2)} סמ"ק`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "pyramid", base, height: height * 3, unit: 'ס"מ' },
         });
       }
     }

@@ -32,6 +32,7 @@ const pythagoras: Generator = {
           answer: `${c} ס"מ`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "right-triangle", a, b, c: "?", unit: 'ס"מ' },
         });
       } else {
         problems.push({
@@ -39,6 +40,7 @@ const pythagoras: Generator = {
           answer: `${b} ס"מ`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "right-triangle", a, b: "?", c, unit: 'ס"מ' },
         });
       }
     }

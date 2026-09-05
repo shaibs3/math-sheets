@@ -25,6 +25,7 @@ const compositeArea: Generator = {
           answer: `${formatNumber(width * height + (PI * radius * radius) / 2, 2)} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "rect-semicircle", width, height, unit: 'ס"מ' },
         });
       } else if (kind === 2) {
         const cut = rng.int(1, Math.min(height, width) - 1);
@@ -33,6 +34,7 @@ const compositeArea: Generator = {
           answer: `${formatNumber(width * height - cut * cut, 2)} סמ"ר`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "rect-cutout", width, height, cut, unit: 'ס"מ' },
         });
       } else {
         const radius = width / 2;
@@ -41,6 +43,7 @@ const compositeArea: Generator = {
           answer: `${formatNumber(width + 2 * height + PI * radius, 2)} ס"מ`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "rect-semicircle", width, height, unit: 'ס"מ' },
         });
       }
     }
