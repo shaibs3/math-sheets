@@ -10,14 +10,18 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # math-sheets
 
-Hebrew RTL site that generates printable math worksheets for the Israeli 6th-grade
+Hebrew RTL site that generates printable math worksheets for the Israeli school
 curriculum. A parent prints an A4 sheet; a child solves it on paper. The printed page —
 not the screen — is the deliverable.
 
+This is a public open-source repo. `CONTRIBUTING.md` is the human-facing version of these
+rules — if you change one, keep the other in step. PR titles follow Conventional Commits
+(`feat:`, `fix:`, `docs:`, `chore:`…) and a CI check enforces it.
+
 ## Start here
 
-1. Read `progress.md` for the active feature and the last verified state.
-2. Read `feature_list.json` for scope and done criteria of that feature.
+1. Read `docs/agents/progress.md` for the active feature and the last verified state.
+2. Read `docs/agents/feature_list.json` for scope and done criteria of that feature.
 3. Run `./init.sh` before your first edit. It must pass before you change anything, so a
    later failure is provably yours.
 4. Work one feature at a time. Do not start a second one.
@@ -100,22 +104,22 @@ The screen is a preview. Before claiming a visual change is done, verify against
 
 ## Definition of done
 
-A feature is done only when all of these hold, and `progress.md` records the evidence:
+A feature is done only when all of these hold, and `docs/agents/progress.md` records the evidence:
 
-- [ ] `./init.sh` passes (typecheck, lint, tests), with output summarized in `progress.md`.
+- [ ] `./init.sh` passes (typecheck, lint, tests), with output summarized in `docs/agents/progress.md`.
 - [ ] Determinism: same `(topic, seed, count, level)` still yields identical problems.
 - [ ] Answer key matches the sheet — verified by a test that recomputes, not by eye.
 - [ ] Print preview checked if any rendering changed.
 - [ ] No comments added; no new dependencies.
-- [ ] `progress.md` updated with what changed, what was verified, and the next step.
+- [ ] `docs/agents/progress.md` updated with what changed, what was verified, and the next step.
 
 Do not report a feature complete with failing or skipped checks. Report what failed instead.
 
 ## Out of scope unless asked
 
-Auth, a backend or database, payments, analytics, other grades (1–5 are `available: false`
-placeholders), non-Hebrew locales, and rewriting the design system. The review loop is
-localStorage-first with no auth and stays that way — see `feature_list.json`.
+Auth, a backend or database, payments, analytics, non-Hebrew locales, and rewriting the
+design system. The review loop is
+localStorage-first with no auth and stays that way — see `docs/agents/feature_list.json`.
 
 Any component reading progress state must render nothing until mounted (`useProgress`
 returns `mounted`). Server HTML that depends on localStorage or on today's date will
