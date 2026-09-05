@@ -47,3 +47,4 @@ next-env.d.ts
 docs/agents/progress.md
 docs/agents/session-handoff.md
 docs/agents/feature_list.json
+.print-check/
