@@ -4,9 +4,9 @@ Append a new entry at the top of the log for every session. Never overwrite hist
 
 ## Current state
 
-- **Active feature:** `grades-1-5` — all six grades are now `available`.
-- **Last verified:** 2026-09-04 — `./init.sh` ALL CHECKS PASSED (typecheck, lint, 355 tests in 6 files, determinism guard, comment guard).
-- **Next step:** print-preview the new grade 1–5 sheets at A4 (especially the 3-column bare-arithmetic generators at high `count`), and `/review/6` + `/mivdak/6`.
+- **Active feature:** `grades-7-12` — all twelve grades are now `available`.
+- **Last verified:** 2026-09-05 — `./init.sh` ALL CHECKS PASSED (typecheck, lint, 739 tests in 6 files, determinism guard, comment guard) and `npx next build` succeeds with 12 static `/grade/N` pages.
+- **Next step:** A4 print preview of the new algebra sheets at high `count` with `?answers=1` — the 2-column bare-expression generators carry longer prompts than any existing topic.
 
 ## Entry template
 
@@ -19,6 +19,23 @@ Next step: <the single next action>
 ```
 
 ## Log
+
+### 2026-09-05 — grades-7-12
+
+Changed: `lib/curriculum/grade7.ts`–`grade12.ts` (new, 70 topics), `lib/curriculum/index.ts` (imports them, all twelve grades `available: true`), `lib/algebra.ts` (new — polynomial and signed-number formatters shared by the algebra generators), 34 new generators in `lib/generators/` all registered in `lib/generators/index.ts`, `lib/generators/answers.test.ts` (a prompt-expression evaluator plus independent recompute checks for every algebra generator), `components/TopicIcon.tsx` (icons for מספרים מכוונים, זוויות, פיתגורס, גליל, פונקציה קווית, פרבולה, טריגונומטריה, הסתברות, מדדי מרכז), `app/page.tsx` (grade letters ז–י"ב for the home grid badge, which was rendering blank for grades 7–12).
+
+Curriculum source: כיתה ז `https://meyda.education.gov.il/files/Tochniyot_Limudim/Math/Hatab/7.pdf` and כיתה ח `.../Hatab/8.pdf` both resolve. `.../Hatab/9.pdf` is a **404** — כיתה ט came from the combined ז–ט book at `https://meyda.education.gov.il/files/Curriculum/math_7_9.pdf` (grade ט starts at p.101). Grades י–י"ב are the 3-יחידות program at `https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativa-Elyona/` (`mavo-math.pdf`, `eshkol_madaei_10.pdf`, `eshkol_merhav_10.pdf`, `eshkol_financi_10.pdf`, `11th-social.pdf`, `yud_alef_02.pdf`, `11th-financial.pdf`, `geometry-merhav-12.pdf`, `linear-12.pdf`, `analitic-geometry-12.pdf`, `model-ribuei-12.pdf`, `itpalgut-normalit-12.pdf`).
+
+Reused rather than duplicated: `order-of-operations`, `area-shapes`, `circle`, `box-volume-surface` (grade 7); `scale` (grades 8 and 11); `decimal-units`, `statistics-center`, `probability-basic`, `linear-equation-brackets`, `linear-system`, `line-from-points` (grade 10); `ratio`, `similar-triangles`, `pythagoras`, `conditional-probability`, `consumer-percent` (grade 11); `line-from-points`, `linear-system`, `quadratic-equation`, `parabola`, `quadratic-optimum`, `right-triangle-trig` (grade 12).
+
+Verified: `./init.sh` ALL CHECKS PASSED — 739 tests in 6 files (was 368). Answers are recomputed from the prompt string, never asserted against a hardcoded array: `answers.test.ts` now carries a small recursive-descent evaluator for the prompt language (precedence, implicit multiplication, unary minus, `²`/`^`, `×`/`·`/`÷`), and every equation generator is checked by substituting the stated solution back into the parsed prompt. Equations additionally assert that x±1 does *not* satisfy them; quadratics assert both roots vanish and the midpoint does not; identity generators (כינוס איברים, פתיחת סוגריים, כפל מקוצר, פירוק לגורמים, טרינום, שברים אלגבריים) are checked by evaluating prompt and answer at four non-integer sample points; the inequality generator is checked at the boundary and one step past it, including the sign flip on a negative coefficient. `npx next build` prerenders all 12 `/grade/N` pages.
+
+Not done / known gaps:
+- Print preview of the new sheets at A4 is **not** checked.
+- Grades י–י"ב cover the **3-יחידות track only**. The `Topic` type has no unit-level concept, so 4/5 יח"ל were deliberately not attempted rather than smuggled in.
+- Deliberately skipped, because none yields an answer recomputable from a text-only prompt: all of the grade-ט deductive geometry (חפיפה, דמיון, דלתון/טרפז/מקבילית proofs, הוכחה על דרך השלילה), בניות בסרגל ומחוגה, שרטוט וקריאת גרפים ודיאגרמות, תחומי עלייה/ירידה וחיוביות/שליליות of a parabola (interval answers, not a value), תכנון ליניארי (needs a feasible-region drawing), and the literacy wrapper of the 3-יח"ל program (הסקת מסקנות, השוואת כדאיות והנמקה). רבעונים ועשירונים was dropped because the quartile convention is ambiguous enough that a "correct" answer would be arbitrary.
+
+Next step: A4 print preview of the new algebra sheets at high `count` with `?answers=1`.
 
 ### 2026-09-04 — grades-1-5
 

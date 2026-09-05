@@ -9,6 +9,12 @@ const gradeLetters: Record<number, string> = {
   4: "ד",
   5: "ה",
   6: "ו",
+  7: "ז",
+  8: "ח",
+  9: "ט",
+  10: "י",
+  11: "י\"א",
+  12: "י\"ב",
 };
 
 export default function HomePage() {
@@ -38,7 +44,7 @@ export default function HomePage() {
               >
                 <span
                   aria-hidden="true"
-                  className="flex size-12 items-center justify-center rounded-full bg-[var(--color-muted)] text-2xl font-bold text-[var(--color-primary)] transition-colors duration-200 group-hover:bg-[var(--color-primary)] group-hover:text-white"
+                  className="flex size-12 items-center justify-center rounded-full bg-[var(--color-muted)] text-xl font-bold text-[var(--color-primary)] transition-colors duration-200 group-hover:bg-[var(--color-primary)] group-hover:text-white"
                 >
                   {gradeLetters[grade.id]}
                 </span>
