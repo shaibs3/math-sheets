@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #2563eb;
+  --color-primary: #23407a;
+  --color-primary-hover: #16223c;
   --color-on-primary: #ffffff;
-  --color-secondary: #f59e0b;
-  --color-accent: #ec4899;
-  --color-background: #eff6ff;
-  --color-foreground: #0f172a;
-  --color-muted: #f1f5fd;
-  --color-border: #e4ecfc;
-  --color-ring: #2563eb;
+  --color-secondary: #f2b705;
+  --color-accent: #d64541;
+  --color-background: #faf7f0;
+  --color-foreground: #1b2a4a;
+  --color-muted: #f1ede3;
+  --color-border: #e3dccd;
+  --color-rule: #d9e2f1;
+  --color-subtle: #5a6b85;
+  --color-ring: #23407a;
 }
 
 @theme inline {
@@ -20,6 +23,27 @@ body {
   font-family: var(--font-heebo), system-ui, sans-serif;
   background: var(--color-background);
   color: var(--color-foreground);
+}
+
+.paper-rule {
+  position: relative;
+}
+
+.paper-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 31px,
+    var(--color-rule) 31px,
+    var(--color-rule) 32px
+  );
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
 }
 
 @media (prefers-reduced-motion: reduce) {

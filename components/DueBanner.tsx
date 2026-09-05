@@ -18,7 +18,7 @@ export default function DueBanner({ gradeId }: { gradeId: number }) {
       </p>
       <Link
         href={`/review/${gradeId}`}
-        className="flex min-h-11 items-center rounded-lg bg-[var(--color-primary)] px-4 text-sm font-medium text-[var(--color-on-primary)] transition-colors duration-200 hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
+        className="flex min-h-11 items-center rounded-lg bg-[var(--color-primary)] px-4 text-sm font-medium text-[var(--color-on-primary)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
       >
         לדף החזרה
       </Link>

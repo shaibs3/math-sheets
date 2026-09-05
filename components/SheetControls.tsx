@@ -83,7 +83,7 @@ export default function SheetControls({ seed, count, level, levels, answers }: P
         <button
           type="button"
           onClick={() => window.print()}
-          className={`${buttonClass} bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-blue-700`}
+          className={`${buttonClass} bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]`}
         >
           הדפסה
         </button>
