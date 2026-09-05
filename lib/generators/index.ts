@@ -91,6 +91,11 @@ import timeUnits from "./time-units";
 import unitFraction from "./unit-fraction";
 import volume from "./volume";
 import wordAddSubBasic from "./word-add-sub-basic";
+import wordFractionsDecimals from "./word-fractions-decimals";
+import wordMoneyMeasure from "./word-money-measure";
+import wordMultDiv from "./word-mult-div";
+import wordRateAverage from "./word-rate-average";
+import wordTwoStep from "./word-two-step";
 import zScore from "./z-score";
 
 const generators: Generator[] = [
@@ -186,6 +191,11 @@ const generators: Generator[] = [
   unitFraction,
   volume,
   wordAddSubBasic,
+  wordFractionsDecimals,
+  wordMoneyMeasure,
+  wordMultDiv,
+  wordRateAverage,
+  wordTwoStep,
   zScore,
 ];
 
