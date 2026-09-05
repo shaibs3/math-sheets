@@ -4,8 +4,8 @@ Append a new entry at the top of the log for every session. Never overwrite hist
 
 ## Current state
 
-- **Active feature:** `grades-1-5` — all six grades are now `available`.
-- **Last verified:** 2026-09-04 — `./init.sh` ALL CHECKS PASSED (typecheck, lint, 355 tests in 6 files, determinism guard, comment guard).
+- **Active feature:** `topic-level-clamping` — per-topic difficulty ranges close the level leak on shared generators.
+- **Last verified:** 2026-09-05 — `./init.sh` ALL CHECKS PASSED (typecheck, lint, 388 tests in 7 files, determinism guard, comment guard).
 - **Next step:** print-preview the new grade 1–5 sheets at A4 (especially the 3-column bare-arithmetic generators at high `count`), and `/review/6` + `/mivdak/6`.
 
 ## Entry template
@@ -19,6 +19,12 @@ Next step: <the single next action>
 ```
 
 ## Log
+
+### 2026-09-05 — topic-level-clamping
+Changed: `lib/types.ts` (`Topic.levels?: Level[]`, optional, defaults to all three), new `lib/levels.ts` (`topicLevels`, `clampLevel`, `defaultLevel`, `supportsLevel`, `ALL_LEVELS`), `app/sheet/[grade]/[topic]/page.tsx` (clamps the URL level to the topic instead of 1..3), `components/SheetControls.tsx` (renders only the supported levels; hides the selector when a topic has a single level), `app/mivdak/[grade]/page.tsx` (per-topic clamp of the one requested level), `components/ReviewSheet.tsx` (clamps the level stored on each skill and dedupes lanes that collapse onto the same level), level declarations on the cross-grade topics in `lib/curriculum/grade1.ts`–`grade5.ts`, new `lib/levels.test.ts`.
+Verified: `./init.sh` ALL CHECKS PASSED — 388 tests in 7 files (was 368). `npx next build` clean. Determinism: `clampLevel` is pure and only picks a `Level`; a test asserts the grade-1 שעון sheet at requested level 3 is deep-equal to the same seed/count at level 2, so `(topic, seed, count, level)` still fully determines the sheet, and no generator signature or level semantics changed. Mutation-checked the new tests by removing the grade-1 שעון declaration: 6 of them fail, so they really pin the leak.
+Not done / known gaps: print preview unchecked — the only rendering change is the difficulty `<select>` in `.no-print` controls, which never reaches paper. Only genuinely cross-grade topics are annotated; the remaining ~42 topics keep the all-levels default deliberately. Stored progress is not migrated — a skill whose level a topic no longer allows is clamped down at replay time rather than rewritten in localStorage.
+Next step: print-preview the grade 1–5 sheets at A4 (still open from `grades-1-5`).
 
 ### 2026-09-04 — grades-1-5
 
