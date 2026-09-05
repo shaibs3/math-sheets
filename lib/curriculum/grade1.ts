@@ -14,6 +14,7 @@ export const grade1Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "חיבור וחיסור בתחום ה-100, כולל עשרות שלמות.",
     generatorId: "add-sub-100",
+    levels: [1, 2],
   },
   {
     id: "shaalot-hibur-hisur",
@@ -21,6 +22,7 @@ export const grade1Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "שאלות מילוליות קצרות של הוספה ושל הורדה.",
     generatorId: "word-add-sub-basic",
+    levels: [1, 2],
   },
   {
     id: "hashvaat-misparim",
@@ -49,6 +51,7 @@ export const grade1Topics: Topic[] = [
     strand: "מדידות וגאומטרייה",
     description: "קריאת שעה, חישוב שעה עתידית ומשך זמן.",
     generatorId: "clock",
+    levels: [1, 2],
   },
 ];
 
