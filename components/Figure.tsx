@@ -264,57 +264,86 @@ function TriangleAngles({ angles }: { angles: [number, number] }) {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
 
   const side = Math.sin(toRad(b)) / Math.sin(toRad(third));
-  const raw = [
+  const corners = [
     { x: 0, y: 0 },
     { x: 1, y: 0 },
     { x: side * Math.cos(toRad(a)), y: side * Math.sin(toRad(a)) },
   ];
 
-  const xs = raw.map((point) => point.x);
-  const ys = raw.map((point) => point.y);
-  const spanX = Math.max(...xs) - Math.min(...xs);
-  const spanY = Math.max(...ys) - Math.min(...ys);
-  const scale = Math.min(92 / spanX, 56 / spanY);
-
-  const points = raw.map((point) => ({
-    x: 20 + (point.x - Math.min(...xs)) * scale,
-    y: 76 - (point.y - Math.min(...ys)) * scale,
-  }));
-
   const labels = [`${a}°`, `${b}°`, "?"];
   const vertexAngles = [a, b, third];
+  const halfLabels = labels.map((label) => (label === "?" ? 4.5 : 8));
 
-  const placements = points.map((point, index) => {
-    const others = points.filter((_, other) => other !== index);
-    const directions = others.map((other) => unitVector(point, other));
-    const edgeLengths = others.map((other) => Math.hypot(other.x - point.x, other.y - point.y));
+  const xs = corners.map((corner) => corner.x);
+  const ys = corners.map((corner) => corner.y);
+  const base = Math.min(86 / (Math.max(...xs) - Math.min(...xs)), 52 / (Math.max(...ys) - Math.min(...ys)));
 
-    const bisector = { x: directions[0].x + directions[1].x, y: directions[0].y + directions[1].y };
-    const length = Math.hypot(bisector.x, bisector.y) || 1;
+  const layout = (scale: number) => {
+    const points = corners.map((corner) => ({
+      x: (corner.x - Math.min(...xs)) * scale,
+      y: -(corner.y - Math.min(...ys)) * scale,
+    }));
 
-    const halfLabel = labels[index] === "?" ? 4 : 7.5;
-    const clearance = (halfLabel + 4) / Math.sin(toRad(vertexAngles[index] / 2));
-    const cap = Math.min(...edgeLengths) * 0.45;
-    const distance = Math.min(Math.max(clearance, 14), Math.max(cap, 14));
+    return points.map((point, index) => {
+      const others = points.filter((_, other) => other !== index);
+      const directions = others.map((other) => unitVector(point, other));
+      const shortest = Math.min(...others.map((other) => Math.hypot(other.x - point.x, other.y - point.y)));
 
-    return {
-      x: point.x + (bisector.x / length) * distance,
-      y: point.y + (bisector.y / length) * distance,
-      arc: angleArc(point, directions[0], directions[1], Math.min(distance * 0.45, 11)),
-    };
-  });
+      const bisector = { x: directions[0].x + directions[1].x, y: directions[0].y + directions[1].y };
+      const length = Math.hypot(bisector.x, bisector.y) || 1;
+      const needed = (halfLabels[index] + 5) / Math.sin(toRad(vertexAngles[index] / 2));
+
+      return {
+        point,
+        directions,
+        needed,
+        room: shortest * 0.45,
+        label: {
+          x: point.x + (bisector.x / length) * needed,
+          y: point.y + (bisector.y / length) * needed,
+        },
+        arc: Math.min(shortest * 0.3, 11),
+      };
+    });
+  };
+
+  const trial = layout(base);
+  const growth = Math.min(Math.max(...trial.map((entry) => entry.needed / entry.room), 1), 2.6);
+  const placements = layout(base * growth);
+
+  const bounds = placements.flatMap((entry) => [
+    { x: entry.point.x, y: entry.point.y },
+    { x: entry.label.x - 10, y: entry.label.y - 6 },
+    { x: entry.label.x + 10, y: entry.label.y + 6 },
+  ]);
+  const minX = Math.min(...bounds.map((point) => point.x)) - 6;
+  const minY = Math.min(...bounds.map((point) => point.y)) - 6;
+  const width = Math.max(...bounds.map((point) => point.x)) + 6 - minX;
+  const height = Math.max(...bounds.map((point) => point.y)) + 6 - minY;
 
   return (
-    <svg viewBox="0 0 132 96" className="w-full max-w-[210px]">
-      <polygon points={points.map((point) => `${point.x},${point.y}`).join(" ")} {...stroke} />
-      {placements.map((placement, index) => (
-        <path key={`arc${index}`} d={placement.arc} {...stroke} strokeWidth={1} />
+    <svg
+      viewBox={`${minX} ${minY} ${width} ${height}`}
+      className="w-full"
+      style={{ maxWidth: Math.min(150 + width * 0.8, 280) }}
+    >
+      <polygon
+        points={placements.map((entry) => `${entry.point.x},${entry.point.y}`).join(" ")}
+        {...stroke}
+      />
+      {placements.map((entry, index) => (
+        <path
+          key={`arc${index}`}
+          d={angleArc(entry.point, entry.directions[0], entry.directions[1], entry.arc)}
+          {...stroke}
+          strokeWidth={1}
+        />
       ))}
-      {placements.map((placement, index) => (
+      {placements.map((entry, index) => (
         <text
           key={index}
-          x={placement.x}
-          y={placement.y}
+          x={entry.label.x}
+          y={entry.label.y}
           textAnchor="middle"
           dominantBaseline="middle"
           {...labelProps}
