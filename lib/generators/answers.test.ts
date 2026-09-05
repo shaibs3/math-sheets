@@ -10,6 +10,9 @@ import coordinateTable from "./coordinate-table";
 import linearGraph from "./linear-graph";
 import addSub20 from "./add-sub-20";
 import addSub100 from "./add-sub-100";
+import addSubTens from "./add-sub-tens";
+import multiplyDivide20 from "./multiply-divide-20";
+import decimalMultiplyDivide from "./decimal-multiply-divide";
 import addSubVertical from "./add-sub-vertical";
 import multiplyTable from "./multiply-table";
 import multiplyVertical from "./multiply-vertical";
@@ -163,6 +166,8 @@ function applyOperator(left: number, operator: string, right: number): number {
 const binaryGenerators: [string, Generator][] = [
   ["add-sub-20", addSub20],
   ["add-sub-100", addSub100],
+  ["add-sub-tens", addSubTens],
+  ["multiply-divide-20", multiplyDivide20],
   ["add-sub-vertical", addSubVertical],
   ["multiply-table", multiplyTable],
   ["multiply-vertical", multiplyVertical],
@@ -183,6 +188,58 @@ describe.each(binaryGenerators)("%s", (_name, generator) => {
       expect(Number.isInteger(expected), problem.prompt).toBe(true);
       expect(expected).toBeGreaterThanOrEqual(0);
       expect(Number(problem.answer)).toBe(expected);
+    }
+  });
+});
+
+describe("add-sub-tens", () => {
+  it.each(allLevels)("stays inside the grade 1 range at level %i", (level) => {
+    for (const problem of addSubTens.generate({ seed: 1201, count: 40, level })) {
+      const values = [...numbersIn(problem.prompt), Number(problem.answer)];
+      for (const value of values) {
+        expect(value, problem.prompt).toBeLessThanOrEqual(100);
+        expect(value, problem.prompt).toBeGreaterThanOrEqual(0);
+      }
+      const roundValues = values.filter((value) => value % 10 === 0);
+      expect(roundValues.length, problem.prompt).toBeGreaterThanOrEqual(1);
+    }
+  });
+});
+
+describe("multiply-divide-20", () => {
+  it.each(allLevels)("keeps every product within 20 at level %i", (level) => {
+    for (const problem of multiplyDivide20.generate({ seed: 1202, count: 40, level })) {
+      const match = problem.prompt.match(/^(\d+) ([×÷]) (\d+) =$/);
+      expect(match, problem.prompt).not.toBeNull();
+      const [, left, operator, right] = match!;
+      const product = operator === "×" ? Number(left) * Number(right) : Number(left);
+      expect(product, problem.prompt).toBeLessThanOrEqual(20);
+      expect(Number(problem.answer)).toBe(applyOperator(Number(left), operator, Number(right)));
+      expect(Number.isInteger(Number(problem.answer)), problem.prompt).toBe(true);
+    }
+  });
+});
+
+describe("decimal-multiply-divide", () => {
+  const scaled = (text: string) => {
+    const [whole, fraction = ""] = text.split(".");
+    return { integer: Number(whole + fraction), decimals: fraction.length };
+  };
+
+  it.each(allLevels)("recomputes the decimal result from the prompt at level %i", (level) => {
+    for (const problem of decimalMultiplyDivide.generate({ seed: 1203, count: 40, level })) {
+      const match = problem.prompt.match(/^(\d+(?:\.\d+)?) ([×÷]) (\d+(?:\.\d+)?) =$/);
+      expect(match, problem.prompt).not.toBeNull();
+      const [, left, operator, right] = match!;
+      const a = scaled(left);
+      const b = scaled(right);
+      const expected =
+        operator === "×"
+          ? (a.integer * b.integer) / 10 ** (a.decimals + b.decimals)
+          : (a.integer * 10 ** b.decimals) / (b.integer * 10 ** a.decimals);
+
+      expect(a.decimals + b.decimals, problem.prompt).toBeGreaterThan(0);
+      expect(Number(problem.answer), problem.prompt).toBeCloseTo(expected, 9);
     }
   });
 });

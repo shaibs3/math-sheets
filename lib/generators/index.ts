@@ -2,6 +2,7 @@ import type { Generator } from "../types";
 import absoluteValueEquation from "./absolute-value-equation";
 import addSub100 from "./add-sub-100";
 import addSub20 from "./add-sub-20";
+import addSubTens from "./add-sub-tens";
 import addSubVertical from "./add-sub-vertical";
 import algebraicFractions from "./algebraic-fractions";
 import algebraicSubstitution from "./algebraic-substitution";
@@ -21,6 +22,7 @@ import compoundInterest from "./compound-interest";
 import conditionalProbability from "./conditional-probability";
 import consumerPercent from "./consumer-percent";
 import cylinder from "./cylinder";
+import decimalMultiplyDivide from "./decimal-multiply-divide";
 import decimalUnits from "./decimal-units";
 import decimalsOperations from "./decimals-operations";
 import distancePoints from "./distance-points";
@@ -55,6 +57,7 @@ import linearSystem from "./linear-system";
 import longDivision from "./long-division";
 import midpoint from "./midpoint";
 import money from "./money";
+import multiplyDivide20 from "./multiply-divide-20";
 import multiplyPowersTen from "./multiply-powers-ten";
 import multiplyTable from "./multiply-table";
 import multiplyVertical from "./multiply-vertical";
@@ -102,6 +105,7 @@ const generators: Generator[] = [
   absoluteValueEquation,
   addSub100,
   addSub20,
+  addSubTens,
   addSubVertical,
   algebraicFractions,
   algebraicSubstitution,
@@ -121,6 +125,7 @@ const generators: Generator[] = [
   conditionalProbability,
   consumerPercent,
   cylinder,
+  decimalMultiplyDivide,
   decimalUnits,
   decimalsOperations,
   distancePoints,
@@ -155,6 +160,7 @@ const generators: Generator[] = [
   longDivision,
   midpoint,
   money,
+  multiplyDivide20,
   multiplyPowersTen,
   multiplyTable,
   multiplyVertical,

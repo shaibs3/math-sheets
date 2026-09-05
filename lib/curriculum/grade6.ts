@@ -37,6 +37,13 @@ export const grade6Topics: Topic[] = [
     generatorId: "decimals-operations",
   },
   {
+    id: "kefel-hiluk-asroniim",
+    name: "כפל וחילוק בשבר עשרוני",
+    strand: "שברים",
+    description: "כפל שבר עשרוני בשבר עשרוני וחילוק בשבר עשרוני.",
+    generatorId: "decimal-multiply-divide",
+  },
+  {
     id: "achuzim",
     name: "אחוזים",
     strand: "אחוזים",

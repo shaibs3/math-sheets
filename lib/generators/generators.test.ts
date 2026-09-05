@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import generators, { getGenerator } from "./index";
-import { grades } from "../curriculum";
+import { getGrade, grades } from "../curriculum";
+import { retiredTopics } from "../curriculum/retired-topics";
 import type { Level } from "../types";
 
 const levels: Level[] = [1, 2, 3];
@@ -16,6 +17,14 @@ describe("generator registry", () => {
   it.each(grades)("gives every topic in $name a unique id", (grade) => {
     const ids = grade.topics.map((topic) => topic.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("points every retired topic at a live replacement", () => {
+    for (const { gradeId, retiredTopicId, replacementTopicId } of retiredTopics) {
+      const topicIds = getGrade(gradeId)!.topics.map((topic) => topic.id);
+      expect(topicIds, retiredTopicId).not.toContain(retiredTopicId);
+      expect(topicIds, replacementTopicId).toContain(replacementTopicId);
+    }
   });
 
   it("marks every grade as available", () => {
