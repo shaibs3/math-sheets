@@ -1,3 +1,4 @@
+import { triangleAnglesLayout } from "@/lib/figure-layout";
 import type { Figure as FigureData, Measure, Point } from "@/lib/figure";
 
 const stroke = { stroke: "currentColor", fill: "none", strokeWidth: 1.5 } as const;
@@ -259,97 +260,38 @@ function Circle({ value, label, unit }: { value: Measure; label: string; unit?: 
 }
 
 function TriangleAngles({ angles }: { angles: [number, number] }) {
-  const [a, b] = angles;
-  const third = 180 - a - b;
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
-
-  const side = Math.sin(toRad(b)) / Math.sin(toRad(third));
-  const corners = [
-    { x: 0, y: 0 },
-    { x: 1, y: 0 },
-    { x: side * Math.cos(toRad(a)), y: side * Math.sin(toRad(a)) },
-  ];
-
-  const labels = [`${a}°`, `${b}°`, "?"];
-  const vertexAngles = [a, b, third];
-  const halfLabels = labels.map((label) => (label === "?" ? 4.5 : 8));
-
-  const xs = corners.map((corner) => corner.x);
-  const ys = corners.map((corner) => corner.y);
-  const base = Math.min(86 / (Math.max(...xs) - Math.min(...xs)), 52 / (Math.max(...ys) - Math.min(...ys)));
-
-  const layout = (scale: number) => {
-    const points = corners.map((corner) => ({
-      x: (corner.x - Math.min(...xs)) * scale,
-      y: -(corner.y - Math.min(...ys)) * scale,
-    }));
-
-    return points.map((point, index) => {
-      const others = points.filter((_, other) => other !== index);
-      const directions = others.map((other) => unitVector(point, other));
-      const shortest = Math.min(...others.map((other) => Math.hypot(other.x - point.x, other.y - point.y)));
-
-      const bisector = { x: directions[0].x + directions[1].x, y: directions[0].y + directions[1].y };
-      const length = Math.hypot(bisector.x, bisector.y) || 1;
-      const needed = (halfLabels[index] + 5) / Math.sin(toRad(vertexAngles[index] / 2));
-
-      return {
-        point,
-        directions,
-        needed,
-        room: shortest * 0.45,
-        label: {
-          x: point.x + (bisector.x / length) * needed,
-          y: point.y + (bisector.y / length) * needed,
-        },
-        arc: Math.min(shortest * 0.3, 11),
-      };
-    });
-  };
-
-  const trial = layout(base);
-  const growth = Math.min(Math.max(...trial.map((entry) => entry.needed / entry.room), 1), 2.6);
-  const placements = layout(base * growth);
-
-  const bounds = placements.flatMap((entry) => [
-    { x: entry.point.x, y: entry.point.y },
-    { x: entry.label.x - 10, y: entry.label.y - 6 },
-    { x: entry.label.x + 10, y: entry.label.y + 6 },
-  ]);
-  const minX = Math.min(...bounds.map((point) => point.x)) - 6;
-  const minY = Math.min(...bounds.map((point) => point.y)) - 6;
-  const width = Math.max(...bounds.map((point) => point.x)) + 6 - minX;
-  const height = Math.max(...bounds.map((point) => point.y)) + 6 - minY;
+  const layout = triangleAnglesLayout(angles[0], angles[1]);
+  const { minX, minY, width, height } = layout.viewBox;
 
   return (
     <svg
       viewBox={`${minX} ${minY} ${width} ${height}`}
       className="w-full"
-      style={{ maxWidth: Math.min(150 + width * 0.8, 280) }}
+      style={{ maxWidth: layout.maxWidth }}
     >
       <polygon
-        points={placements.map((entry) => `${entry.point.x},${entry.point.y}`).join(" ")}
+        points={layout.points.map((point) => `${point.x},${point.y}`).join(" ")}
         {...stroke}
       />
-      {placements.map((entry, index) => (
+      {layout.arcs.map((arc, index) => (
         <path
           key={`arc${index}`}
-          d={angleArc(entry.point, entry.directions[0], entry.directions[1], entry.arc)}
+          d={angleArc(arc.vertex, arc.from, arc.to, arc.radius)}
           {...stroke}
           strokeWidth={1}
         />
       ))}
-      {placements.map((entry, index) => (
+      {layout.labels.map((label, index) => (
         <text
           key={index}
-          x={entry.label.x}
-          y={entry.label.y}
+          x={label.x}
+          y={label.y}
           textAnchor="middle"
           dominantBaseline="middle"
           {...labelProps}
           fontSize={9}
         >
-          {labels[index]}
+          {label.text}
         </text>
       ))}
     </svg>
