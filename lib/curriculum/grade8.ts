@@ -37,6 +37,13 @@ export const grade8Topics: Topic[] = [
     generatorId: "linear-function",
   },
   {
+    id: "shipua-mishtei-nekudot",
+    name: "שיפוע לפי שתי נקודות",
+    strand: "תחום אלגברי",
+    description: "חישוב שיפוע הישר העובר דרך שתי נקודות נתונות במערכת הצירים.",
+    generatorId: "coordinate-slope",
+  },
+  {
     id: "mishvaat-yashar",
     name: "משוואת ישר משתי נקודות",
     strand: "תחום אלגברי",

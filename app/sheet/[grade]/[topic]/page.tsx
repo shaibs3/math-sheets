@@ -47,7 +47,6 @@ export default async function SheetPage({
     <main className="mx-auto w-full max-w-3xl px-6 py-8 print:max-w-none print:px-0 print:py-0">
       <Suspense>
         <SheetControls
-          seed={seed}
           count={count}
           level={level}
           levels={levels}
@@ -60,7 +59,6 @@ export default async function SheetPage({
           topicId={topic.id}
           title={topic.name}
           strand={topic.strand}
-          seed={seed}
         />
         <ProblemList problems={problems} columns={generator.columns} />
         {answers && <AnswerKey problems={problems} title={topic.name} />}

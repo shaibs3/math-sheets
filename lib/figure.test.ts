@@ -35,6 +35,10 @@ describe("promptNumbers", () => {
   it("reads negative and decimal values", () => {
     expect(promptNumbers("הנקודה (3, -2) והישר y = 1.5x")).toEqual([3, -2, 1.5]);
   });
+
+  it("does not read the Hebrew conjunction prefix as a minus sign", () => {
+    expect(promptNumbers("שתי זוויות הן 44° ו-71°")).toEqual([44, 71]);
+  });
 });
 
 describe("figureMatchesPrompt", () => {

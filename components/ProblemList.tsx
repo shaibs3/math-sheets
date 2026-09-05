@@ -27,9 +27,12 @@ export default function ProblemList({
     <ol className={`grid gap-x-8 gap-y-4 ${columnClasses[columns] ?? columnClasses[2]}`}>
       {problems.map((problem, index) => (
         <li key={index} className="print-keep border-b border-dashed border-slate-300 pb-2">
-          <div className="flex gap-2">
+          <div className="flex items-baseline gap-2">
             <span className="font-semibold text-slate-500">{index + 1}.</span>
-            <span dir={problem.dir ?? "ltr"} className="grow text-lg leading-loose">
+            <span
+              dir={problem.dir ?? "ltr"}
+              className="grow text-lg leading-loose whitespace-pre-line"
+            >
               <MathText text={problem.prompt} />
             </span>
           </div>

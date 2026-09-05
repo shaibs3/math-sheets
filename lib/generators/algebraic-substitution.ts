@@ -18,21 +18,21 @@ const algebraicSubstitution: Generator = {
 
       if (kind === 1) {
         problems.push({
-          prompt: `חשבו את ערך הביטוי ${a}x + ${b} עבור x = ${x}`,
+          prompt: `חשבו את ערך הביטוי ${a}x + ${b}\nעבור x = ${x}`,
           answer: String(a * x + b),
           work: "lines",
           dir: "rtl",
         });
       } else if (kind === 2) {
         problems.push({
-          prompt: `חשבו את ערך הביטוי ${a}x − ${b} עבור x = ${x}`,
+          prompt: `חשבו את ערך הביטוי ${a}x − ${b}\nעבור x = ${x}`,
           answer: String(a * x - b),
           work: "lines",
           dir: "rtl",
         });
       } else {
         problems.push({
-          prompt: `חשבו את ערך הביטוי ${a}(x + ${b}) עבור x = ${x}`,
+          prompt: `חשבו את ערך הביטוי ${a}(x + ${b})\nעבור x = ${x}`,
           answer: String(a * (x + b)),
           work: "lines",
           dir: "rtl",

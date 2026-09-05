@@ -10,6 +10,9 @@ import areaShapes from "./area-shapes";
 import average from "./average";
 import boxVolumeSurface from "./box-volume-surface";
 import circle from "./circle";
+import coordinatePoints from "./coordinate-points";
+import coordinateSlope from "./coordinate-slope";
+import coordinateTable from "./coordinate-table";
 import clock from "./clock";
 import collectLikeTerms from "./collect-like-terms";
 import compareNumbers from "./compare-numbers";
@@ -46,6 +49,7 @@ import lineFromPoints from "./line-from-points";
 import linearEquation from "./linear-equation";
 import linearEquationBrackets from "./linear-equation-brackets";
 import linearFunction from "./linear-function";
+import linearGraph from "./linear-graph";
 import linearInequality from "./linear-inequality";
 import linearSystem from "./linear-system";
 import longDivision from "./long-division";
@@ -101,6 +105,9 @@ const generators: Generator[] = [
   average,
   boxVolumeSurface,
   circle,
+  coordinatePoints,
+  coordinateSlope,
+  coordinateTable,
   clock,
   collectLikeTerms,
   compareNumbers,
@@ -137,6 +144,7 @@ const generators: Generator[] = [
   linearEquation,
   linearEquationBrackets,
   linearFunction,
+  linearGraph,
   linearInequality,
   linearSystem,
   longDivision,

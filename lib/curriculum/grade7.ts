@@ -65,6 +65,27 @@ export const grade7Topics: Topic[] = [
     generatorId: "function-value",
   },
   {
+    id: "maarechet-tzirim",
+    name: "מערכת צירים",
+    strand: "תחום אלגברי",
+    description: "סימון נקודות במערכת צירים וזיהוי הרביע או הציר שעליו הן נמצאות.",
+    generatorId: "coordinate-points",
+  },
+  {
+    id: "tavlat-erachim",
+    name: "טבלת ערכים",
+    strand: "תחום אלגברי",
+    description: "חישוב ערכי y של פונקציה קווית עבור ערכי x נתונים.",
+    generatorId: "coordinate-table",
+  },
+  {
+    id: "graf-funktsia-kavit",
+    name: "גרף של פונקציה קווית",
+    strand: "תחום אלגברי",
+    description: "שרטוט הישר y = mx + b ומציאת נקודות החיתוך עם הצירים.",
+    generatorId: "linear-graph",
+  },
+  {
     id: "zaviot",
     name: "חישובי זוויות",
     strand: "תחום גאומטרי",
