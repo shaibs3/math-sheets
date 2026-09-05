@@ -79,6 +79,13 @@ export function pointInPolygon(point: Vec, polygon: Vec[]): boolean {
   return inside;
 }
 
+export function boxesOverlap(first: LabelBox, second: LabelBox): boolean {
+  return (
+    Math.abs(first.x - second.x) < first.halfWidth + second.halfWidth &&
+    Math.abs(first.y - second.y) < first.halfHeight + second.halfHeight
+  );
+}
+
 export function labelsAreClear(layout: FigureLayout): boolean {
   return layout.labels.every((label) =>
     layout.segments.every((segment) => !segmentIntersectsBox(segment, label)),
@@ -105,6 +112,7 @@ export type Primitive =
 
 export type ShapeLayout = {
   primitives: Primitive[];
+  decorations?: Primitive[];
   labels: LabelBox[];
   viewBox: ViewBox;
   maxWidth: number;
@@ -827,8 +835,88 @@ export function shapeLayoutFor(figure: Figure): ShapeLayout | null {
       return adjacentAnglesLayout(figure.angle);
     case "parallel-lines":
       return parallelLinesLayout(figure.angle);
-    case "triangle-angles":
     case "axes":
+      return axesLayout(figure.min, figure.max, figure.points, figure.line);
+    case "triangle-angles":
       return null;
   }
+}
+
+export function axesLayout(
+  min: number,
+  max: number,
+  points: Vec[] = [],
+  line?: { m: number; b: number },
+): ShapeLayout {
+  const unit = 11;
+  const toX = (value: number) => (value - min) * unit;
+  const toY = (value: number) => (max - value) * unit;
+
+  const ticks: number[] = [];
+  for (let value = min; value <= max; value += 1) ticks.push(value);
+
+  const grid: Primitive[] = [
+    ...ticks.map((value) => ({
+      kind: "line" as const,
+      from: { x: toX(value), y: toY(min) },
+      to: { x: toX(value), y: toY(max) },
+      thin: true,
+    })),
+    ...ticks.map((value) => ({
+      kind: "line" as const,
+      from: { x: toX(min), y: toY(value) },
+      to: { x: toX(max), y: toY(value) },
+      thin: true,
+    })),
+    { kind: "line", from: { x: toX(min), y: toY(0) }, to: { x: toX(max), y: toY(0) } },
+    { kind: "line", from: { x: toX(0), y: toY(min) }, to: { x: toX(0), y: toY(max) } },
+  ];
+
+  if (line) {
+    const clamp = (value: number) => Math.max(min, Math.min(max, value));
+    grid.push({
+      kind: "line",
+      from: { x: toX(min), y: toY(clamp(line.m * min + line.b)) },
+      to: { x: toX(max), y: toY(clamp(line.m * max + line.b)) },
+    });
+  }
+
+  const dots: Primitive[] = points.map((point) => ({
+    kind: "ellipse",
+    centre: { x: toX(point.x), y: toY(point.y) },
+    rx: 2.4,
+    ry: 2.4,
+  }));
+
+  const step = max - min > 12 ? 2 : 1;
+  const tickLabels = ticks
+    .filter(
+      (value) => value !== 0 && value !== min && value !== max && Math.abs(value) % step === 0,
+    )
+    .flatMap((value) => [
+      labelBox(String(value), toX(value), toY(0) + LABEL_HALF_HEIGHT + 4),
+      labelBox(String(value), toX(0) - String(value).length * HALF_CHAR - 5, toY(value)),
+    ]);
+
+  const dotSegments = dots.flatMap(primitiveSegments);
+  const visibleTicks = tickLabels.filter((label) =>
+    dotSegments.every((segment) => !segmentIntersectsBox(segment, label)),
+  );
+
+  const labels = [
+    ...visibleTicks,
+    labelBox("0", toX(0) - 6, toY(0) + LABEL_HALF_HEIGHT + 4),
+    labelBox("x", toX(max) - 4, toY(0) - LABEL_HALF_HEIGHT - 1),
+    labelBox("y", toX(0) + 5, toY(max) + LABEL_HALF_HEIGHT),
+  ];
+
+  const frame = fit([...grid, ...dots], labels);
+
+  return {
+    primitives: dots,
+    decorations: grid,
+    labels,
+    viewBox: frame.viewBox,
+    maxWidth: Math.min(Math.max(170, frame.viewBox.width * 1.7), 300),
+  };
 }

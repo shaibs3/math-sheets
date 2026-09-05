@@ -4,7 +4,7 @@ import {
   type Primitive,
   type ShapeLayout,
 } from "@/lib/figure-layout";
-import type { Figure as FigureData, Measure, Point } from "@/lib/figure";
+import type { Figure as FigureData, Measure } from "@/lib/figure";
 
 const stroke = { stroke: "currentColor", fill: "none", strokeWidth: 1.5 } as const;
 const labelProps = {
@@ -47,8 +47,13 @@ function widthFor(primitive: Primitive): number {
   return "thin" in primitive && primitive.thin ? 1 : 1.5;
 }
 
-function Shape({ primitive }: { primitive: Primitive }) {
-  const common = { ...stroke, strokeWidth: widthFor(primitive), strokeDasharray: dashFor(primitive) };
+function Shape({ primitive, decoration }: { primitive: Primitive; decoration?: boolean }) {
+  const common = {
+    ...stroke,
+    strokeWidth: decoration && "thin" in primitive && primitive.thin ? 0.4 : widthFor(primitive),
+    strokeDasharray: dashFor(primitive),
+    opacity: decoration && "thin" in primitive && primitive.thin ? 0.35 : undefined,
+  };
 
   switch (primitive.kind) {
     case "polygon":
@@ -99,6 +104,9 @@ function LaidOut({ layout }: { layout: ShapeLayout }) {
       className="w-full"
       style={{ maxWidth: layout.maxWidth }}
     >
+      {(layout.decorations ?? []).map((primitive, index) => (
+        <Shape key={`d${index}`} primitive={primitive} decoration />
+      ))}
       {layout.primitives.map((primitive, index) => (
         <Shape key={index} primitive={primitive} />
       ))}
@@ -153,104 +161,8 @@ function TriangleAngles({ angles }: { angles: [number, number] }) {
   );
 }
 
-export function Axes({
-  min,
-  max,
-  points,
-  line,
-  size = 150,
-}: {
-  min: number;
-  max: number;
-  points?: Point[];
-  line?: { m: number; b: number };
-  size?: number;
-}) {
-  const span = max - min;
-  const pad = 12;
-  const box = 120;
-  const unit = (box - pad * 2) / span;
-  const toX = (x: number) => pad + (x - min) * unit;
-  const toY = (y: number) => box - pad - (y - min) * unit;
-
-  const ticks = [];
-  for (let value = min; value <= max; value += 1) ticks.push(value);
-
-  const clamp = (y: number) => Math.max(min, Math.min(max, y));
-  const lineStart = line ? { x: min, y: clamp(line.m * min + line.b) } : null;
-  const lineEnd = line ? { x: max, y: clamp(line.m * max + line.b) } : null;
-
-  return (
-    <svg viewBox={`0 0 ${box} ${box}`} className="w-full" style={{ maxWidth: size }}>
-      <g stroke="currentColor" strokeWidth={0.4} opacity={0.35}>
-        {ticks.map((value) => (
-          <line key={`v${value}`} x1={toX(value)} y1={toY(min)} x2={toX(value)} y2={toY(max)} />
-        ))}
-        {ticks.map((value) => (
-          <line key={`h${value}`} x1={toX(min)} y1={toY(value)} x2={toX(max)} y2={toY(value)} />
-        ))}
-      </g>
-
-      <g stroke="currentColor" strokeWidth={1.2}>
-        <line x1={toX(min)} y1={toY(0)} x2={toX(max)} y2={toY(0)} />
-        <line x1={toX(0)} y1={toY(min)} x2={toX(0)} y2={toY(max)} />
-      </g>
-
-      <g {...labelProps} fontSize={4.5}>
-        {ticks
-          .filter((value) => value !== 0 && value !== min && value !== max)
-          .map((value) => (
-            <text key={`lx${value}`} x={toX(value)} y={toY(0) + 5.5} textAnchor="middle">
-              {value}
-            </text>
-          ))}
-        {ticks
-          .filter((value) => value !== 0 && value !== min && value !== max)
-          .map((value) => (
-            <text key={`ly${value}`} x={toX(0) - 2} y={toY(value) + 1.6} textAnchor="end">
-              {value}
-            </text>
-          ))}
-        <text x={toX(0) - 2} y={toY(0) + 5.5} textAnchor="end">
-          0
-        </text>
-      </g>
-
-      <text x={toX(max) - 1} y={toY(0) - 3} textAnchor="end" {...labelProps} fontSize={7}>
-        x
-      </text>
-      <text x={toX(0) + 3} y={toY(max) + 6} {...labelProps} fontSize={7}>
-        y
-      </text>
-
-      {lineStart && lineEnd ? (
-        <line
-          x1={toX(lineStart.x)}
-          y1={toY(lineStart.y)}
-          x2={toX(lineEnd.x)}
-          y2={toY(lineEnd.y)}
-          {...stroke}
-        />
-      ) : null}
-
-      {(points ?? []).map((point, index) => (
-        <g key={index}>
-          <circle cx={toX(point.x)} cy={toY(point.y)} r={2.4} fill="currentColor" />
-          <text x={toX(point.x) + 4} y={toY(point.y) - 4} {...labelProps} fontSize={7}>
-            {`(${point.x}, ${point.y})`}
-          </text>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
 export default function Figure({ figure }: { figure: FigureData }) {
   if (figure.kind === "triangle-angles") return <TriangleAngles angles={figure.angles} />;
-  if (figure.kind === "axes") {
-    return <Axes min={figure.min} max={figure.max} points={figure.points} line={figure.line} />;
-  }
-
   const layout = shapeLayoutFor(figure);
   return layout ? <LaidOut layout={layout} /> : null;
 }
