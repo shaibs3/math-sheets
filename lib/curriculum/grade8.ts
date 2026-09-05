@@ -99,6 +99,13 @@ export const grade8Topics: Topic[] = [
     description: "נפח ושטח פנים של גליל ישר.",
     generatorId: "cylinder",
   },
+  {
+    id: "meshulashim-hofefim",
+    name: "משולשים חופפים",
+    strand: "תחום גאומטרי",
+    description: "התאמת צלעות וזוויות בין שני משולשים חופפים, כולל היקף.",
+    generatorId: "congruent-triangles",
+  },
 ];
 
 export default grade8Topics;
