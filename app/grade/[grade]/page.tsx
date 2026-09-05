@@ -1,4 +1,5 @@
 import Link from "next/link";
+import StudyLevelBadge from "@/components/StudyLevelBadge";
 import { PROGRESS_ENABLED } from "@/lib/features";
 import { notFound } from "next/navigation";
 import DueBanner from "@/components/DueBanner";
@@ -51,6 +52,7 @@ export default async function GradePage({ params }: PageProps<"/grade/[grade]">)
                     <span className="min-w-0">
                       <span className="flex items-center gap-2">
                         <span className="text-lg font-semibold">{topic.name}</span>
+                        {topic.studyLevel ? <StudyLevelBadge level={topic.studyLevel} /> : null}
                         {PROGRESS_ENABLED ? <TopicStatusBadge topicId={topic.id} /> : null}
                       </span>
                       <span className="mt-0.5 block text-sm text-slate-600">

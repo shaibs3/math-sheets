@@ -7,6 +7,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "ממוצע, חציון ושכיח של אוסף נתונים.",
     generatorId: "statistics-center",
+    studyLevel: 3,
   },
   {
     id: "histabrut-klasit",
@@ -14,6 +15,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "הסתברות של מאורע במרחב מדגם סימטרי.",
     generatorId: "probability-basic",
+    studyLevel: 3,
   },
   {
     id: "shinuy-nose",
@@ -21,6 +23,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול חברה ומדע",
     description: "בידוד נעלם בנוסחה נתונה וחישוב ערכו.",
     generatorId: "formula-rearrange",
+    studyLevel: 3,
   },
   {
     id: "achuzim-tsarchaniim",
@@ -28,6 +31,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול פיננסי-כלכלי",
     description: "הנחות, מע\"מ ומציאת המחיר לפני ההנחה.",
     generatorId: "consumer-percent",
+    studyLevel: 3,
   },
   {
     id: "mishvaot-yishumiyot",
@@ -35,6 +39,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול פיננסי-כלכלי",
     description: "פתרון משוואה ממעלה ראשונה עם סוגריים ומכנים.",
     generatorId: "linear-equation-brackets",
+    studyLevel: 3,
   },
   {
     id: "hashvaat-kedaiyut",
@@ -42,6 +47,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול פיננסי-כלכלי",
     description: "פתרון מערכת שתי משוואות להשוואה בין שני מסלולים.",
     generatorId: "linear-system",
+    studyLevel: 3,
   },
   {
     id: "kotzev-shinuy",
@@ -49,6 +55,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול פיננסי-כלכלי",
     description: "מציאת שיפוע ומשוואת ישר לפי שתי נקודות.",
     generatorId: "line-from-points",
+    studyLevel: 3,
   },
   {
     id: "shetach-veheikef-murkav",
@@ -56,6 +63,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "צירוף מלבן, ריבוע וחלקי מעגל לחישוב שטח והיקף.",
     generatorId: "composite-area",
+    studyLevel: 3,
   },
   {
     id: "hamarat-yechidot",
@@ -63,6 +71,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "מעבר בין יחידות אורך, משקל ושטח.",
     generatorId: "decimal-units",
+    studyLevel: 3,
   },
   {
     id: "mehirut-merchak-zman",
@@ -70,6 +79,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "חישוב מהירות ממוצעת, מרחק ומשך נסיעה.",
     generatorId: "speed-distance-time",
+    studyLevel: 3,
   },
   {
     id: "optimum-ribui",
@@ -77,6 +87,7 @@ export const grade10Topics: Topic[] = [
     strand: "אשכול התמצאות במישור ובמרחב",
     description: "מציאת הקודקוד של פונקציה ריבועית בהקשר יישומי.",
     generatorId: "quadratic-optimum",
+    studyLevel: 3,
   },
 ];
 
