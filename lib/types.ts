@@ -1,12 +1,15 @@
+import type { Figure } from "./figure";
+
 export type Level = 1 | 2 | 3;
 
-export type WorkStyle = "none" | "lines" | "vertical" | "box";
+export type WorkStyle = "none" | "lines" | "vertical" | "box" | "grid";
 
 export type Problem = {
   prompt: string;
   answer: string;
   work?: WorkStyle;
   dir?: "rtl" | "ltr";
+  figure?: Figure;
 };
 
 export type GeneratorOptions = {

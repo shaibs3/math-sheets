@@ -1,3 +1,4 @@
+import Figure, { Axes } from "./Figure";
 import MathText from "./MathText";
 import type { Problem } from "@/lib/types";
 
@@ -32,7 +33,18 @@ export default function ProblemList({
               <MathText text={problem.prompt} />
             </span>
           </div>
-          <div className={workHeights[problem.work ?? "lines"]} />
+          {problem.figure ? (
+            <div className="mt-2 flex justify-center">
+              <Figure figure={problem.figure} />
+            </div>
+          ) : null}
+          {problem.work === "grid" ? (
+            <div className="mt-2 flex justify-center">
+              <Axes min={-5} max={5} size={190} />
+            </div>
+          ) : (
+            <div className={workHeights[problem.work ?? "lines"]} />
+          )}
         </li>
       ))}
     </ol>
