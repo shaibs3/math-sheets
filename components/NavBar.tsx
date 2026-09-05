@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PROGRESS_ENABLED } from "@/lib/features";
 import { usePathname } from "next/navigation";
 import DueLink from "./DueLink";
+import Logo from "./Logo";
 import ProfileSwitcher from "./ProfileSwitcher";
 import { getGrade, getTopic } from "@/lib/curriculum";
 
@@ -39,21 +40,9 @@ export default function NavBar() {
       >
         <Link
           href="/"
-          className="flex min-h-11 items-center gap-2 rounded-lg px-2 font-bold text-[var(--color-primary)] transition-colors hover:bg-[var(--color-muted)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
+          className="flex min-h-11 items-center gap-2 rounded-lg px-2 text-lg font-extrabold tracking-tight text-[var(--color-primary)] transition-colors hover:bg-[var(--color-muted)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
         >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            className="size-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M4 6h16M4 12h10M4 18h13" />
-            <circle cx={19} cy={17} r={3} />
-          </svg>
+          <Logo className="size-7 shrink-0" />
           על הנייר
         </Link>
 

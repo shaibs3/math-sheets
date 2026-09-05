@@ -1,5 +1,6 @@
 import Link from "next/link";
 import GradePicker from "@/components/GradePicker";
+import Logo from "@/components/Logo";
 import SheetPreview from "@/components/SheetPreview";
 import TopicIcon from "@/components/TopicIcon";
 import { getGrade, getTopic } from "@/lib/curriculum";
@@ -28,8 +29,11 @@ export default function HomePage() {
     <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <section className="paper-rule grid items-center gap-10 pb-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
         <div>
-          <p className="text-sm font-bold tracking-wide text-[var(--color-primary)]">על הנייר</p>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+          <p className="flex items-center gap-2.5 text-[var(--color-primary)]">
+            <Logo className="size-9 shrink-0 sm:size-10" />
+            <span className="text-2xl font-extrabold tracking-tight sm:text-3xl">על הנייר</span>
+          </p>
+          <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
             דף תרגול מוכן להדפסה, בפחות מדקה
           </h1>
           <p className="mt-4 max-w-md text-lg text-[var(--color-subtle)]">
