@@ -21,6 +21,7 @@ export const grade5Topics: Topic[] = [
     strand: "שברים",
     description: "חיבור וחיסור שברים עם מכנים שונים.",
     generatorId: "fractions-add-subtract",
+    levels: [1, 2],
   },
   {
     id: "mavar-lashever-asroni",
@@ -35,6 +36,7 @@ export const grade5Topics: Topic[] = [
     strand: "שברים",
     description: "חיבור וחיסור עשרוניים וכפל וחילוק ב-10, 100, 1000.",
     generatorId: "decimals-operations",
+    levels: [1, 2],
   },
   {
     id: "hiluk-be-dusifrati",
