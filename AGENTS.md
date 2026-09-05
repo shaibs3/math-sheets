@@ -23,7 +23,8 @@ rules — if you change one, keep the other in step. PR titles follow Convention
 1. Read `docs/agents/progress.md` for the active feature and the last verified state. It is
    gitignored — local scratch state, not shared history, because every branch appends to the
    top of it and it conflicts on every merge. Create it if it is missing.
-2. Read `docs/agents/feature_list.json` for scope and done criteria of that feature.
+2. Read `docs/agents/feature_list.json` for scope and done criteria of that feature. Like
+   the progress log it is gitignored local state; create it if it is missing.
 3. Run `./init.sh` before your first edit. It must pass before you change anything, so a
    later failure is provably yours.
 4. Work one feature at a time. Do not start a second one.

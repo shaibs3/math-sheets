@@ -45,3 +45,5 @@ next-env.d.ts
 
 # agent session state (local only, conflicts on every branch)
 docs/agents/progress.md
+docs/agents/session-handoff.md
+docs/agents/feature_list.json
