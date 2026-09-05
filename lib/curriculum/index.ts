@@ -34,3 +34,7 @@ export function getGrade(id: number): Grade | undefined {
 export function getTopic(gradeId: number, topicId: string): Topic | undefined {
   return getGrade(gradeId)?.topics.find((topic) => topic.id === topicId);
 }
+
+export function gradeForTopic(topicId: string): Grade | undefined {
+  return grades.find((grade) => grade.topics.some((topic) => topic.id === topicId));
+}

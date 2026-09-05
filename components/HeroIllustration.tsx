@@ -6,42 +6,44 @@ export default function HeroIllustration({ className }: { className?: string }) 
       aria-label="איור של דף תרגול מודפס ועיפרון"
       className={className}
     >
-      <rect x={18} y={14} width={116} height="134" rx={8} fill="#dbe6fb" />
-      <rect x={30} y={8} width={116} height="134" rx={8} fill="#ffffff" stroke="#c7d8f7" strokeWidth={2} />
+      <rect x={18} y={14} width={116} height="134" rx={8} fill="#efe9dc" />
+      <rect x={30} y={8} width={116} height="134" rx={8} fill="#ffffff" stroke="#e3dccd" strokeWidth={2} />
 
-      <g stroke="#2563eb" strokeWidth={3} strokeLinecap="round">
+      <g stroke="#23407a" strokeWidth={3} strokeLinecap="round">
         <line x1={46} y1={28} x2={104} y2={28} />
       </g>
 
+      <line x1={45} y1={122} x2={57} y2={122} stroke="#1b2a4a" strokeWidth={1.5} strokeLinecap="round" />
+
       <g
-        fill="#0f172a"
+        fill="#1b2a4a"
         fontSize={13}
         fontFamily="inherit"
         textAnchor="start"
         style={{ direction: "ltr", unicodeBidi: "isolate" }}
       >
-        <text x={46} y={57}>
-          2/3 × 6 =
+        <text x={46} y={62}>
+          12 + 35 =
         </text>
-        <text x={46} y={85}>
-          25% · 80 =
+        <text x={46} y={92}>
+          9 × 7 =
         </text>
-        <text x={46} y={113}>
-          3 : 4
+        <text x={51} y={118} fontSize={10} textAnchor="middle">
+          2
         </text>
-      </g>
-
-      <g stroke="#cbd5e1" strokeWidth={2} strokeLinecap="round" strokeDasharray="4 5">
-        <line x1={46} y1={66} x2={128} y2={66} />
-        <line x1={46} y1={94} x2={128} y2={94} />
-        <line x1={46} y1={122} x2={128} y2={122} />
+        <text x={51} y={132} fontSize={10} textAnchor="middle">
+          3
+        </text>
+        <text x={62} y={126}>
+          × 6 =
+        </text>
       </g>
 
       <g transform="rotate(24 168 96)">
-        <rect x={160} y={30} width={17} height={78} rx={3} fill="#f59e0b" />
-        <rect x={160} y={30} width={17} height={12} rx={3} fill="#ec4899" />
+        <rect x={160} y={30} width={17} height={78} rx={3} fill="#f2b705" />
+        <rect x={160} y={30} width={17} height={12} rx={3} fill="#d64541" />
         <path d="M160 108 L168.5 128 L177 108 Z" fill="#fcd9a4" />
-        <path d="M164 118 L168.5 128 L173 118 Z" fill="#0f172a" />
+        <path d="M164 118 L168.5 128 L173 118 Z" fill="#1b2a4a" />
       </g>
     </svg>
   );

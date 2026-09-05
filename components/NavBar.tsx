@@ -78,7 +78,7 @@ export default function NavBar() {
           ))}
         </ol>
 
-        <div className="mr-auto flex items-center gap-1">
+        <div className="me-auto flex items-center gap-1">
           <DueLink />
           <ProfileSwitcher />
         </div>

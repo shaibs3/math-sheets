@@ -93,7 +93,7 @@ export default function MarkResults({ gradeId, specs, skillIds, seed }: Props) {
         <button
           type="button"
           onClick={save}
-          className="min-h-11 cursor-pointer rounded-lg bg-[var(--color-primary)] px-4 text-sm font-medium text-[var(--color-on-primary)] transition-colors duration-200 hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
+          className="min-h-11 cursor-pointer rounded-lg bg-[var(--color-primary)] px-4 text-sm font-medium text-[var(--color-on-primary)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]"
         >
           שמירה
         </button>

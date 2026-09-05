@@ -68,7 +68,7 @@ export default function ReviewSheet({ gradeId }: { gradeId: number }) {
             <button
               type="button"
               onClick={() => setPracticeEarly(true)}
-              className="min-h-11 cursor-pointer rounded-lg bg-[var(--color-primary)] px-4 text-sm font-medium text-[var(--color-on-primary)] transition-colors duration-200 hover:bg-blue-700"
+              className="min-h-11 cursor-pointer rounded-lg bg-[var(--color-primary)] px-4 text-sm font-medium text-[var(--color-on-primary)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)]"
             >
               תרגול עכשיו בכל זאת
             </button>
@@ -78,7 +78,7 @@ export default function ReviewSheet({ gradeId }: { gradeId: number }) {
             className={`flex min-h-11 items-center rounded-lg px-4 text-sm font-medium transition-colors duration-200 ${
               tracked
                 ? "border border-[var(--color-border)] hover:bg-[var(--color-muted)]"
-                : "bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-blue-700"
+                : "bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]"
             }`}
           >
             למבדק
