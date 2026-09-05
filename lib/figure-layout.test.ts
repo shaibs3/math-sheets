@@ -1,9 +1,14 @@
 import { describe, expect, it } from "vitest";
+import generators from "./generators";
+import type { Level } from "./types";
 import {
   labelsAreClear,
   labelsAreInsideViewBox,
   pointInPolygon,
   segmentIntersectsBox,
+  shapeLabelsAreClear,
+  shapeLabelsAreInsideViewBox,
+  shapeLayoutFor,
   triangleAnglesLayout,
 } from "./figure-layout";
 
@@ -73,6 +78,57 @@ describe("triangleAnglesLayout", () => {
         expect(pointInPolygon(label, layout.points), `${first}° ${second}° ${label.text}`).toBe(
           true,
         );
+      }
+    }
+  });
+});
+
+describe("every figure a generator emits", () => {
+  const seeds = [7, 1234, 98765];
+  const levels: Level[] = [1, 2, 3];
+
+  const layouts = generators.flatMap((generator) =>
+    levels.flatMap((level) =>
+      seeds.flatMap((seed) =>
+        generator
+          .generate({ seed, count: 12, level })
+          .flatMap((problem) => {
+            if (!problem.figure) return [];
+            const layout = shapeLayoutFor(problem.figure);
+            return layout ? [{ id: generator.id, kind: problem.figure.kind, layout }] : [];
+          }),
+      ),
+    ),
+  );
+
+  it("covers every shape kind that has a layout", () => {
+    expect(new Set(layouts.map((entry) => entry.kind)).size).toBeGreaterThanOrEqual(11);
+  });
+
+  it("never lets a label touch the drawn shape", () => {
+    for (const entry of layouts) {
+      expect(shapeLabelsAreClear(entry.layout), `${entry.id} / ${entry.kind}`).toBe(true);
+    }
+  });
+
+  it("keeps every label inside the viewBox", () => {
+    for (const entry of layouts) {
+      expect(shapeLabelsAreInsideViewBox(entry.layout), `${entry.id} / ${entry.kind}`).toBe(true);
+    }
+  });
+
+  it("never lets two labels overlap", () => {
+    for (const entry of layouts) {
+      const labels = entry.layout.labels;
+      for (let i = 0; i < labels.length; i++) {
+        for (let j = i + 1; j < labels.length; j++) {
+          const overlaps =
+            Math.abs(labels[i].x - labels[j].x) < labels[i].halfWidth + labels[j].halfWidth &&
+            Math.abs(labels[i].y - labels[j].y) < labels[i].halfHeight + labels[j].halfHeight;
+          expect(overlaps, `${entry.id} / ${entry.kind}: "${labels[i].text}" vs "${labels[j].text}"`).toBe(
+            false,
+          );
+        }
       }
     }
   });
