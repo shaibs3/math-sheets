@@ -898,17 +898,20 @@ export function axesLayout(
       labelBox(String(value), toX(0) - String(value).length * HALF_CHAR - 5, toY(value)),
     ]);
 
-  const dotSegments = dots.flatMap(primitiveSegments);
-  const visibleTicks = tickLabels.filter((label) =>
-    dotSegments.every((segment) => !segmentIntersectsBox(segment, label)),
-  );
-
-  const labels = [
-    ...visibleTicks,
+  const anchors = [
     labelBox("0", toX(0) - 6, toY(0) + LABEL_HALF_HEIGHT + 4),
     labelBox("x", toX(max) - 4, toY(0) - LABEL_HALF_HEIGHT - 1),
     labelBox("y", toX(0) + 5, toY(max) + LABEL_HALF_HEIGHT),
   ];
+
+  const dotSegments = dots.flatMap(primitiveSegments);
+  const visibleTicks = tickLabels.filter(
+    (label) =>
+      dotSegments.every((segment) => !segmentIntersectsBox(segment, label)) &&
+      anchors.every((anchor) => !boxesOverlap(anchor, label)),
+  );
+
+  const labels = [...visibleTicks, ...anchors];
 
   const frame = fit([...grid, ...dots], labels);
 
