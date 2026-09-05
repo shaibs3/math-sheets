@@ -4,6 +4,10 @@ export type Figure =
   | { kind: "rect"; width: number; height: number; unit?: string }
   | { kind: "triangle"; base: number; height: number; unit?: string }
   | { kind: "circle"; value: number; label: "radius" | "diameter"; unit?: string }
+  | { kind: "triangle-angles"; angles: [number, number] }
+  | { kind: "adjacent-angles"; angle: number }
+  | { kind: "parallel-lines"; angle: number }
+  | { kind: "polygon"; sides: number }
   | {
       kind: "axes";
       min: number;
@@ -20,6 +24,13 @@ export function figureValues(figure: Figure): number[] {
       return [figure.base, figure.height];
     case "circle":
       return [figure.value];
+    case "triangle-angles":
+      return figure.angles;
+    case "adjacent-angles":
+    case "parallel-lines":
+      return [figure.angle];
+    case "polygon":
+      return [figure.sides];
     case "axes":
       return [
         ...(figure.points ?? []).flatMap((point) => [point.x, point.y]),
@@ -29,9 +40,14 @@ export function figureValues(figure: Figure): number[] {
 }
 
 const numberToken = /-?\d+(?:\.\d+)?/g;
+const hebrewLetter = /[֐-׿]/;
 
 export function promptNumbers(prompt: string): number[] {
-  return (prompt.match(numberToken) ?? []).map(Number);
+  return [...prompt.matchAll(numberToken)].map((match) => {
+    const start = match.index ?? 0;
+    const negated = match[0].startsWith("-") && hebrewLetter.test(prompt[start - 1] ?? "");
+    return Number(negated ? match[0].slice(1) : match[0]);
+  });
 }
 
 export function figureMatchesPrompt(figure: Figure, prompt: string): boolean {

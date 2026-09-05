@@ -19,6 +19,7 @@ const angles: Generator = {
           answer: `${180 - angle}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "adjacent-angles", angle },
         });
       } else if (kind === 2) {
         const first = rng.int(20, 100);
@@ -28,6 +29,7 @@ const angles: Generator = {
           answer: `${180 - first - second}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "triangle-angles", angles: [first, second] },
         });
       } else if (kind === 3) {
         const sides = rng.int(3, level === 3 ? 12 : 8);
@@ -36,6 +38,7 @@ const angles: Generator = {
           answer: `${(sides - 2) * 180}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "polygon", sides },
         });
       } else {
         const angle = rng.int(20, 160);
@@ -44,6 +47,7 @@ const angles: Generator = {
           answer: `${180 - angle}°`,
           work: "lines",
           dir: "rtl",
+          figure: { kind: "parallel-lines", angle },
         });
       }
     }

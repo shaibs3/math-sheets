@@ -59,7 +59,12 @@ export default function MathText({ text }: { text: string }) {
     <>
       {parts.map((part, index) =>
         part.isolated ? (
-          <span key={index} dir="ltr" style={{ unicodeBidi: "isolate" }}>
+          <span
+            key={index}
+            dir="ltr"
+            className="inline-block whitespace-nowrap"
+            style={{ unicodeBidi: "isolate" }}
+          >
             {part.text}
           </span>
         ) : (

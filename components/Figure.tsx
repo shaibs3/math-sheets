@@ -76,6 +76,128 @@ function Circle({ value, label, unit }: { value: number; label: string; unit?: s
   );
 }
 
+function TriangleAngles({ angles }: { angles: [number, number] }) {
+  const [a, b] = angles;
+  const third = 180 - a - b;
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+
+  const side = Math.sin(toRad(b)) / Math.sin(toRad(third));
+  const raw = [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: side * Math.cos(toRad(a)), y: side * Math.sin(toRad(a)) },
+  ];
+
+  const xs = raw.map((point) => point.x);
+  const ys = raw.map((point) => point.y);
+  const spanX = Math.max(...xs) - Math.min(...xs);
+  const spanY = Math.max(...ys) - Math.min(...ys);
+  const scale = Math.min(84 / spanX, 46 / spanY);
+
+  const points = raw.map((point) => ({
+    x: 18 + (point.x - Math.min(...xs)) * scale,
+    y: 62 - (point.y - Math.min(...ys)) * scale,
+  }));
+
+  const centroid = {
+    x: (points[0].x + points[1].x + points[2].x) / 3,
+    y: (points[0].y + points[1].y + points[2].y) / 3,
+  };
+
+  const labels = [`${a}°`, `${b}°`, "?"];
+
+  return (
+    <svg viewBox="0 0 120 74" className="w-full max-w-[170px]">
+      <polygon points={points.map((point) => `${point.x},${point.y}`).join(" ")} {...stroke} />
+      {points.map((point, index) => (
+        <text
+          key={index}
+          x={point.x + (centroid.x - point.x) * 0.32}
+          y={point.y + (centroid.y - point.y) * 0.32 + 3}
+          textAnchor="middle"
+          {...labelProps}
+          fontSize={8}
+        >
+          {labels[index]}
+        </text>
+      ))}
+    </svg>
+  );
+}
+
+function AdjacentAngles({ angle }: { angle: number }) {
+  const vertex = { x: 60, y: 54 };
+  const reach = 44;
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const ray = {
+    x: vertex.x + reach * Math.cos(toRad(angle)),
+    y: vertex.y - reach * Math.sin(toRad(angle)),
+  };
+  const label = (deg: number, text: string) => ({
+    x: vertex.x + 24 * Math.cos(toRad(deg)),
+    y: vertex.y - 24 * Math.sin(toRad(deg)) + 3,
+    text,
+  });
+
+  const marks = [label(angle / 2, `${angle}°`), label((180 + angle) / 2, "?")];
+
+  return (
+    <svg viewBox="0 0 120 68" className="w-full max-w-[170px]">
+      <line x1={vertex.x - reach} y1={vertex.y} x2={vertex.x + reach} y2={vertex.y} {...stroke} />
+      <line x1={vertex.x} y1={vertex.y} x2={ray.x} y2={ray.y} {...stroke} />
+      {marks.map((mark, index) => (
+        <text key={index} x={mark.x} y={mark.y} textAnchor="middle" {...labelProps} fontSize={8}>
+          {mark.text}
+        </text>
+      ))}
+    </svg>
+  );
+}
+
+function ParallelLines({ angle }: { angle: number }) {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const topY = 16;
+  const bottomY = 58;
+  const shift = (bottomY - topY) / Math.tan(toRad(angle));
+  const topX = 54;
+  const bottomX = topX + shift;
+
+  return (
+    <svg viewBox="0 0 120 74" className="w-full max-w-[170px]">
+      <line x1={10} y1={topY} x2={110} y2={topY} {...stroke} />
+      <line x1={10} y1={bottomY} x2={110} y2={bottomY} {...stroke} />
+      <line
+        x1={topX - shift * 0.55}
+        y1={topY - 12}
+        x2={bottomX + shift * 0.55}
+        y2={bottomY + 12}
+        {...stroke}
+      />
+      <text x={topX + 7} y={topY - 3} {...labelProps} fontSize={8}>
+        {`${angle}°`}
+      </text>
+      <text x={bottomX + 7} y={bottomY - 3} {...labelProps} fontSize={8}>
+        ?
+      </text>
+    </svg>
+  );
+}
+
+function Polygon({ sides }: { sides: number }) {
+  const radius = 30;
+  const center = { x: 60, y: 38 };
+  const points = Array.from({ length: sides }, (_, index) => {
+    const theta = (index / sides) * 2 * Math.PI - Math.PI / 2;
+    return `${center.x + radius * Math.cos(theta)},${center.y + radius * Math.sin(theta)}`;
+  });
+
+  return (
+    <svg viewBox="0 0 120 76" className="w-full max-w-[150px]">
+      <polygon points={points.join(" ")} {...stroke} />
+    </svg>
+  );
+}
+
 export function Axes({
   min,
   max,
@@ -119,6 +241,26 @@ export function Axes({
         <line x1={toX(0)} y1={toY(min)} x2={toX(0)} y2={toY(max)} />
       </g>
 
+      <g {...labelProps} fontSize={4.5}>
+        {ticks
+          .filter((value) => value !== 0 && value !== min && value !== max)
+          .map((value) => (
+            <text key={`lx${value}`} x={toX(value)} y={toY(0) + 5.5} textAnchor="middle">
+              {value}
+            </text>
+          ))}
+        {ticks
+          .filter((value) => value !== 0 && value !== min && value !== max)
+          .map((value) => (
+            <text key={`ly${value}`} x={toX(0) - 2} y={toY(value) + 1.6} textAnchor="end">
+              {value}
+            </text>
+          ))}
+        <text x={toX(0) - 2} y={toY(0) + 5.5} textAnchor="end">
+          0
+        </text>
+      </g>
+
       <text x={toX(max) - 1} y={toY(0) - 3} textAnchor="end" {...labelProps} fontSize={7}>
         x
       </text>
@@ -156,6 +298,14 @@ export default function Figure({ figure }: { figure: FigureData }) {
       return <Triangle base={figure.base} height={figure.height} unit={figure.unit} />;
     case "circle":
       return <Circle value={figure.value} label={figure.label} unit={figure.unit} />;
+    case "triangle-angles":
+      return <TriangleAngles angles={figure.angles} />;
+    case "adjacent-angles":
+      return <AdjacentAngles angle={figure.angle} />;
+    case "parallel-lines":
+      return <ParallelLines angle={figure.angle} />;
+    case "polygon":
+      return <Polygon sides={figure.sides} />;
     case "axes":
       return (
         <Axes min={figure.min} max={figure.max} points={figure.points} line={figure.line} />
