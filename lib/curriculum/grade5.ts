@@ -66,6 +66,20 @@ export const grade5Topics: Topic[] = [
     description: "השוואה בין שני שברים ובין שבר למספר שלם.",
     generatorId: "compare-fractions",
   },
+  {
+    id: "beayot-miluliot-shvarim-veasroniim",
+    name: "בעיות מילוליות בשברים ובעשרוניים",
+    strand: "בעיות מילוליות",
+    description: "מציאת חלק מכמות ובעיות קנייה ומדידה במספרים עשרוניים.",
+    generatorId: "word-fractions-decimals",
+  },
+  {
+    id: "beayot-miluliot-ketzev-umemutza",
+    name: "בעיות מילוליות בקצב ובממוצע",
+    strand: "בעיות מילוליות",
+    description: "מהירות, מחיר ליחידה וממוצע של קבוצת נתונים.",
+    generatorId: "word-rate-average",
+  },
 ];
 
 export default grade5Topics;

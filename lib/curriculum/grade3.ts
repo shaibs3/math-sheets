@@ -73,6 +73,20 @@ export const grade3Topics: Topic[] = [
     description: "השלמת האיבר החסר לפי חוק החילוף, חוק הקיבוץ וחוק הפילוג.",
     generatorId: "arithmetic-laws",
   },
+  {
+    id: "beayot-miluliot-kefel-hiluk",
+    name: "בעיות מילוליות בכפל ובחילוק",
+    strand: "בעיות מילוליות",
+    description: "בעיות בכפל, בחלוקה שווה ובחלוקה לקבוצות.",
+    generatorId: "word-mult-div",
+  },
+  {
+    id: "beayot-miluliot-du-shlabiot",
+    name: "בעיות מילוליות בשני שלבים",
+    strand: "בעיות מילוליות",
+    description: "בעיות שדורשות שתי פעולות חשבון עד לתשובה.",
+    generatorId: "word-two-step",
+  },
 ];
 
 export default grade3Topics;

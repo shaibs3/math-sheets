@@ -10,6 +10,9 @@ import coordinateTable from "./coordinate-table";
 import linearGraph from "./linear-graph";
 import addSub20 from "./add-sub-20";
 import addSub100 from "./add-sub-100";
+import addSubTens from "./add-sub-tens";
+import multiplyDivide20 from "./multiply-divide-20";
+import decimalMultiplyDivide from "./decimal-multiply-divide";
 import addSubVertical from "./add-sub-vertical";
 import multiplyTable from "./multiply-table";
 import multiplyVertical from "./multiply-vertical";
@@ -37,6 +40,11 @@ import boxVolumeSurface from "./box-volume-surface";
 import clock from "./clock";
 import money from "./money";
 import wordAddSubBasic from "./word-add-sub-basic";
+import wordMultDiv from "./word-mult-div";
+import wordTwoStep from "./word-two-step";
+import wordMoneyMeasure from "./word-money-measure";
+import wordFractionsDecimals from "./word-fractions-decimals";
+import wordRateAverage from "./word-rate-average";
 import signedNumbers from "./signed-numbers";
 import algebraicSubstitution from "./algebraic-substitution";
 import collectLikeTerms from "./collect-like-terms";
@@ -56,6 +64,13 @@ import statisticsCenter from "./statistics-center";
 import probabilityBasic from "./probability-basic";
 import pythagoras from "./pythagoras";
 import cylinder from "./cylinder";
+import kiteProperties from "./kite-properties";
+import parallelogramProperties from "./parallelogram-properties";
+import rectangleProperties from "./rectangle-properties";
+import rhombusProperties from "./rhombus-properties";
+import squareProperties from "./square-properties";
+import trapezoidProperties from "./trapezoid-properties";
+import congruentTriangles from "./congruent-triangles";
 import powerLaws from "./power-laws";
 import scientificNotation from "./scientific-notation";
 import rootLaws from "./root-laws";
@@ -165,6 +180,8 @@ function applyOperator(left: number, operator: string, right: number): number {
 const binaryGenerators: [string, Generator][] = [
   ["add-sub-20", addSub20],
   ["add-sub-100", addSub100],
+  ["add-sub-tens", addSubTens],
+  ["multiply-divide-20", multiplyDivide20],
   ["add-sub-vertical", addSubVertical],
   ["multiply-table", multiplyTable],
   ["multiply-vertical", multiplyVertical],
@@ -185,6 +202,58 @@ describe.each(binaryGenerators)("%s", (_name, generator) => {
       expect(Number.isInteger(expected), problem.prompt).toBe(true);
       expect(expected).toBeGreaterThanOrEqual(0);
       expect(Number(problem.answer)).toBe(expected);
+    }
+  });
+});
+
+describe("add-sub-tens", () => {
+  it.each(allLevels)("stays inside the grade 1 range at level %i", (level) => {
+    for (const problem of addSubTens.generate({ seed: 1201, count: 40, level })) {
+      const values = [...numbersIn(problem.prompt), Number(problem.answer)];
+      for (const value of values) {
+        expect(value, problem.prompt).toBeLessThanOrEqual(100);
+        expect(value, problem.prompt).toBeGreaterThanOrEqual(0);
+      }
+      const roundValues = values.filter((value) => value % 10 === 0);
+      expect(roundValues.length, problem.prompt).toBeGreaterThanOrEqual(1);
+    }
+  });
+});
+
+describe("multiply-divide-20", () => {
+  it.each(allLevels)("keeps every product within 20 at level %i", (level) => {
+    for (const problem of multiplyDivide20.generate({ seed: 1202, count: 40, level })) {
+      const match = problem.prompt.match(/^(\d+) ([×÷]) (\d+) =$/);
+      expect(match, problem.prompt).not.toBeNull();
+      const [, left, operator, right] = match!;
+      const product = operator === "×" ? Number(left) * Number(right) : Number(left);
+      expect(product, problem.prompt).toBeLessThanOrEqual(20);
+      expect(Number(problem.answer)).toBe(applyOperator(Number(left), operator, Number(right)));
+      expect(Number.isInteger(Number(problem.answer)), problem.prompt).toBe(true);
+    }
+  });
+});
+
+describe("decimal-multiply-divide", () => {
+  const scaled = (text: string) => {
+    const [whole, fraction = ""] = text.split(".");
+    return { integer: Number(whole + fraction), decimals: fraction.length };
+  };
+
+  it.each(allLevels)("recomputes the decimal result from the prompt at level %i", (level) => {
+    for (const problem of decimalMultiplyDivide.generate({ seed: 1203, count: 40, level })) {
+      const match = problem.prompt.match(/^(\d+(?:\.\d+)?) ([×÷]) (\d+(?:\.\d+)?) =$/);
+      expect(match, problem.prompt).not.toBeNull();
+      const [, left, operator, right] = match!;
+      const a = scaled(left);
+      const b = scaled(right);
+      const expected =
+        operator === "×"
+          ? (a.integer * b.integer) / 10 ** (a.decimals + b.decimals)
+          : (a.integer * 10 ** b.decimals) / (b.integer * 10 ** a.decimals);
+
+      expect(a.decimals + b.decimals, problem.prompt).toBeGreaterThan(0);
+      expect(Number(problem.answer), problem.prompt).toBeCloseTo(expected, 9);
     }
   });
 });
@@ -482,6 +551,103 @@ describe("word-add-sub-basic", () => {
       const expected = problem.prompt.includes("קיבלה") ? first + second : first - second;
       expect(expected).toBeGreaterThan(0);
       expect(firstNumber(problem.answer)).toBe(expected);
+    }
+  });
+});
+
+
+describe("word-mult-div", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordMultDiv.generate({ seed: 8123, count: 40, level })) {
+      const [first, second] = numbersIn(problem.prompt);
+      const expected = problem.prompt.includes("בסך הכול") ? first * second : first / second;
+      expect(Number.isInteger(expected), problem.prompt).toBe(true);
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
+    }
+  });
+});
+
+describe("word-two-step", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordTwoStep.generate({ seed: 5150, count: 40, level })) {
+      const [first, second, third] = numbersIn(problem.prompt);
+      const expected = problem.prompt.includes("חולקו")
+        ? first / second - third
+        : problem.prompt.includes("ונלקחו")
+          ? first * second - third
+          : first + second - third;
+      expect(Number.isInteger(expected), problem.prompt).toBe(true);
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
+    }
+  });
+});
+
+describe("word-money-measure", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordMoneyMeasure.generate({ seed: 6262, count: 40, level })) {
+      const [first, second, third] = numbersIn(problem.prompt);
+      let expected: number;
+      if (problem.prompt.includes("עודף")) expected = third - first * second;
+      else if (problem.prompt.includes("נשארו במכל")) expected = first - second * third;
+      else if (problem.prompt.includes("חתיכות")) expected = first / second;
+      else {
+        const [priceA, priceB, countA, countB] = numbersIn(problem.prompt);
+        expected = priceA * countA + priceB * countB;
+      }
+      expect(Number.isInteger(expected), problem.prompt).toBe(true);
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
+    }
+  });
+});
+
+function roundTo(value: number, decimals: number): number {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
+}
+
+describe("word-fractions-decimals", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordFractionsDecimals.generate({ seed: 3311, count: 40, level })) {
+      const numbers = numbersIn(problem.prompt);
+      let expected: number;
+      if (problem.prompt.includes("מהם")) {
+        const [total, numerator, denominator] = numbers;
+        expect(total % denominator, problem.prompt).toBe(0);
+        expected = (total / denominator) * numerator;
+      } else if (problem.prompt.includes("כמה עולים")) {
+        expected = numbers[0] * numbers[1];
+      } else if (problem.prompt.includes("בסך הכול")) {
+        expected = numbers[0] + numbers[1];
+      } else {
+        expected = numbers[0] - numbers[1];
+      }
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(roundTo(expected, 2));
+    }
+  });
+});
+
+describe("word-rate-average", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordRateAverage.generate({ seed: 9090, count: 40, level })) {
+      const numbers = numbersIn(problem.prompt);
+      let expected: number;
+      if (problem.prompt.includes("הציון הממוצע")) {
+        const [howMany, ...scores] = numbers;
+        expect(scores, problem.prompt).toHaveLength(howMany);
+        expected = scores.reduce((sum, score) => sum + score, 0) / howMany;
+      } else if (problem.prompt.includes("המהירות הממוצעת")) {
+        expected = numbers[0] / numbers[1];
+      } else if (problem.prompt.includes("כמה עולה")) {
+        expected = numbers[1] / numbers[0];
+      } else {
+        expected = numbers[0] * numbers[1];
+      }
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(roundTo(expected, 2));
     }
   });
 });
@@ -1275,6 +1441,26 @@ describe("place-value-million", () => {
   });
 });
 
+describe("kite-properties", () => {
+  it.each(testLevels)("recomputes every kite answer from its prompt at level %i", (level) => {
+    for (const problem of kiteProperties.generate({ seed: 5101, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("היקף הדלתון")) {
+        expect(answer, problem.prompt).toBe(2 * (given[0] + given[1]));
+      } else if (problem.prompt.includes("זווית הזנב")) {
+        expect(given[0] + given[1] + 2 * answer, problem.prompt).toBe(360);
+      } else if (problem.prompt.includes("שטח הדלתון")) {
+        expect(2 * answer, problem.prompt).toBe(given[0] * given[1]);
+      } else {
+        expect(2 * answer, problem.prompt).toBe(given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
 describe("compare-fractions", () => {
   it.each(testLevels)("recomputes the stated comparison at level %i", (level) => {
     for (const problem of compareFractions.generate({ seed: 5103, count: 40, level })) {
@@ -1328,6 +1514,28 @@ describe("quadratic-inequality", () => {
   });
 });
 
+describe("parallelogram-properties", () => {
+  it.each(testLevels)("recomputes every parallelogram answer from its prompt at level %i", (level) => {
+    for (const problem of parallelogramProperties.generate({ seed: 5102, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("מהי הצלע הסמוכה אליה")) {
+        expect(2 * (given[1] + answer), problem.prompt).toBe(given[0]);
+      } else if (problem.prompt.includes("היקף המקבילית")) {
+        expect(answer, problem.prompt).toBe(2 * (given[0] + given[1]));
+      } else if (problem.prompt.includes("שטח המקבילית")) {
+        expect(answer, problem.prompt).toBe(given[0] * given[1]);
+      } else if (problem.prompt.includes("הזווית הסמוכה")) {
+        expect(given[0] + answer, problem.prompt).toBe(180);
+      } else {
+        expect(answer, problem.prompt).toBe(given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
 describe("quadratic-system", () => {
   it.each(testLevels)("both stated pairs satisfy both equations at level %i", (level) => {
     for (const problem of quadraticSystem.generate({ seed: 5106, count: 30, level })) {
@@ -1343,6 +1551,54 @@ describe("quadratic-system", () => {
           );
         }
       }
+    }
+  });
+});
+
+describe("rectangle-properties", () => {
+  it.each(testLevels)("recomputes every rectangle answer from its prompt at level %i", (level) => {
+    for (const problem of rectangleProperties.generate({ seed: 5103, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("מהו רוחב המלבן")) {
+        expect(given[1] * answer, problem.prompt).toBe(given[0]);
+      } else if (problem.prompt.includes("שטח המלבן")) {
+        expect(answer, problem.prompt).toBe(given[0] * given[1]);
+      } else if (problem.prompt.includes("היקף המלבן")) {
+        expect(answer, problem.prompt).toBe(2 * (given[0] + given[1]));
+      } else if (problem.prompt.includes("אלכסון המלבן")) {
+        expect(answer ** 2, problem.prompt).toBe(given[0] ** 2 + given[1] ** 2);
+      } else {
+        expect(given[0] + answer, problem.prompt).toBe(90);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("rhombus-properties", () => {
+  it.each(testLevels)("recomputes every rhombus answer from its prompt at level %i", (level) => {
+    for (const problem of rhombusProperties.generate({ seed: 5104, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("מהו אורך צלע המעוין")) {
+        if (given.length === 1) {
+          expect(4 * answer, problem.prompt).toBe(given[0]);
+        } else {
+          expect(answer ** 2, problem.prompt).toBe((given[0] / 2) ** 2 + (given[1] / 2) ** 2);
+        }
+      } else if (problem.prompt.includes("היקף המעוין")) {
+        expect(answer, problem.prompt).toBe(4 * given[0]);
+      } else if (problem.prompt.includes("שטח המעוין")) {
+        expect(2 * answer, problem.prompt).toBe(given[0] * given[1]);
+      } else if (problem.prompt.includes("הזווית הסמוכה")) {
+        expect(given[0] + answer, problem.prompt).toBe(180);
+      } else {
+        expect(2 * answer, problem.prompt).toBe(given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
     }
   });
 });
@@ -1365,6 +1621,92 @@ describe("function-transform", () => {
           9,
         );
       }
+    }
+  });
+});
+
+describe("square-properties", () => {
+  it.each(testLevels)("recomputes every square answer from its prompt at level %i", (level) => {
+    for (const problem of squareProperties.generate({ seed: 5105, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("חצי האלכסון")) {
+        expect(2 * answer, problem.prompt).toBe(given[0]);
+      } else if (problem.prompt.includes("מהו אורך צלע הריבוע")) {
+        if (problem.prompt.includes("היקף")) {
+          expect(4 * answer, problem.prompt).toBe(given[0]);
+        } else {
+          expect(answer ** 2, problem.prompt).toBe(given[0]);
+        }
+      } else if (problem.prompt.includes("שטח הריבוע")) {
+        expect(answer, problem.prompt).toBe(given[0] ** 2);
+      } else {
+        expect(answer, problem.prompt).toBe(4 * given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("trapezoid-properties", () => {
+  it.each(testLevels)("recomputes every trapezoid answer from its prompt at level %i", (level) => {
+    for (const problem of trapezoidProperties.generate({ seed: 5106, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("הבסיס השני")) {
+        expect((given[2] + answer) * given[1], problem.prompt).toBe(2 * given[0]);
+      } else if (problem.prompt.includes("גובה הטרפז")) {
+        expect((given[1] + given[2]) * answer, problem.prompt).toBe(2 * given[0]);
+      } else if (problem.prompt.includes("שטח הטרפז")) {
+        expect(2 * answer, problem.prompt).toBe((given[0] + given[1]) * given[2]);
+      } else if (problem.prompt.includes("קטע האמצעים")) {
+        expect(2 * answer, problem.prompt).toBe(given[0] + given[1]);
+      } else {
+        expect(given[0] + answer, problem.prompt).toBe(180);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("congruent-triangles", () => {
+  it.each(testLevels)("matches corresponding parts through the stated congruence at level %i", (level) => {
+    for (const problem of congruentTriangles.generate({ seed: 5107, count: 40, level })) {
+      const image = /חופף למשולש ([A-F]{3})/.exec(problem.prompt)![1];
+      const correspondence: Record<string, string> = {
+        A: image[0],
+        B: image[1],
+        C: image[2],
+      };
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+      const askedSide = /מהו אורך ([A-F]{2})\?/.exec(problem.prompt);
+      const askedAngle = /מהי זווית ([A-F])\?/.exec(problem.prompt);
+      const statedAngles = [...problem.prompt.matchAll(/זווית ([A-C]) = (\d+)°/g)];
+
+      if (problem.prompt.includes("מהו היקף משולש")) {
+        expect(answer, problem.prompt).toBe(given[0] + given[1] + given[2]);
+      } else if (problem.prompt.includes("היקף משולש")) {
+        const asked = askedSide![1].split("").sort().join("");
+        expect(asked, problem.prompt).toBe([correspondence.A, correspondence.C].sort().join(""));
+        expect(given[0], problem.prompt).toBe(given[1] + given[2] + answer);
+      } else if (askedSide) {
+        const stated = /([A-C])([A-C]) = (\d+)/.exec(problem.prompt)!;
+        const mapped = [correspondence[stated[1]], correspondence[stated[2]]].sort().join("");
+        expect(askedSide[1].split("").sort().join(""), problem.prompt).toBe(mapped);
+        expect(answer, problem.prompt).toBe(Number(stated[3]));
+      } else if (statedAngles.length === 2) {
+        expect(askedAngle![1], problem.prompt).toBe(correspondence.C);
+        expect(Number(statedAngles[0][2]) + Number(statedAngles[1][2]) + answer, problem.prompt).toBe(
+          180,
+        );
+      } else {
+        expect(askedAngle![1], problem.prompt).toBe(correspondence[statedAngles[0][1]]);
+        expect(answer, problem.prompt).toBe(Number(statedAngles[0][2]));
+      }
+      expect(answer).toBeGreaterThan(0);
     }
   });
 });

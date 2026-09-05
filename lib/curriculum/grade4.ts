@@ -72,6 +72,13 @@ export const grade4Topics: Topic[] = [
     description: "ספרות וערכן במספרים בני חמש ושש ספרות ופירוק לפי ערך המקום.",
     generatorId: "place-value-million",
   },
+  {
+    id: "beayot-miluliot-kesef-umidot",
+    name: "בעיות מילוליות בכסף ובמידות",
+    strand: "בעיות מילוליות",
+    description: "בעיות רב-שלביות בהקשרי קנייה, עודף, אורך ונפח.",
+    generatorId: "word-money-measure",
+  },
 ];
 
 export default grade4Topics;

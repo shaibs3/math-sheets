@@ -100,6 +100,48 @@ export const grade9Topics: Topic[] = [
     description: "כתיבת g(x) המתקבלת מ-f(x) בהזזה, בשיקוף ובמתיחה, כפולינום.",
     generatorId: "function-transform",
   },
+  {
+    id: "daltton",
+    name: "דלתון",
+    strand: "תחום גאומטרי",
+    description: "זוויות, אלכסונים, היקף ושטח של דלתון.",
+    generatorId: "kite-properties",
+  },
+  {
+    id: "makbilit",
+    name: "מקבילית",
+    strand: "תחום גאומטרי",
+    description: "זוויות נגדיות וסמוכות, צלעות, היקף ושטח של מקבילית.",
+    generatorId: "parallelogram-properties",
+  },
+  {
+    id: "malben",
+    name: "מלבן",
+    strand: "תחום גאומטרי",
+    description: "שטח, היקף, אלכסונים וזוויות במלבן.",
+    generatorId: "rectangle-properties",
+  },
+  {
+    id: "meuyan",
+    name: "מעוין",
+    strand: "תחום גאומטרי",
+    description: "צלעות שוות, אלכסונים מאונכים, היקף ושטח של מעוין.",
+    generatorId: "rhombus-properties",
+  },
+  {
+    id: "ribua",
+    name: "ריבוע",
+    strand: "תחום גאומטרי",
+    description: "צלע, היקף, שטח ואלכסונים של ריבוע.",
+    generatorId: "square-properties",
+  },
+  {
+    id: "trapez",
+    name: "טרפז",
+    strand: "תחום גאומטרי",
+    description: "זוויות חד-צדדיות, קטע אמצעים, שטח וגובה בטרפז.",
+    generatorId: "trapezoid-properties",
+  },
 ];
 
 export default grade9Topics;

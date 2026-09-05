@@ -9,12 +9,18 @@ export const grade1Topics: Topic[] = [
     generatorId: "add-sub-20",
   },
   {
-    id: "hibur-hisur-ad-100",
-    name: "חיבור וחיסור עד 100",
+    id: "hibur-hisur-asarot",
+    name: "חיבור וחיסור עשרות שלמות",
     strand: "פעולות החשבון",
-    description: "חיבור וחיסור בתחום ה-100, כולל עשרות שלמות.",
-    generatorId: "add-sub-100",
-    levels: [1, 2],
+    description: "חיבור וחיסור של עשרות שלמות עד 100, ועשרות ויחידות.",
+    generatorId: "add-sub-tens",
+  },
+  {
+    id: "kefel-hiluk-ad-20",
+    name: "כפל וחילוק עד 20",
+    strand: "פעולות החשבון",
+    description: "כפל בתחום ה-20 וחילוק כמנה שלמה.",
+    generatorId: "multiply-divide-20",
   },
   {
     id: "shaalot-hibur-hisur",
