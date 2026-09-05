@@ -60,6 +60,13 @@ export const grade5Topics: Topic[] = [
     generatorId: "area-shapes",
   },
   {
+    id: "hashvaat-shvarim",
+    name: "השוואת שברים",
+    strand: "שברים",
+    description: "השוואה בין שני שברים ובין שבר למספר שלם.",
+    generatorId: "compare-fractions",
+  },
+  {
     id: "beayot-miluliot-shvarim-veasroniim",
     name: "בעיות מילוליות בשברים ובעשרוניים",
     strand: "בעיות מילוליות",

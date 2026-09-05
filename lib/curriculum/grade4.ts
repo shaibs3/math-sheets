@@ -66,6 +66,13 @@ export const grade4Topics: Topic[] = [
     generatorId: "box-volume-surface",
   },
   {
+    id: "erech-hamakom-milion",
+    name: "ערך המקום עד מיליון",
+    strand: "פעולות החשבון",
+    description: "ספרות וערכן במספרים בני חמש ושש ספרות ופירוק לפי ערך המקום.",
+    generatorId: "place-value-million",
+  },
+  {
     id: "beayot-miluliot-kesef-umidot",
     name: "בעיות מילוליות בכסף ובמידות",
     strand: "בעיות מילוליות",

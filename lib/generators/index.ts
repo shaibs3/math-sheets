@@ -108,6 +108,14 @@ import wordRateAverage from "./word-rate-average";
 import wordTwoStep from "./word-two-step";
 import zScore from "./z-score";
 
+import arithmeticLaws from "./arithmetic-laws";
+import compareFractions from "./compare-fractions";
+import functionTransform from "./function-transform";
+import placeValueMillion from "./place-value-million";
+import quadraticInequality from "./quadratic-inequality";
+import quadraticSystem from "./quadratic-system";
+import rationalEquation from "./rational-equation";
+
 const generators: Generator[] = [
   absoluteValueEquation,
   addSub100,
@@ -217,6 +225,13 @@ const generators: Generator[] = [
   wordRateAverage,
   wordTwoStep,
   zScore,
+  arithmeticLaws,
+  compareFractions,
+  functionTransform,
+  placeValueMillion,
+  quadraticInequality,
+  quadraticSystem,
+  rationalEquation,
 ];
 
 export const generatorsById = new Map(generators.map((generator) => [generator.id, generator]));

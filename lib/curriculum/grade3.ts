@@ -67,6 +67,13 @@ export const grade3Topics: Topic[] = [
     generatorId: "time-units",
   },
   {
+    id: "hukey-hapeulot",
+    name: "חוקי החילוף, הקיבוץ והפילוג",
+    strand: "פעולות החשבון",
+    description: "השלמת האיבר החסר לפי חוק החילוף, חוק הקיבוץ וחוק הפילוג.",
+    generatorId: "arithmetic-laws",
+  },
+  {
     id: "beayot-miluliot-kefel-hiluk",
     name: "בעיות מילוליות בכפל ובחילוק",
     strand: "בעיות מילוליות",
