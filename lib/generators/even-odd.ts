@@ -14,7 +14,7 @@ const evenOdd: Generator = {
     for (let i = 0; i < count; i++) {
       const value = rng.int(1, maxByLevel[level]);
       problems.push({
-        prompt: `${value} — זוגי או אי‑זוגי?`,
+        prompt: `${value}: זוגי או אי‑זוגי?`,
         answer: value % 2 === 0 ? "זוגי" : "אי‑זוגי",
         work: "none",
         dir: "rtl",

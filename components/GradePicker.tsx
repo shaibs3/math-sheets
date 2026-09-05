@@ -18,9 +18,9 @@ const gradeLetters: Record<number, string> = {
 };
 
 const bands = [
-  { label: "יסודי", range: "א׳–ו׳", ids: [1, 2, 3, 4, 5, 6] },
-  { label: "חטיבת ביניים", range: "ז׳–ט׳", ids: [7, 8, 9] },
-  { label: "תיכון", range: "י׳–י״ב", ids: [10, 11, 12] },
+  { label: "יסודי", range: "א׳–ו׳", ids: [1, 2, 3, 4, 5, 6], primary: true },
+  { label: "חטיבת ביניים", range: "ז׳–ט׳", ids: [7, 8, 9], primary: false },
+  { label: "תיכון", range: "י׳–י״ב", ids: [10, 11, 12], primary: false },
 ];
 
 function sampleTopics(grade: Grade): string {
@@ -30,30 +30,25 @@ function sampleTopics(grade: Grade): string {
     .join(" · ");
 }
 
-const chipSize = "size-14 text-xl";
-
-function GradeChip({ grade }: { grade: Grade }) {
-  if (!grade.available) {
-    return (
-      <li
-        title="בקרוב"
-        className={`flex ${chipSize} items-center justify-center rounded-lg border border-dashed border-[var(--color-border)] font-bold text-[var(--color-subtle)] opacity-60`}
-      >
-        <span aria-hidden="true">{gradeLetters[grade.id]}</span>
-        <span className="sr-only">{grade.name} — בקרוב</span>
-      </li>
-    );
-  }
-
+function GradeTile({ grade, primary }: { grade: Grade; primary: boolean }) {
   return (
     <li>
       <Link
         href={`/grade/${grade.id}`}
         title={sampleTopics(grade)}
-        aria-label={grade.name}
-        className={`flex ${chipSize} items-center justify-center rounded-lg border border-[var(--color-border)] bg-white font-bold text-[var(--color-foreground)] transition-colors duration-150 hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)]`}
+        aria-label={`${grade.name} — ${grade.topics.length} נושאים`}
+        className={`flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border-2 bg-white transition-colors duration-150 hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ring)] ${
+          primary
+            ? "min-h-20 border-[var(--color-primary)]/25"
+            : "min-h-16 border-[var(--color-border)]"
+        }`}
       >
-        <span aria-hidden="true">{gradeLetters[grade.id]}</span>
+        <span aria-hidden="true" className={primary ? "text-2xl font-extrabold" : "text-xl font-bold"}>
+          {gradeLetters[grade.id]}
+        </span>
+        <span aria-hidden="true" className="text-[11px] text-[var(--color-subtle)]">
+          {grade.topics.length} נושאים
+        </span>
       </Link>
     </li>
   );
@@ -62,8 +57,8 @@ function GradeChip({ grade }: { grade: Grade }) {
 export default function GradePicker({ heading }: { heading: string }) {
   return (
     <section>
-      <h2 className="mb-4 text-lg font-bold">{heading}</h2>
-      <div className="flex flex-col gap-5">
+      <h2 className="mb-5 text-xl font-bold">{heading}</h2>
+      <div className="flex flex-col gap-6">
         {bands.map((band) => (
           <div key={band.label}>
             <h3 className="mb-2 text-sm font-medium text-[var(--color-subtle)]">
@@ -72,10 +67,16 @@ export default function GradePicker({ heading }: { heading: string }) {
                 ({band.range})
               </span>
             </h3>
-            <ul className="flex flex-wrap gap-3">
+            <ul
+              className={`grid gap-3 ${
+                band.primary ? "grid-cols-3 sm:grid-cols-6" : "grid-cols-3 sm:max-w-md"
+              }`}
+            >
               {band.ids.map((id) => {
                 const grade = grades.find((candidate) => candidate.id === id);
-                return grade ? <GradeChip key={id} grade={grade} /> : null;
+                return grade ? (
+                  <GradeTile key={id} grade={grade} primary={band.primary} />
+                ) : null;
               })}
             </ul>
           </div>
