@@ -12,6 +12,7 @@ permissions: read-all
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    if: github.event.repository.visibility == 'public'
     permissions:
       security-events: write
       actions: read
