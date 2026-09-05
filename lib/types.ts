@@ -28,6 +28,7 @@ export type Topic = {
   strand: string;
   description: string;
   generatorId: string;
+  levels?: Level[];
 };
 
 export type Grade = {
