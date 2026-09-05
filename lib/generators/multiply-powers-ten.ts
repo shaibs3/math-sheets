@@ -18,7 +18,7 @@ const multiplyPowersTen: Generator = {
 
     for (let i = 0; i < count; i++) {
       const power = rng.pick(powers);
-      const kind = rng.int(1, 3);
+      const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 3);
       const a = rng.int(2, 9);
       const b = rng.int(2, 9);
 
@@ -38,8 +38,8 @@ const multiplyPowersTen: Generator = {
         });
       } else {
         problems.push({
-          prompt: `${a * 10} × ${b * 10} =`,
-          answer: String(a * b * 100),
+          prompt: `${a * power} × ${b * 10} =`,
+          answer: String(a * b * power * 10),
           work: "none",
           dir: "ltr",
         });

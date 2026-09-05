@@ -13,7 +13,7 @@ const powerLaws: Generator = {
     for (let i = 0; i < count; i++) {
       const symbol = level === 3 && rng.bool() ? String(rng.int(2, 9)) : "x";
       const m = rng.int(2, maxExponent);
-      const n = rng.int(1, maxExponent);
+      const n = rng.int(2, maxExponent);
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 4);
 
       if (kind === 1) {

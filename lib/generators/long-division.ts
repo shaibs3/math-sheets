@@ -18,7 +18,7 @@ const longDivision: Generator = {
     for (let i = 0; i < count; i++) {
       const divisor = level === 3 && rng.bool() ? rng.int(2, 9) * 10 : rng.int(3, 9);
       const [min, max] = quotientRangeByLevel[level];
-      const quotient = rng.int(min, max);
+      const quotient = rng.int(min, divisor > 9 ? Math.min(max, 99) : max);
 
       problems.push({
         prompt: `${divisor * quotient} ÷ ${divisor} =`,
