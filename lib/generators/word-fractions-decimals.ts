@@ -3,9 +3,15 @@ import { createRng } from "../rng";
 import type { Generator, Problem } from "../types";
 
 const groups = [
-  { place: "בכיתה", people: "תלמידים", verb: "נסעו לטיול", question: "כמה תלמידים נסעו?" },
-  { place: "במועדון", people: "ילדים", verb: "משחקים כדורסל", question: "כמה ילדים משחקים כדורסל?" },
-  { place: "בגן", people: "עצים", verb: "עצי זית", question: "כמה עצי זית יש בגן?" },
+  { place: "בכיתה", people: "תלמידים", verb: "נסעו לטיול", question: "כמה תלמידים נסעו?", most: 40 },
+  {
+    place: "במועדון",
+    people: "ילדים",
+    verb: "משחקים כדורסל",
+    question: "כמה ילדים משחקים כדורסל?",
+    most: 60,
+  },
+  { place: "בגן", people: "עצים", verb: "עצי זית", question: "כמה עצי זית יש בגן?", most: 120 },
 ];
 
 const produce = ["תפוחים", "עגבניות", "גבינה", "ענבים"];
@@ -60,7 +66,7 @@ const wordFractionsDecimals: Generator = {
       if (kind === 1) {
         const group = rng.pick(groups);
         const [numerator, denominator] = rng.pick(fractions);
-        const parts = rng.int(2, 9);
+        const parts = rng.int(2, Math.max(2, Math.min(9, Math.floor(group.most / denominator))));
         const total = denominator * parts;
         problems.push({
           prompt: `${group.place} ${total} ${group.people}, ו-${numerator}/${denominator} מהם ${group.verb}. ${group.question}`,

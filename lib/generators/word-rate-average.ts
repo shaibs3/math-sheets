@@ -93,8 +93,21 @@ const wordRateAverage: Generator = {
         });
       } else {
         const howMany = rng.int(range.scores[0], range.scores[1]);
+        const [lowest, highest] = range.grade;
         const scores: number[] = [];
-        for (let n = 0; n < howMany; n++) scores.push(rng.int(range.grade[0], range.grade[1]));
+        for (let n = 0; n < howMany - 1; n++) scores.push(rng.int(lowest, highest));
+        const partial = scores.reduce((sum, score) => sum + score, 0);
+        const span = highest - lowest + 1;
+        const first = rng.int(lowest, highest);
+        let last = first;
+        for (let step = 0; step < span; step++) {
+          const candidate = lowest + ((first - lowest + step) % span);
+          if ((partial + candidate) % howMany === 0) {
+            last = candidate;
+            break;
+          }
+        }
+        scores.push(last);
         const list = scores.slice(0, -1).join(", ");
         const total = scores.reduce((sum, score) => sum + score, 0);
         problems.push({
