@@ -4,6 +4,10 @@ import fractionsDivide from "./fractions-divide";
 import fractionsAddSubtract from "./fractions-add-subtract";
 import percent from "./percent";
 import volume from "./volume";
+import coordinatePoints from "./coordinate-points";
+import coordinateSlope from "./coordinate-slope";
+import coordinateTable from "./coordinate-table";
+import linearGraph from "./linear-graph";
 import addSub20 from "./add-sub-20";
 import addSub100 from "./add-sub-100";
 import addSubVertical from "./add-sub-vertical";
@@ -1156,6 +1160,71 @@ describe("speed-distance-time", () => {
           ? [answer, given[1], given[0]]
           : [given[1], answer, given[0]];
       expect(speed * hours, problem.prompt).toBeCloseTo(distance, 6);
+    }
+  });
+});
+
+function lineIn(text: string): { m: number; b: number } {
+  const match = /y=(-?\d*)x([+-]\d+)?/.exec(normalizeExpression(text));
+  if (!match) throw new Error(`no line in ${text}`);
+  const slope = match[1] === "" ? 1 : match[1] === "-" ? -1 : Number(match[1]);
+  return { m: slope, b: match[2] ? Number(match[2]) : 0 };
+}
+
+function locationFor(x: number, y: number): string {
+  if (x === 0 && y === 0) return "בראשית הצירים";
+  if (x === 0) return "על ציר ה-y";
+  if (y === 0) return "על ציר ה-x";
+  if (x > 0 && y > 0) return "רביע ראשון";
+  if (x < 0 && y > 0) return "רביע שני";
+  if (x < 0 && y < 0) return "רביע שלישי";
+  return "רביע רביעי";
+}
+
+describe("coordinate-points", () => {
+  it.each(testLevels)("names the quadrant of the stated point at level %i", (level) => {
+    for (const problem of coordinatePoints.generate({ seed: 4801, count: 40, level })) {
+      const [[x, y]] = pointsIn(problem.prompt);
+      expect(problem.answer, problem.prompt).toBe(locationFor(x, y));
+    }
+  });
+});
+
+describe("coordinate-table", () => {
+  it.each(testLevels)("recomputes each y from the stated line at level %i", (level) => {
+    for (const problem of coordinateTable.generate({ seed: 4802, count: 40, level })) {
+      const { m, b } = lineIn(problem.prompt);
+      const inputs = /כאשרx=([-\d,]+)/
+        .exec(normalizeExpression(problem.prompt))![1]
+        .split(",")
+        .map(Number);
+      expect(signedNumbersIn(problem.answer), problem.prompt).toEqual(
+        inputs.map((x) => m * x + b),
+      );
+    }
+  });
+});
+
+describe("linear-graph", () => {
+  it.each(testLevels)("recomputes the stated intercept at level %i", (level) => {
+    for (const problem of linearGraph.generate({ seed: 4803, count: 40, level })) {
+      const { m, b } = lineIn(problem.prompt);
+      const onXAxis = problem.prompt.includes("ציר ה-x");
+      const expected: [number, number] = onXAxis ? [-b / m || 0, 0] : [0, b];
+      const [point] = pointsIn(problem.answer);
+      expect(point, problem.prompt).toEqual(expected);
+    }
+  });
+});
+
+describe("coordinate-slope", () => {
+  it.each(testLevels)("recomputes the slope from the two stated points at level %i", (level) => {
+    for (const problem of coordinateSlope.generate({ seed: 4804, count: 40, level })) {
+      const [[x1, y1], [x2, y2]] = pointsIn(problem.prompt);
+      expect(signedNumbersIn(problem.answer)[0], problem.prompt).toBeCloseTo(
+        (y2 - y1) / (x2 - x1),
+        9,
+      );
     }
   });
 });
