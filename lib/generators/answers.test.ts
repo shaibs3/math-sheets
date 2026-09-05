@@ -37,6 +37,11 @@ import boxVolumeSurface from "./box-volume-surface";
 import clock from "./clock";
 import money from "./money";
 import wordAddSubBasic from "./word-add-sub-basic";
+import wordMultDiv from "./word-mult-div";
+import wordTwoStep from "./word-two-step";
+import wordMoneyMeasure from "./word-money-measure";
+import wordFractionsDecimals from "./word-fractions-decimals";
+import wordRateAverage from "./word-rate-average";
 import signedNumbers from "./signed-numbers";
 import algebraicSubstitution from "./algebraic-substitution";
 import collectLikeTerms from "./collect-like-terms";
@@ -475,6 +480,103 @@ describe("word-add-sub-basic", () => {
       const expected = problem.prompt.includes("קיבלה") ? first + second : first - second;
       expect(expected).toBeGreaterThan(0);
       expect(firstNumber(problem.answer)).toBe(expected);
+    }
+  });
+});
+
+
+describe("word-mult-div", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordMultDiv.generate({ seed: 8123, count: 40, level })) {
+      const [first, second] = numbersIn(problem.prompt);
+      const expected = problem.prompt.includes("בסך הכול") ? first * second : first / second;
+      expect(Number.isInteger(expected), problem.prompt).toBe(true);
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
+    }
+  });
+});
+
+describe("word-two-step", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordTwoStep.generate({ seed: 5150, count: 40, level })) {
+      const [first, second, third] = numbersIn(problem.prompt);
+      const expected = problem.prompt.includes("חולקו")
+        ? first / second - third
+        : problem.prompt.includes("ונלקחו")
+          ? first * second - third
+          : first + second - third;
+      expect(Number.isInteger(expected), problem.prompt).toBe(true);
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
+    }
+  });
+});
+
+describe("word-money-measure", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordMoneyMeasure.generate({ seed: 6262, count: 40, level })) {
+      const [first, second, third] = numbersIn(problem.prompt);
+      let expected: number;
+      if (problem.prompt.includes("עודף")) expected = third - first * second;
+      else if (problem.prompt.includes("נשארו במכל")) expected = first - second * third;
+      else if (problem.prompt.includes("חתיכות")) expected = first / second;
+      else {
+        const [priceA, priceB, countA, countB] = numbersIn(problem.prompt);
+        expected = priceA * countA + priceB * countB;
+      }
+      expect(Number.isInteger(expected), problem.prompt).toBe(true);
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(expected);
+    }
+  });
+});
+
+function roundTo(value: number, decimals: number): number {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
+}
+
+describe("word-fractions-decimals", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordFractionsDecimals.generate({ seed: 3311, count: 40, level })) {
+      const numbers = numbersIn(problem.prompt);
+      let expected: number;
+      if (problem.prompt.includes("מהם")) {
+        const [total, numerator, denominator] = numbers;
+        expect(total % denominator, problem.prompt).toBe(0);
+        expected = (total / denominator) * numerator;
+      } else if (problem.prompt.includes("כמה עולים")) {
+        expected = numbers[0] * numbers[1];
+      } else if (problem.prompt.includes("בסך הכול")) {
+        expected = numbers[0] + numbers[1];
+      } else {
+        expected = numbers[0] - numbers[1];
+      }
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(roundTo(expected, 2));
+    }
+  });
+});
+
+describe("word-rate-average", () => {
+  it.each(allLevels)("recomputes the answer from the prompt at level %i", (level) => {
+    for (const problem of wordRateAverage.generate({ seed: 9090, count: 40, level })) {
+      const numbers = numbersIn(problem.prompt);
+      let expected: number;
+      if (problem.prompt.includes("הציון הממוצע")) {
+        const [howMany, ...scores] = numbers;
+        expect(scores, problem.prompt).toHaveLength(howMany);
+        expected = scores.reduce((sum, score) => sum + score, 0) / howMany;
+      } else if (problem.prompt.includes("המהירות הממוצעת")) {
+        expected = numbers[0] / numbers[1];
+      } else if (problem.prompt.includes("כמה עולה")) {
+        expected = numbers[1] / numbers[0];
+      } else {
+        expected = numbers[0] * numbers[1];
+      }
+      expect(expected).toBeGreaterThan(0);
+      expect(firstNumber(problem.answer), problem.prompt).toBe(roundTo(expected, 2));
     }
   });
 });

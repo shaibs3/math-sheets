@@ -65,6 +65,13 @@ export const grade4Topics: Topic[] = [
     description: "חישוב נפח תיבה ושטח הפנים שלה.",
     generatorId: "box-volume-surface",
   },
+  {
+    id: "beayot-miluliot-kesef-umidot",
+    name: "בעיות מילוליות בכסף ובמידות",
+    strand: "בעיות מילוליות",
+    description: "בעיות רב-שלביות בהקשרי קנייה, עודף, אורך ונפח.",
+    generatorId: "word-money-measure",
+  },
 ];
 
 export default grade4Topics;
