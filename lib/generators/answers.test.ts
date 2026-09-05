@@ -64,6 +64,13 @@ import statisticsCenter from "./statistics-center";
 import probabilityBasic from "./probability-basic";
 import pythagoras from "./pythagoras";
 import cylinder from "./cylinder";
+import kiteProperties from "./kite-properties";
+import parallelogramProperties from "./parallelogram-properties";
+import rectangleProperties from "./rectangle-properties";
+import rhombusProperties from "./rhombus-properties";
+import squareProperties from "./square-properties";
+import trapezoidProperties from "./trapezoid-properties";
+import congruentTriangles from "./congruent-triangles";
 import powerLaws from "./power-laws";
 import scientificNotation from "./scientific-notation";
 import rootLaws from "./root-laws";
@@ -1384,6 +1391,182 @@ describe("coordinate-slope", () => {
         (y2 - y1) / (x2 - x1),
         9,
       );
+    }
+  });
+});
+
+describe("kite-properties", () => {
+  it.each(testLevels)("recomputes every kite answer from its prompt at level %i", (level) => {
+    for (const problem of kiteProperties.generate({ seed: 5101, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("היקף הדלתון")) {
+        expect(answer, problem.prompt).toBe(2 * (given[0] + given[1]));
+      } else if (problem.prompt.includes("זווית הזנב")) {
+        expect(given[0] + given[1] + 2 * answer, problem.prompt).toBe(360);
+      } else if (problem.prompt.includes("שטח הדלתון")) {
+        expect(2 * answer, problem.prompt).toBe(given[0] * given[1]);
+      } else {
+        expect(2 * answer, problem.prompt).toBe(given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("parallelogram-properties", () => {
+  it.each(testLevels)("recomputes every parallelogram answer from its prompt at level %i", (level) => {
+    for (const problem of parallelogramProperties.generate({ seed: 5102, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("מהי הצלע הסמוכה אליה")) {
+        expect(2 * (given[1] + answer), problem.prompt).toBe(given[0]);
+      } else if (problem.prompt.includes("היקף המקבילית")) {
+        expect(answer, problem.prompt).toBe(2 * (given[0] + given[1]));
+      } else if (problem.prompt.includes("שטח המקבילית")) {
+        expect(answer, problem.prompt).toBe(given[0] * given[1]);
+      } else if (problem.prompt.includes("הזווית הסמוכה")) {
+        expect(given[0] + answer, problem.prompt).toBe(180);
+      } else {
+        expect(answer, problem.prompt).toBe(given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("rectangle-properties", () => {
+  it.each(testLevels)("recomputes every rectangle answer from its prompt at level %i", (level) => {
+    for (const problem of rectangleProperties.generate({ seed: 5103, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("מהו רוחב המלבן")) {
+        expect(given[1] * answer, problem.prompt).toBe(given[0]);
+      } else if (problem.prompt.includes("שטח המלבן")) {
+        expect(answer, problem.prompt).toBe(given[0] * given[1]);
+      } else if (problem.prompt.includes("היקף המלבן")) {
+        expect(answer, problem.prompt).toBe(2 * (given[0] + given[1]));
+      } else if (problem.prompt.includes("אלכסון המלבן")) {
+        expect(answer ** 2, problem.prompt).toBe(given[0] ** 2 + given[1] ** 2);
+      } else {
+        expect(given[0] + answer, problem.prompt).toBe(90);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("rhombus-properties", () => {
+  it.each(testLevels)("recomputes every rhombus answer from its prompt at level %i", (level) => {
+    for (const problem of rhombusProperties.generate({ seed: 5104, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("מהו אורך צלע המעוין")) {
+        if (given.length === 1) {
+          expect(4 * answer, problem.prompt).toBe(given[0]);
+        } else {
+          expect(answer ** 2, problem.prompt).toBe((given[0] / 2) ** 2 + (given[1] / 2) ** 2);
+        }
+      } else if (problem.prompt.includes("היקף המעוין")) {
+        expect(answer, problem.prompt).toBe(4 * given[0]);
+      } else if (problem.prompt.includes("שטח המעוין")) {
+        expect(2 * answer, problem.prompt).toBe(given[0] * given[1]);
+      } else if (problem.prompt.includes("הזווית הסמוכה")) {
+        expect(given[0] + answer, problem.prompt).toBe(180);
+      } else {
+        expect(2 * answer, problem.prompt).toBe(given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("square-properties", () => {
+  it.each(testLevels)("recomputes every square answer from its prompt at level %i", (level) => {
+    for (const problem of squareProperties.generate({ seed: 5105, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("חצי האלכסון")) {
+        expect(2 * answer, problem.prompt).toBe(given[0]);
+      } else if (problem.prompt.includes("מהו אורך צלע הריבוע")) {
+        if (problem.prompt.includes("היקף")) {
+          expect(4 * answer, problem.prompt).toBe(given[0]);
+        } else {
+          expect(answer ** 2, problem.prompt).toBe(given[0]);
+        }
+      } else if (problem.prompt.includes("שטח הריבוע")) {
+        expect(answer, problem.prompt).toBe(given[0] ** 2);
+      } else {
+        expect(answer, problem.prompt).toBe(4 * given[0]);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("trapezoid-properties", () => {
+  it.each(testLevels)("recomputes every trapezoid answer from its prompt at level %i", (level) => {
+    for (const problem of trapezoidProperties.generate({ seed: 5106, count: 40, level })) {
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+
+      if (problem.prompt.includes("הבסיס השני")) {
+        expect((given[2] + answer) * given[1], problem.prompt).toBe(2 * given[0]);
+      } else if (problem.prompt.includes("גובה הטרפז")) {
+        expect((given[1] + given[2]) * answer, problem.prompt).toBe(2 * given[0]);
+      } else if (problem.prompt.includes("שטח הטרפז")) {
+        expect(2 * answer, problem.prompt).toBe((given[0] + given[1]) * given[2]);
+      } else if (problem.prompt.includes("קטע האמצעים")) {
+        expect(2 * answer, problem.prompt).toBe(given[0] + given[1]);
+      } else {
+        expect(given[0] + answer, problem.prompt).toBe(180);
+      }
+      expect(answer).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("congruent-triangles", () => {
+  it.each(testLevels)("matches corresponding parts through the stated congruence at level %i", (level) => {
+    for (const problem of congruentTriangles.generate({ seed: 5107, count: 40, level })) {
+      const image = /חופף למשולש ([A-F]{3})/.exec(problem.prompt)![1];
+      const correspondence: Record<string, string> = {
+        A: image[0],
+        B: image[1],
+        C: image[2],
+      };
+      const given = unsignedNumbersIn(problem.prompt);
+      const answer = unsignedNumbersIn(problem.answer)[0];
+      const askedSide = /מהו אורך ([A-F]{2})\?/.exec(problem.prompt);
+      const askedAngle = /מהי זווית ([A-F])\?/.exec(problem.prompt);
+      const statedAngles = [...problem.prompt.matchAll(/זווית ([A-C]) = (\d+)°/g)];
+
+      if (problem.prompt.includes("מהו היקף משולש")) {
+        expect(answer, problem.prompt).toBe(given[0] + given[1] + given[2]);
+      } else if (problem.prompt.includes("היקף משולש")) {
+        const asked = askedSide![1].split("").sort().join("");
+        expect(asked, problem.prompt).toBe([correspondence.A, correspondence.C].sort().join(""));
+        expect(given[0], problem.prompt).toBe(given[1] + given[2] + answer);
+      } else if (askedSide) {
+        const stated = /([A-C])([A-C]) = (\d+)/.exec(problem.prompt)!;
+        const mapped = [correspondence[stated[1]], correspondence[stated[2]]].sort().join("");
+        expect(askedSide[1].split("").sort().join(""), problem.prompt).toBe(mapped);
+        expect(answer, problem.prompt).toBe(Number(stated[3]));
+      } else if (statedAngles.length === 2) {
+        expect(askedAngle![1], problem.prompt).toBe(correspondence.C);
+        expect(Number(statedAngles[0][2]) + Number(statedAngles[1][2]) + answer, problem.prompt).toBe(
+          180,
+        );
+      } else {
+        expect(askedAngle![1], problem.prompt).toBe(correspondence[statedAngles[0][1]]);
+        expect(answer, problem.prompt).toBe(Number(statedAngles[0][2]));
+      }
+      expect(answer).toBeGreaterThan(0);
     }
   });
 });

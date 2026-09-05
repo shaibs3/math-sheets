@@ -20,6 +20,7 @@ import compareNumbers from "./compare-numbers";
 import compositeArea from "./composite-area";
 import compoundInterest from "./compound-interest";
 import conditionalProbability from "./conditional-probability";
+import congruentTriangles from "./congruent-triangles";
 import consumerPercent from "./consumer-percent";
 import cylinder from "./cylinder";
 import decimalMultiplyDivide from "./decimal-multiply-divide";
@@ -63,7 +64,9 @@ import multiplyTable from "./multiply-table";
 import multiplyVertical from "./multiply-vertical";
 import numberLineMissing from "./number-line-missing";
 import orderOfOperations from "./order-of-operations";
+import kiteProperties from "./kite-properties";
 import parabola from "./parabola";
+import parallelogramProperties from "./parallelogram-properties";
 import percent from "./percent";
 import percentChange from "./percent-change";
 import placeValue from "./place-value";
@@ -78,6 +81,8 @@ import quadraticOptimum from "./quadratic-optimum";
 import quadrilateralAngles from "./quadrilateral-angles";
 import ratio from "./ratio";
 import rectangleArea from "./rectangle-area";
+import rectangleProperties from "./rectangle-properties";
+import rhombusProperties from "./rhombus-properties";
 import rightTriangleTrig from "./right-triangle-trig";
 import rootLaws from "./root-laws";
 import scale from "./scale";
@@ -87,10 +92,12 @@ import similarTriangles from "./similar-triangles";
 import slopeRelations from "./slope-relations";
 import solidsVolume from "./solids-volume";
 import specialProducts from "./special-products";
+import squareProperties from "./square-properties";
 import speedDistanceTime from "./speed-distance-time";
 import standardDeviation from "./standard-deviation";
 import statisticsCenter from "./statistics-center";
 import timeUnits from "./time-units";
+import trapezoidProperties from "./trapezoid-properties";
 import unitFraction from "./unit-fraction";
 import volume from "./volume";
 import wordAddSubBasic from "./word-add-sub-basic";
@@ -123,6 +130,7 @@ const generators: Generator[] = [
   compositeArea,
   compoundInterest,
   conditionalProbability,
+  congruentTriangles,
   consumerPercent,
   cylinder,
   decimalMultiplyDivide,
@@ -149,6 +157,7 @@ const generators: Generator[] = [
   fractionsMultiply,
   functionValue,
   improperMixed,
+  kiteProperties,
   lengthUnits,
   lineFromPoints,
   linearEquation,
@@ -167,6 +176,7 @@ const generators: Generator[] = [
   numberLineMissing,
   orderOfOperations,
   parabola,
+  parallelogramProperties,
   percent,
   percentChange,
   placeValue,
@@ -181,6 +191,8 @@ const generators: Generator[] = [
   quadrilateralAngles,
   ratio,
   rectangleArea,
+  rectangleProperties,
+  rhombusProperties,
   rightTriangleTrig,
   rootLaws,
   scale,
@@ -191,9 +203,11 @@ const generators: Generator[] = [
   solidsVolume,
   specialProducts,
   speedDistanceTime,
+  squareProperties,
   standardDeviation,
   statisticsCenter,
   timeUnits,
+  trapezoidProperties,
   unitFraction,
   volume,
   wordAddSubBasic,
