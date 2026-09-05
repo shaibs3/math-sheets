@@ -12,6 +12,22 @@ function withUnit(value: number, unit?: string): string {
   return unit ? `${value} ${unit}` : String(value);
 }
 
+type Vector = { x: number; y: number };
+
+function unitVector(from: Vector, to: Vector): Vector {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const length = Math.hypot(dx, dy) || 1;
+  return { x: dx / length, y: dy / length };
+}
+
+function angleArc(vertex: Vector, first: Vector, second: Vector, radius: number): string {
+  const start = { x: vertex.x + first.x * radius, y: vertex.y + first.y * radius };
+  const end = { x: vertex.x + second.x * radius, y: vertex.y + second.y * radius };
+  const sweep = first.x * second.y - first.y * second.x > 0 ? 1 : 0;
+  return `M ${start.x} ${start.y} A ${radius} ${radius} 0 0 ${sweep} ${end.x} ${end.y}`;
+}
+
 function Rect({ width, height, unit }: { width: number; height: number; unit?: string }) {
   const scale = Math.min(74 / width, 46 / height);
   const w = width * scale;
@@ -92,29 +108,46 @@ function TriangleAngles({ angles }: { angles: [number, number] }) {
   const ys = raw.map((point) => point.y);
   const spanX = Math.max(...xs) - Math.min(...xs);
   const spanY = Math.max(...ys) - Math.min(...ys);
-  const scale = Math.min(84 / spanX, 46 / spanY);
+  const scale = Math.min(72 / spanX, 38 / spanY);
 
   const points = raw.map((point) => ({
-    x: 18 + (point.x - Math.min(...xs)) * scale,
-    y: 62 - (point.y - Math.min(...ys)) * scale,
+    x: 24 + (point.x - Math.min(...xs)) * scale,
+    y: 56 - (point.y - Math.min(...ys)) * scale,
   }));
 
-  const centroid = {
-    x: (points[0].x + points[1].x + points[2].x) / 3,
-    y: (points[0].y + points[1].y + points[2].y) / 3,
-  };
-
   const labels = [`${a}°`, `${b}°`, "?"];
+  const vertexAngles = [a, b, third];
+
+  const placements = points.map((point, index) => {
+    const others = points.filter((_, other) => other !== index);
+    const directions = others.map((other) => unitVector(point, other));
+
+    const bisector = { x: directions[0].x + directions[1].x, y: directions[0].y + directions[1].y };
+    const length = Math.hypot(bisector.x, bisector.y) || 1;
+    const clearance = 6 / Math.sin(toRad(vertexAngles[index] / 2));
+    const distance = Math.min(Math.max(clearance, 12), 30);
+    const radius = Math.min(distance * 0.55, 10);
+
+    return {
+      x: point.x + (bisector.x / length) * distance,
+      y: point.y + (bisector.y / length) * distance,
+      arc: angleArc(point, directions[0], directions[1], radius),
+    };
+  });
 
   return (
     <svg viewBox="0 0 120 74" className="w-full max-w-[170px]">
       <polygon points={points.map((point) => `${point.x},${point.y}`).join(" ")} {...stroke} />
-      {points.map((point, index) => (
+      {placements.map((placement, index) => (
+        <path key={`arc${index}`} d={placement.arc} {...stroke} strokeWidth={1} />
+      ))}
+      {placements.map((placement, index) => (
         <text
           key={index}
-          x={point.x + (centroid.x - point.x) * 0.32}
-          y={point.y + (centroid.y - point.y) * 0.32 + 3}
+          x={placement.x}
+          y={placement.y}
           textAnchor="middle"
+          dominantBaseline="middle"
           {...labelProps}
           fontSize={8}
         >
@@ -141,10 +174,16 @@ function AdjacentAngles({ angle }: { angle: number }) {
 
   const marks = [label(angle / 2, `${angle}°`), label((180 + angle) / 2, "?")];
 
+  const right = { x: 1, y: 0 };
+  const left = { x: -1, y: 0 };
+  const along = unitVector(vertex, ray);
+
   return (
     <svg viewBox="0 0 120 68" className="w-full max-w-[170px]">
       <line x1={vertex.x - reach} y1={vertex.y} x2={vertex.x + reach} y2={vertex.y} {...stroke} />
       <line x1={vertex.x} y1={vertex.y} x2={ray.x} y2={ray.y} {...stroke} />
+      <path d={angleArc(vertex, right, along, 13)} {...stroke} strokeWidth={1} />
+      <path d={angleArc(vertex, along, left, 13)} {...stroke} strokeWidth={1} />
       {marks.map((mark, index) => (
         <text key={index} x={mark.x} y={mark.y} textAnchor="middle" {...labelProps} fontSize={8}>
           {mark.text}
@@ -161,6 +200,9 @@ function ParallelLines({ angle }: { angle: number }) {
   const shift = (bottomY - topY) / Math.tan(toRad(angle));
   const topX = 54;
   const bottomX = topX + shift;
+  const top = { x: topX, y: topY };
+  const bottom = { x: bottomX, y: bottomY };
+  const right = { x: 1, y: 0 };
 
   return (
     <svg viewBox="0 0 120 74" className="w-full max-w-[170px]">
@@ -173,10 +215,12 @@ function ParallelLines({ angle }: { angle: number }) {
         y2={bottomY + 12}
         {...stroke}
       />
-      <text x={topX + 7} y={topY - 3} {...labelProps} fontSize={8}>
+      <path d={angleArc(top, right, unitVector(top, bottom), 11)} {...stroke} strokeWidth={1} />
+      <path d={angleArc(bottom, unitVector(bottom, top), right, 11)} {...stroke} strokeWidth={1} />
+      <text x={topX + 14} y={topY + 11} {...labelProps} fontSize={8}>
         {`${angle}°`}
       </text>
-      <text x={bottomX + 7} y={bottomY - 3} {...labelProps} fontSize={8}>
+      <text x={bottomX + 14} y={bottomY - 6} {...labelProps} fontSize={8}>
         ?
       </text>
     </svg>

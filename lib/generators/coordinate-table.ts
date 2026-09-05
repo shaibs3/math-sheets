@@ -29,7 +29,7 @@ const coordinateTable: Generator = {
       const outputs = inputs.map((x) => m * x + b);
 
       problems.push({
-        prompt: `השלימו את ערכי y עבור ${formatLine(m, b)} כאשר x = ${inputs.join(", ")}.`,
+        prompt: `השלימו את ערכי y עבור ${formatLine(m, b)}\nכאשר x = ${inputs.join(", ")}.`,
         answer: `y = ${outputs.join(", ")}`,
         work: "lines",
         dir: "rtl",
