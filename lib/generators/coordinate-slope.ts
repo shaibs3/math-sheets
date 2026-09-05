@@ -27,7 +27,7 @@ const coordinateSlope: Generator = {
       const y2 = m * x2 + b;
 
       problems.push({
-        prompt: `הישר עובר דרך הנקודות (${x1}, ${y1}) ו-(${x2}, ${y2}). מהו שיפועו?`,
+        prompt: `הישר עובר דרך הנקודות (${x1}, ${y1}) ו- (${x2}, ${y2}). מהו שיפועו?`,
         answer: `${m}`,
         work: "lines",
         dir: "rtl",

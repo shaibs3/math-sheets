@@ -37,7 +37,7 @@ const slopeRelations: Generator = {
         problems.push({
           prompt: `נתון הישר ${line}. מצאו את משוואת הישר המקביל לו העובר דרך (${formatSignedNumber(
             px,
-          )} , ${formatSignedNumber(py)}).`,
+          )}, ${formatSignedNumber(py)}).`,
           answer: `y = ${formatLinear(m, py - m * px)}`,
           work: "lines",
           dir: "rtl",

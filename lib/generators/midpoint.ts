@@ -21,7 +21,7 @@ const midpoint: Generator = {
       const x2 = midX + offsetX;
       const y2 = midY + offsetY;
       const point = (x: number, y: number) =>
-        `(${formatSignedNumber(x)} , ${formatSignedNumber(y)})`;
+        `(${formatSignedNumber(x)}, ${formatSignedNumber(y)})`;
 
       if (level !== 1 && rng.bool()) {
         problems.push({
@@ -35,7 +35,7 @@ const midpoint: Generator = {
         });
       } else {
         problems.push({
-          prompt: `מצאו את אמצע הקטע שקצותיו ${point(x1, y1)} ו-${point(x2, y2)}.`,
+          prompt: `מצאו את אמצע הקטע שקצותיו ${point(x1, y1)} ו- ${point(x2, y2)}.`,
           answer: point(midX, midY),
           work: "lines",
           dir: "rtl",

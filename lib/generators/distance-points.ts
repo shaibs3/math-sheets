@@ -32,9 +32,9 @@ const distancePoints: Generator = {
       const y2 = y1 + dy * signY;
 
       problems.push({
-        prompt: `מצאו את המרחק בין הנקודות (${formatSignedNumber(x1)} , ${formatSignedNumber(
+        prompt: `מצאו את המרחק בין הנקודות (${formatSignedNumber(x1)}, ${formatSignedNumber(
           y1,
-        )}) ו-(${formatSignedNumber(x2)} , ${formatSignedNumber(y2)}).`,
+        )}) ו- (${formatSignedNumber(x2)}, ${formatSignedNumber(y2)}).`,
         answer: String(distance),
         work: "lines",
         dir: "rtl",

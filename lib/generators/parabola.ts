@@ -23,7 +23,7 @@ const parabola: Generator = {
       if (kind === 1) {
         problems.push({
           prompt: `נתונה הפרבולה y = ${expression}. מהו קודקודה?`,
-          answer: `(${formatSignedNumber(vertexX)} , ${formatSignedNumber(vertexY)})`,
+          answer: `(${formatSignedNumber(vertexX)}, ${formatSignedNumber(vertexY)})`,
           work: "lines",
           dir: "rtl",
         });

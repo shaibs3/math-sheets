@@ -24,7 +24,7 @@ const lineFromPoints: Generator = {
         problems.push({
           prompt: `מצאו את השיפוע של הישר העובר דרך (${formatSignedNumber(
             x1,
-          )} , ${formatSignedNumber(y1)}) ו-(${formatSignedNumber(x2)} , ${formatSignedNumber(
+          )}, ${formatSignedNumber(y1)}) ו- (${formatSignedNumber(x2)}, ${formatSignedNumber(
             y2,
           )}).`,
           answer: `m = ${formatSignedNumber(m)}`,
@@ -35,7 +35,7 @@ const lineFromPoints: Generator = {
         problems.push({
           prompt: `מצאו את משוואת הישר העובר דרך (${formatSignedNumber(
             x1,
-          )} , ${formatSignedNumber(y1)}) ו-(${formatSignedNumber(x2)} , ${formatSignedNumber(
+          )}, ${formatSignedNumber(y1)}) ו- (${formatSignedNumber(x2)}, ${formatSignedNumber(
             y2,
           )}).`,
           answer: `y = ${formatLinear(m, b)}`,
