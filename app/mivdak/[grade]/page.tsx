@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { PROGRESS_ENABLED } from "@/lib/features";
 import { notFound } from "next/navigation";
 import MixedSheet from "@/components/MixedSheet";
 import PrintControls from "@/components/PrintControls";
@@ -24,6 +25,7 @@ export default async function MivdakPage({
 
   const gradeId = Number(gradeParam);
   const grade = getGrade(gradeId);
+  if (!PROGRESS_ENABLED) notFound();
   if (!grade?.available) notFound();
 
   const seed = clamp(Number(query.seed), 1, 9999999, DEFAULT_SEED);

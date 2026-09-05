@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { PROGRESS_ENABLED } from "@/lib/features";
 import { notFound } from "next/navigation";
 import ReviewSheet from "@/components/ReviewSheet";
 import { getGrade } from "@/lib/curriculum";
@@ -6,6 +7,7 @@ import { getGrade } from "@/lib/curriculum";
 export default async function ReviewPage({ params }: PageProps<"/review/[grade]">) {
   const { grade: gradeParam } = await params;
   const gradeId = Number(gradeParam);
+  if (!PROGRESS_ENABLED) notFound();
   if (!getGrade(gradeId)?.available) notFound();
 
   return (
