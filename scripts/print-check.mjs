@@ -15,6 +15,13 @@ const pages = [
   { name: "grid-plotting", path: "/sheet/7/maarechet-tzirim?seed=7&count=12&answers=1" },
   { name: "grid-linear", path: "/sheet/7/graf-funktsia-kavit?seed=7&count=12&answers=1" },
   { name: "circle-figures", path: "/sheet/6/maagal-veigul?seed=7&count=30&answers=1" },
+  { name: "word-money-measure-40", path: "/sheet/4/beayot-miluliot-kesef-umidot?seed=7&count=40&level=3&answers=1" },
+  { name: "word-rate-average-40", path: "/sheet/5/beayot-miluliot-ketzev-umemutza?seed=7&count=40&level=3&answers=1" },
+  { name: "word-fractions-decimals-40", path: "/sheet/5/beayot-miluliot-shvarim-veasroniim?seed=7&count=40&level=3&answers=1" },
+  { name: "quadrilaterals-trapezoid-30", path: "/sheet/9/trapez?seed=7&count=30&answers=1" },
+  { name: "quadrilaterals-kite-30", path: "/sheet/9/daltton?seed=7&count=30&answers=1" },
+  { name: "congruent-triangles-30", path: "/sheet/8/meshulashim-hofefim?seed=7&count=30&answers=1" },
+  { name: "decimals-mult-div-60", path: "/sheet/6/kefel-hiluk-asroniim?seed=7&count=60&level=3&answers=1" },
 ];
 
 function countPdfPages(buffer) {
