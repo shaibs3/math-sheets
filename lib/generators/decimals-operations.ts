@@ -13,7 +13,7 @@ const decimalsOperations: Generator = {
 
     for (let i = 0; i < count; i++) {
       const kind = rng.int(1, level === 1 ? 2 : 4);
-      const decimals = level === 1 ? 1 : 2;
+      const decimals = level === 1 ? 1 : level === 2 ? 2 : 3;
       const a = formatNumber(rng.int(11, 999) / 10 ** decimals, decimals);
       const b = formatNumber(rng.int(11, 999) / 10 ** decimals, decimals);
       const power = rng.pick(powers);

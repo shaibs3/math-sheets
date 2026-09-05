@@ -16,9 +16,9 @@ const volume: Generator = {
       const kind = level === 1 ? 1 : rng.int(1, 3);
 
       if (kind === 1) {
-        const a = rng.int(2, 15);
-        const b = rng.int(2, 15);
-        const c = rng.int(2, 15);
+        const a = rng.int(2, level === 3 ? 30 : 15);
+        const b = rng.int(2, level === 3 ? 30 : 15);
+        const c = rng.int(2, level === 3 ? 30 : 15);
         problems.push({
           prompt: `תיבה שמידותיה ${a} ס"מ, ${b} ס"מ ו-${c} ס"מ. חשבו את נפחה.`,
           answer: `${a * b * c} סמ"ק`,

@@ -17,9 +17,9 @@ const fractionOfQuantity: Generator = {
     const problems: Problem[] = [];
 
     for (let i = 0; i < count; i++) {
-      const d = rng.int(2, level === 1 ? 6 : 12);
+      const d = rng.int(2, level === 1 ? 6 : level === 2 ? 12 : 20);
       const n = rng.int(1, d - 1);
-      const unitSize = rng.int(2, level === 1 ? 10 : 25);
+      const unitSize = rng.int(2, level === 1 ? 10 : level === 2 ? 25 : 50);
       const total = d * unitSize;
       const part = n * unitSize;
       const item = rng.pick(items);

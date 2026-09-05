@@ -14,8 +14,8 @@ const rootLaws: Generator = {
 
     for (let i = 0; i < count; i++) {
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 3);
-      const outer = rng.pick(squareFactors.slice(0, level === 1 ? 5 : squareFactors.length));
-      const inner = rng.pick(radicands.slice(0, level === 1 ? 4 : radicands.length));
+      const outer = rng.pick(squareFactors.slice(0, level === 1 ? 5 : level === 2 ? 8 : squareFactors.length));
+      const inner = rng.pick(radicands.slice(0, level === 1 ? 4 : level === 2 ? 7 : radicands.length));
 
       if (kind === 1) {
         problems.push({

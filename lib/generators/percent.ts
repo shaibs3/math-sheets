@@ -19,7 +19,7 @@ const percent: Generator = {
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 4);
       const wholeStep = 100 / gcd(p, 100);
       const base =
-        kind === 2 ? wholeStep * rng.int(1, 8) : rng.int(2, 30) * (level === 1 ? 10 : 5);
+        kind === 2 ? wholeStep * rng.int(1, 8) : rng.int(2, 30) * (level === 1 ? 10 : level === 2 ? 5 : 4);
       const part = (base * p) / 100;
 
       if (kind === 1) {

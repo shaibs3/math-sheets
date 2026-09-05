@@ -16,7 +16,7 @@ const percentChange: Generator = {
 
     for (let i = 0; i < count; i++) {
       const p = rng.pick(options);
-      const base = rng.int(2, 40) * 100;
+      const base = rng.int(2, level === 3 ? 90 : 40) * (level === 3 ? 10 : 100);
       const kind = level === 1 ? rng.int(1, 2) : rng.int(1, 3);
 
       if (kind === 1) {

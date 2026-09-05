@@ -13,7 +13,7 @@ const circle: Generator = {
     const problems: Problem[] = [];
 
     for (let i = 0; i < count; i++) {
-      const radius = rng.int(1, level === 1 ? 10 : 20);
+      const radius = rng.int(1, level === 1 ? 10 : level === 2 ? 20 : 40);
       const givenDiameter = level >= 2 && rng.bool();
       const measure = givenDiameter ? radius * 2 : radius;
       const label = givenDiameter ? "קוטר" : "רדיוס";
