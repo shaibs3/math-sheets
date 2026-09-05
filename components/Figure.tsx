@@ -274,11 +274,11 @@ function TriangleAngles({ angles }: { angles: [number, number] }) {
   const ys = raw.map((point) => point.y);
   const spanX = Math.max(...xs) - Math.min(...xs);
   const spanY = Math.max(...ys) - Math.min(...ys);
-  const scale = Math.min(72 / spanX, 38 / spanY);
+  const scale = Math.min(92 / spanX, 56 / spanY);
 
   const points = raw.map((point) => ({
-    x: 24 + (point.x - Math.min(...xs)) * scale,
-    y: 56 - (point.y - Math.min(...ys)) * scale,
+    x: 20 + (point.x - Math.min(...xs)) * scale,
+    y: 76 - (point.y - Math.min(...ys)) * scale,
   }));
 
   const labels = [`${a}°`, `${b}°`, "?"];
@@ -287,22 +287,25 @@ function TriangleAngles({ angles }: { angles: [number, number] }) {
   const placements = points.map((point, index) => {
     const others = points.filter((_, other) => other !== index);
     const directions = others.map((other) => unitVector(point, other));
+    const edgeLengths = others.map((other) => Math.hypot(other.x - point.x, other.y - point.y));
 
     const bisector = { x: directions[0].x + directions[1].x, y: directions[0].y + directions[1].y };
     const length = Math.hypot(bisector.x, bisector.y) || 1;
-    const clearance = 6 / Math.sin(toRad(vertexAngles[index] / 2));
-    const distance = Math.min(Math.max(clearance, 12), 30);
-    const radius = Math.min(distance * 0.55, 10);
+
+    const halfLabel = labels[index] === "?" ? 4 : 7.5;
+    const clearance = (halfLabel + 4) / Math.sin(toRad(vertexAngles[index] / 2));
+    const cap = Math.min(...edgeLengths) * 0.45;
+    const distance = Math.min(Math.max(clearance, 14), Math.max(cap, 14));
 
     return {
       x: point.x + (bisector.x / length) * distance,
       y: point.y + (bisector.y / length) * distance,
-      arc: angleArc(point, directions[0], directions[1], radius),
+      arc: angleArc(point, directions[0], directions[1], Math.min(distance * 0.45, 11)),
     };
   });
 
   return (
-    <svg viewBox="0 0 120 74" className="w-full max-w-[170px]">
+    <svg viewBox="0 0 132 96" className="w-full max-w-[210px]">
       <polygon points={points.map((point) => `${point.x},${point.y}`).join(" ")} {...stroke} />
       {placements.map((placement, index) => (
         <path key={`arc${index}`} d={placement.arc} {...stroke} strokeWidth={1} />
@@ -315,7 +318,7 @@ function TriangleAngles({ angles }: { angles: [number, number] }) {
           textAnchor="middle"
           dominantBaseline="middle"
           {...labelProps}
-          fontSize={8}
+          fontSize={9}
         >
           {labels[index]}
         </text>
