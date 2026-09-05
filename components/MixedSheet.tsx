@@ -28,11 +28,6 @@ export default function MixedSheet({
         <header className="mb-6 border-b-2 border-black pb-3">
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-sm text-slate-600 print:text-black">{subtitle}</p>
-          <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <span>שם: ________________________</span>
-            <span>תאריך: ______________</span>
-            <span className="text-slate-500 print:text-black">דף מס׳ {seed}</span>
-          </div>
         </header>
 
         <ProblemList problems={sheet.problems} columns={sheet.columns} />

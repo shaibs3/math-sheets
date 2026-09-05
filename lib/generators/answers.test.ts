@@ -972,7 +972,7 @@ describe("exponential-equation", () => {
 describe("algebraic-substitution", () => {
   it.each(testLevels)("evaluates its own expression at the given x at level %i", (level) => {
     for (const problem of algebraicSubstitution.generate({ seed: 3463, count: 40, level })) {
-      const expression = problem.prompt.split("הביטוי ")[1].split(" עבור")[0];
+      const expression = problem.prompt.split("הביטוי ")[1].split(/\s*עבור/)[0];
       const x = evaluateExpression(problem.prompt.split("x = ")[1]);
       expect(evaluateExpression(expression, { x }), problem.prompt).toBe(Number(problem.answer));
     }

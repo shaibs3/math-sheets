@@ -60,7 +60,6 @@ export default async function SheetPage({
           topicId={topic.id}
           title={topic.name}
           strand={topic.strand}
-          seed={seed}
         />
         <ProblemList problems={problems} columns={generator.columns} />
         {answers && <AnswerKey problems={problems} title={topic.name} />}
