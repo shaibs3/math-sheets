@@ -5,7 +5,6 @@ import { randomSeed } from "@/lib/rng";
 import type { Level } from "@/lib/types";
 
 type Props = {
-  seed: number;
   count: number;
   level: Level;
   levels: Level[];
@@ -20,7 +19,7 @@ const buttonClass =
 
 const levelNames: Record<Level, string> = { 1: "קל", 2: "בינוני", 3: "מאתגר" };
 
-export default function SheetControls({ seed, count, level, levels, answers }: Props) {
+export default function SheetControls({ count, level, levels, answers }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -88,10 +87,6 @@ export default function SheetControls({ seed, count, level, levels, answers }: P
           הדפסה
         </button>
       </div>
-
-      <p className="mt-3 text-xs text-slate-500">
-        דף מס׳ {seed} — אותה כתובת תיצור תמיד את אותו דף, כך שאפשר להדפיס אותו שוב.
-      </p>
     </div>
   );
 }

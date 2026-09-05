@@ -47,7 +47,6 @@ export default async function SheetPage({
     <main className="mx-auto w-full max-w-3xl px-6 py-8 print:max-w-none print:px-0 print:py-0">
       <Suspense>
         <SheetControls
-          seed={seed}
           count={count}
           level={level}
           levels={levels}
