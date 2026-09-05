@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import MixedSheet from "@/components/MixedSheet";
 import PrintControls from "@/components/PrintControls";
 import { getGrade } from "@/lib/curriculum";
+import { clampLevel } from "@/lib/levels";
 import { buildMixedSheet, type MixedSpec } from "@/lib/mixed";
 import type { Level } from "@/lib/types";
 
@@ -32,7 +33,7 @@ export default async function MivdakPage({
   const specs: MixedSpec[] = grade.topics.map((topic) => ({
     topicId: topic.id,
     generatorId: topic.generatorId,
-    level,
+    level: clampLevel(topic, level),
     count: PROBLEMS_PER_TOPIC,
   }));
 

@@ -14,6 +14,7 @@ export const grade2Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "חיבור וחיסור של מספרים דו-ספרתיים ותלת-ספרתיים במאונך.",
     generatorId: "add-sub-vertical",
+    levels: [1, 2],
   },
   {
     id: "kefel-vehiluk",
@@ -21,6 +22,7 @@ export const grade2Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "תרגילי לוח הכפל הראשוני והחילוק ההפוך להם.",
     generatorId: "multiply-table",
+    levels: [1, 2],
   },
   {
     id: "shaalot-hibur-hisur",
@@ -35,6 +37,7 @@ export const grade2Topics: Topic[] = [
     strand: "פעולות החשבון",
     description: "בדיקה אם מספר מתחלק ב-2, ב-5 או ב-10 ללא שארית.",
     generatorId: "divisibility",
+    levels: [1],
   },
   {
     id: "erech-hamakom",
