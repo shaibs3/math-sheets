@@ -18,10 +18,39 @@ const gradeLetters: Record<number, string> = {
 };
 
 const bands = [
-  { label: "יסודי", range: "א׳–ו׳", ids: [1, 2, 3, 4, 5, 6], primary: true },
-  { label: "חטיבת ביניים", range: "ז׳–ט׳", ids: [7, 8, 9], primary: false },
-  { label: "תיכון", range: "י׳–י״ב", ids: [10, 11, 12], primary: false },
+  { label: "יסודי", range: "א׳–ו׳", ids: [1, 2, 3, 4, 5, 6], primary: true, sheets: 1 },
+  { label: "חטיבת ביניים", range: "ז׳–ט׳", ids: [7, 8, 9], primary: false, sheets: 2 },
+  { label: "תיכון", range: "י׳–י״ב", ids: [10, 11, 12], primary: false, sheets: 3 },
 ];
+
+function BandIcon({ sheets }: { sheets: number }) {
+  const bars = [
+    { x: 17, y: 14, height: 7 },
+    { x: 10, y: 9, height: 12 },
+    { x: 3, y: 4, height: 17 },
+  ];
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="size-5 shrink-0 text-[var(--color-primary)]"
+      fill="currentColor"
+    >
+      {bars.map((bar, index) => (
+        <rect
+          key={bar.x}
+          x={bar.x}
+          y={bar.y}
+          width={4}
+          height={bar.height}
+          rx={1.5}
+          opacity={index < sheets ? 1 : 0.2}
+        />
+      ))}
+    </svg>
+  );
+}
 
 function sampleTopics(grade: Grade): string {
   return grade.topics
@@ -61,9 +90,10 @@ export default function GradePicker({ heading }: { heading: string }) {
       <div className="flex flex-col gap-6">
         {bands.map((band) => (
           <div key={band.label}>
-            <h3 className="mb-2 text-sm font-medium text-[var(--color-subtle)]">
+            <h3 className="mb-3 flex items-center gap-2 text-lg font-bold">
+              <BandIcon sheets={band.sheets} />
               {band.label}{" "}
-              <span className="font-normal" dir="rtl">
+              <span className="text-sm font-normal text-[var(--color-subtle)]" dir="rtl">
                 ({band.range})
               </span>
             </h3>
